@@ -17,6 +17,27 @@ export const postRequest = async (URL, requestData, callback) => {
     }
 }
 
+export const postRequestF = async (URL, requestData, callback) => {
+    try {
+        
+        const response = await axios({
+            method  : "POST",
+            url     : URL,
+            data    : requestData,
+            headers : {
+                // "access_token" : sessionStorage.getItem('buyer_token') || localStorage.getItem('buyer_token'),
+                "Content-Type" : "multipart/form-data"
+            }
+        });
+        // return response.data;
+        return callback(response.data);
+
+    } catch (err) {
+        return callback({code : 500, message : 'Connection faild, please start node server'});
+        // throw err;
+    }
+}
+
 export const postRequestWithToken = async (URL, requestData, callback) => {
     try {
         const response = await axios({

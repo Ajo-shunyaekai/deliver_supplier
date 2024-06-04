@@ -5,6 +5,8 @@ import signup from '../style/signup.css';
 import logo from '../assest/signup.svg';
 import ImageUploader from './ImageUploader';
 import SuccessModal from './SuccessModal';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { postRequest, postRequestF, postRequestWithToken } from '../api/Requests';
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -23,15 +25,22 @@ const SignUp = () => {
         operationCountries: [],
         companyLicenseNo: '',
         companyTaxNo: '',
-        description: ''
+        description: '',
+        taxImage: null, 
+        taxImageType: 'tax',
+        logoImage: null,
+        logoImageType: 'logo', 
+        licenseImage: null, 
+        licenseImageType: 'license'
+        
     });
 
-    const [errors, setErrors] = useState({});
-    const [isChecked, setIsChecked] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [countries, setCountries] = useState([]);
+    const [errors, setErrors]             = useState({});
+    const [isChecked, setIsChecked]       = useState(false);
+    const [showModal, setShowModal]       = useState(false);
+    const [countries, setCountries]       = useState([]);
     const [companyPhone, setCompanyPhone] = useState('');
-    const [mobile, setMobile] = useState('');
+    const [mobile, setMobile]             = useState('');
 
     useEffect(() => {
         const fetchCountries = async () => {
@@ -48,6 +57,19 @@ const SignUp = () => {
 
         fetchCountries();
     }, []);
+
+    const handleImageUpload = (hasImage, file, imageType) => {
+        setFormData({
+          ...formData,
+          [`${imageType}Image`]: hasImage ? file : null, 
+        });
+
+        setErrors(prevState => ({
+            ...prevState,
+            [`${imageType}Image`]: !hasImage ? `${imageType} image is required` : '', // Clear error if image uploaded
+          }));
+
+      };
 
     const handleTagsChange = (event) => {
         const { value } = event.target;
@@ -75,7 +97,12 @@ const SignUp = () => {
         if (value.trim() !== '') {
             const phoneRegex = /^[0-9]{10,15}$/;
             if (phoneRegex.test(value)) {
-                setFormData(prevState => ({ ...prevState, [name]: value }));
+                const countryCode = value.slice(0, value.indexOf('-'));
+                const nationalNumber = value.slice(value.indexOf('-') + 1);
+                const formattedNumber = `+${countryCode} ${nationalNumber}`;
+
+                setFormData(prevState => ({ ...prevState, [name]: formattedNumber }));
+                // setFormData(prevState => ({ ...prevState, [name]: value }));
             } else {
                 // setErrors(prevState => ({ ...prevState, [name]: 'Invalid phone number' }));
             }
@@ -101,27 +128,30 @@ const SignUp = () => {
     const validateForm = () => {
         let formErrors = {};
 
-        if (!formData.companyName) formErrors.companyName = 'Company Name is required';
-        if (!formData.companyAddress) formErrors.companyAddress = 'Company Address is required';
-        if (!formData.companyEmail) formErrors.companyEmail = 'Company Email ID is required';
+        if (!formData.companyName) formErrors.companyName                                           = 'Company Name is required';
+        if (!formData.companyAddress) formErrors.companyAddress                                     = 'Company Address is required';
+        if (!formData.companyEmail) formErrors.companyEmail                                         = 'Company Email ID is required';
         if (formData.companyEmail && !validateEmail(formData.companyEmail)) formErrors.companyEmail = 'Invalid Company Email ID';
-        if (!companyPhone) formErrors.companyPhone = 'Company Phone No. is required';
-        if (!formData.contactPersonName) formErrors.contactPersonName = 'Contact Person Name is required';
-        if (!formData.designation) formErrors.designation = 'Designation is required';
-        if (!formData.email) formErrors.email = 'Email ID is required';
-        if (formData.email && !validateEmail(formData.email)) formErrors.email = 'Invalid Email ID';
-        if (!mobile) formErrors.mobile = 'Mobile No. is required';
-        if (!formData.originCountry) formErrors.originCountry = 'Country of Origin is required';
-        if (!formData.operationCountries.length) formErrors.operationCountries = 'Country of Operation is required';
-        if (!formData.companyLicenseNo) formErrors.companyLicenseNo = 'Company License No. is required';
-        if (!formData.companyTaxNo) formErrors.companyTaxNo = 'Company Tax No. is required';
-        if (!isChecked) formErrors.terms = 'You must agree to the terms and conditions';
-        if (!formData.paymentterms) formErrors.paymentterms = 'Payment Terms are required';
-        if (!formData.delivertime) formErrors.delivertime = 'Estimated Delivery Time is required';
-        if (!formData.tags) formErrors.tags = 'Tags are required';
-        if (!formData.description) formErrors.description = 'Description is required';
-        if (formData.tags.split(',').map(tag => tag.trim()).length > 5) formErrors.tags = 'You can only enter up to 5 tags';
-        if (formData.description.length > 1000) formErrors.description = 'Description cannot exceed 1000 characters';
+        if (!companyPhone) formErrors.companyPhone                                                  = 'Company Phone No. is required';
+        if (!formData.contactPersonName) formErrors.contactPersonName                               = 'Contact Person Name is required';
+        if (!formData.designation) formErrors.designation                                           = 'Designation is required';
+        if (!formData.email) formErrors.email                                                       = 'Email ID is required';
+        if (formData.email && !validateEmail(formData.email)) formErrors.email                      = 'Invalid Email ID';
+        if (!mobile) formErrors.mobile                                                              = 'Mobile No. is required';
+        if (!formData.originCountry) formErrors.originCountry                                       = 'Country of Origin is required';
+        if (!formData.operationCountries.length) formErrors.operationCountries                      = 'Country of Operation is required';
+        if (!formData.companyLicenseNo) formErrors.companyLicenseNo                                 = 'Company License No. is required';
+        if (!formData.companyTaxNo) formErrors.companyTaxNo                                         = 'Company Tax No. is required';
+        if (!isChecked) formErrors.terms                                                            = 'You must agree to the terms and conditions';
+        if (!formData.paymentterms) formErrors.paymentterms                                         = 'Payment Terms are required';
+        if (!formData.delivertime) formErrors.delivertime                                           = 'Estimated Delivery Time is required';
+        if (!formData.tags) formErrors.tags                                                         = 'Tags are required';
+        if (!formData.description) formErrors.description                                           = 'Description is required';
+        if (formData.tags.split(',').map(tag => tag.trim()).length > 5) formErrors.tags             = 'You can only enter up to 5 tags';
+        if (formData.description.length > 1000) formErrors.description                              = 'Description cannot exceed 1000 characters';
+        if (!formData.taxImage) formErrors.taxImage                                                 = 'Tax image is required'; 
+        if (!formData.logoImage) formErrors.logoImage                                               = 'Logo image is required'; 
+        if (!formData.licenseImage) formErrors.licenseImage                                         = 'License image is required';
 
         setErrors(formErrors);
 
@@ -130,7 +160,35 @@ const SignUp = () => {
 
     const handleSubmit = () => {
         if (validateForm()) {
-            setShowModal(true);
+            const regObj = {
+                supplier_name           : formData.companyName,
+                description             : formData.description,
+                supplier_address        : formData.companyAddress,
+                supplier_email          : formData.companyEmail,
+                supplier_mobile_no      : companyPhone,
+                license_no              : formData.companyLicenseNo,
+                country_of_origin       : formData.originCountry,
+                contact_person_name     : formData.contactPersonName,
+                designation             : formData.designation,
+                payment_terms           : formData.paymentterms,
+                tags                    : formData.tags,
+                supplier_image          : formData.logoImage,
+                estimated_delivery_time : formData.delivertime,
+                license_image           : formData.licenseImage,
+                tax_image               : formData.taxImage,
+                contact_person_mobile   : mobile,
+                contact_person_email    : formData.email,
+                country_of_operation    : formData.operationCountries.toString(),
+                tax_no                  : formData.companyTaxNo
+            }
+
+            postRequestF('supplier/register', regObj, async (response) => {
+                if (response.code === 200) {
+                    setShowModal(true);
+                } else {
+                   console.log('error in supplier/register api');
+                }
+              }) 
         }
     };
 
@@ -140,6 +198,16 @@ const SignUp = () => {
     };
 
     const handleCloseModal = () => setShowModal(false);
+
+    const formatPhoneNumber = (value) => {
+        const phoneNumber = parsePhoneNumberFromString(value);
+        if (phoneNumber) {
+            const countryCallingCode = `+${phoneNumber.countryCallingCode}`;
+            const nationalNumber = phoneNumber.nationalNumber;
+            return `${countryCallingCode} ${nationalNumber}`;
+        }
+        return value;
+    };
 
     return (
         <>
@@ -193,8 +261,14 @@ const SignUp = () => {
                                 defaultCountry="ae"
                                 name="companyPhone"
                                 value={companyPhone}
+                                // onChange={(value) => {
+                                //    const formattedValue = formatPhoneNumber(value);
+                                //    setCompanyPhone(formattedValue);
+                                //     handlePhoneChange('companyPhone', value);
+                                // }}
                                 onChange={(value) => {
-                                    setCompanyPhone(value);
+                                    const formattedValue = formatPhoneNumber(value);
+                                    setCompanyPhone(formattedValue);
                                     handlePhoneChange('companyPhone', value);
                                 }}
                             />
@@ -245,9 +319,11 @@ const SignUp = () => {
                                 name="mobile"
                                 value={mobile}
                                 onChange={(value) => {
-                                    setMobile(value);
+                                    const formattedValue = formatPhoneNumber(value);
+                                    setMobile(formattedValue);
                                     handlePhoneChange('mobile', value);
                                 }}
+                                
                             />
                             {errors.mobile && <div className='signup__errors'>{errors.mobile}</div>}
                         </div>
@@ -358,15 +434,18 @@ const SignUp = () => {
                         </div>
                         <div className='signup-form-section-div'>
                             <label className='signup-form-section-label'>Upload License Image</label>
-                            <ImageUploader />
+                            <ImageUploader onUploadStatusChange={handleImageUpload} imageType="license" />
+                            {errors.licenseImage && <div className='signup__errors'>{errors.licenseImage}</div>}
                         </div>
                         <div className='signup-form-section-div'>
                             <label className='signup-form-section-label'>Upload Tax Image</label>
-                            <ImageUploader />
+                             <ImageUploader onUploadStatusChange={handleImageUpload} imageType="tax" />
+                             {errors.taxImage && <div className='signup__errors'>{errors.taxImage}</div>}
                         </div>
                         <div className='signup-form-section-div'>
                             <label className='signup-form-section-label'>Upload Company Logo</label>
-                            <ImageUploader />
+                            <ImageUploader onUploadStatusChange={handleImageUpload} imageType="logo" />
+                            {errors.logoImage && <div className='signup__errors'>{errors.logoImage}</div>}
                         </div>
                         <div className='signup-form-section-checkbox'>
                             <div className='signup-form-inner-section-checkbox'>
