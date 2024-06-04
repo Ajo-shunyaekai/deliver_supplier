@@ -1,0 +1,250 @@
+.signup-container {
+  background-color: #ffffff;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.signup-logo-section {
+  width: 46%;
+  display: flex;
+  justify-content: center;
+}
+.signup-logo-section img {
+  width: 100%;
+  max-width: 55%;
+  height: auto;
+}
+.signup-form-section {
+  width: 52%;
+  height: 100vh;
+  overflow: scroll;
+  background: linear-gradient(to left, #f5f5f7, #e1f2ff);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+.signup-form-section::-webkit-scrollbar {
+  display: none;
+}
+.signup-form-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: start;
+}
+.signup-form-section-div {
+  width: 48.4%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+.signup-form-section-heading {
+  width: 100%;
+  font-size: 20px;
+  line-height: normal;
+  font-weight: 500;
+  max-width: 100%;
+  margin: 0px auto;
+}
+.signup-form-section-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+.signup-form-section-input {
+  width: 100% !important;
+  color: #5e676f !important;
+  border-radius: 4px !important;
+  outline: none !important;
+  border: none !important;
+  margin-bottom: 0px !important;
+  padding: 12px !important;
+  font-size: 13px !important;
+  border-color: transparent !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+.custom-select-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-dropdown {
+  background-color: #ffffff !important;
+  width: 100% !important;
+  color: #5e676f !important;
+  border-radius: 4px !important;
+  outline: none !important;
+  border: none !important;
+  margin-bottom: 0px !important;
+  padding: 12px !important;
+  font-size: 13px !important;
+  border-color: transparent !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+
+.custom-select-wrapper .arrow {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 10px;
+}
+
+.custom-select-wrapper .arrow.active {
+  transform: translateY(-50%) rotate(180deg);
+}
+.signup-form-cont-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+}
+.signup-form-button-cancel {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  background-color: #ffffff;
+  border: 1px solid #5e676f;
+  color: #5e676f;
+  padding: 6px 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+}
+.signup-form-button-submit {
+  border: none !important;
+  outline: none !important;
+  background: linear-gradient(to left, #00dcff, #0075ce);
+  color: white;
+  padding: 6px 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+}
+/* start the country code css */
+.react-tel-input .flag-dropdown {
+  display: none !important;
+}
+
+.react-tel-input .form-control {
+  padding-left: 0 !important;
+}
+
+.react-tel-input .selected-flag {
+  display: none !important;
+}
+
+.react-tel-input .selected-dial-code {
+  display: none !important;
+}
+
+.react-tel-input .country-list .flag {
+  display: none !important;
+}
+
+.react-tel-input .country-list .dial-code {
+  display: none !important;
+}
+
+/* end the country code css */
+.signup-form-checkbox-input[type="checkbox"] {
+  display: block !important;
+}
+.signup-form-section-checkbox {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: auto;
+}
+.signup-form-inner-section-checkbox {
+  display: flex;
+  align-items: center;
+}
+.signup-form-checkbox-label {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  column-gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  position: relative;
+  margin-top: 10px;
+}
+.signup__errors {
+  font-size: 12px;
+  color: #ff0000;
+  margin-top: -4px;
+}
+/* start the phone input design */
+.react-international-phone-input-container .react-international-phone-input {
+  border: none !important;
+  width: 100% !important;
+  height: auto !important;
+  padding: 12px 12px 12px 8px !important;
+  font-size: 14px !important;
+  color: #5e676f !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+.react-international-phone-country-selector-button {
+  height: auto !important;
+  padding: 12px 0px 12px 8px !important;
+  border: none !important;
+  font-size: 14px !important;
+  color: #5e676f !important;
+}
+.react-international-phone-country-selector-button__button-content {
+  outline: none !important;
+  border: none !important;
+}
+/* end the phone inout deisgn */
+@media screen and (max-width: 1400px) {
+  .signup-logo-section {
+    width: 40%;
+  }
+  .signup-form-section {
+    width: 58%;
+  }
+  .signup-form-section-input {
+    padding: 10px !important;
+  }
+  .signup-form-section-div {
+    row-gap: 4px;
+  }
+}
+@media screen and (max-width: 992px) {
+  .signup-logo-section {
+    display: none;
+  }
+  .signup-form-section {
+    width: 100%;
+    padding: 30px 20px;
+  }
+}
+@media screen and (max-width: 580px) {
+  .signup-form-section-div {
+    width: 100%;
+  }
+  .signup-form-section-heading {
+    font-size: 22px;
+    max-width: 100%;
+  }
+  .signup-form-checkbox-label {
+    font-size: 14px;
+  }
+}
