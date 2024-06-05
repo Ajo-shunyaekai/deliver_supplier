@@ -1,16 +1,31 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import UploadImage from '../assest/uplaod.svg';
 import CrossIcon from '../assest/Icon.svg';
 import styles from '../style/imageuploader.module.css';
 
-const ImageUploader = ({ onUploadStatusChange, imageType }) => {
-    const [imagePreview, setImagePreview] = useState('');
-    const [imageName, setImageName] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [uploading, setUploading] = useState(false);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+const ImageUploader = ({ onUploadStatusChange, imageType, reset }) => {
     const fileInputRef = useRef(null);
+
+    const [imagePreview, setImagePreview] = useState('');
+    const [imageName, setImageName]       = useState('');
+    const [isLoading, setIsLoading]       = useState(false);
+    const [uploading, setUploading]       = useState(false);
+    const [modalOpen, setModalOpen]       = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    useEffect(() => {
+        if (reset) {
+            setImagePreview('');
+            setImageName('');
+            setUploading(false);
+            setIsLoading(false);
+            setErrorMessage('');
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
+        }
+    }, [reset]);
+  
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -28,7 +43,7 @@ const ImageUploader = ({ onUploadStatusChange, imageType }) => {
                 return;
             }
 
-            setErrorMessage(''); // Clear any previous error message
+            setErrorMessage('');
 
             const reader = new FileReader();
             reader.onload = () => {

@@ -6,41 +6,42 @@ import logo from '../assest/signup.svg';
 import ImageUploader from './ImageUploader';
 import SuccessModal from './SuccessModal';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
-import { postRequest, postRequestF, postRequestWithToken } from '../api/Requests';
+import { postRequestWithFile } from '../api/Requests';
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
-        companyName: '',
-        companyAddress: '',
-        companyEmail: '',
-        companyPhone: '',
-        contactPersonName: '',
-        designation: '',
-        email: '',
-        mobile: '',
-        paymentterms: '',
-        delivertime: '',
-        tags: '',
-        originCountry: '',
-        operationCountries: [],
-        companyLicenseNo: '',
-        companyTaxNo: '',
-        description: '',
-        taxImage: null, 
-        taxImageType: 'tax',
-        logoImage: null,
-        logoImageType: 'logo', 
-        licenseImage: null, 
-        licenseImageType: 'license'
+        companyName        : '',
+        companyAddress     : '',
+        companyEmail       : '',
+        companyPhone       : '',
+        contactPersonName  : '',
+        designation        : '',
+        email              : '',
+        mobile             : '',
+        paymentterms       : '',
+        delivertime        : '',
+        tags               : '',
+        originCountry      : '',
+        operationCountries : [],
+        companyLicenseNo   : '',
+        companyTaxNo       : '',
+        description        : '',
+        taxImage           : null, 
+        taxImageType       : 'tax',
+        logoImage          : null,
+        logoImageType      : 'logo', 
+        licenseImage       : null, 
+        licenseImageType   : 'license'
         
     });
 
-    const [errors, setErrors]             = useState({});
-    const [isChecked, setIsChecked]       = useState(false);
-    const [showModal, setShowModal]       = useState(false);
-    const [countries, setCountries]       = useState([]);
-    const [companyPhone, setCompanyPhone] = useState('');
-    const [mobile, setMobile]             = useState('');
+    const [errors, setErrors]                 = useState({});
+    const [isChecked, setIsChecked]           = useState(false);
+    const [showModal, setShowModal]           = useState(false);
+    const [countries, setCountries]           = useState([]);
+    const [companyPhone, setCompanyPhone]     = useState('');
+    const [mobile, setMobile]                 = useState('');
+    const [resetUploaders, setResetUploaders] = useState(false);
 
     useEffect(() => {
         const fetchCountries = async () => {
@@ -66,7 +67,7 @@ const SignUp = () => {
 
         setErrors(prevState => ({
             ...prevState,
-            [`${imageType}Image`]: !hasImage ? `${imageType} image is required` : '', // Clear error if image uploaded
+            [`${imageType}Image`]: !hasImage ? `${imageType} image is required` : '', 
           }));
 
       };
@@ -182,15 +183,51 @@ const SignUp = () => {
                 tax_no                  : formData.companyTaxNo
             }
 
-            postRequestF('supplier/register', regObj, async (response) => {
+            postRequestWithFile('supplier/register', regObj, async (response) => {
                 if (response.code === 200) {
+                    setFormData({
+                        companyName: '',
+                        companyAddress: '',
+                        companyEmail: '',
+                        companyPhone: '',
+                        contactPersonName: '',
+                        designation: '',
+                        email: '',
+                        mobile: '',
+                        paymentterms: '',
+                        delivertime: '',
+                        tags: '',
+                        originCountry: '',
+                        operationCountries: [],
+                        companyLicenseNo: '',
+                        companyTaxNo: '',
+                        description: '',
+                        taxImage: null,
+                        taxImageType: 'tax',
+                        logoImage: null,
+                        logoImageType: 'logo',
+                        licenseImage: null,
+                        licenseImageType: 'license'
+                    });
+                    setErrors({});
+                    setIsChecked(false);
+                    setCompanyPhone('');
+                    setMobile('');
+                    setResetUploaders(true);
                     setShowModal(true);
+                    
                 } else {
                    console.log('error in supplier/register api');
                 }
-              }) 
+            }) 
         }
     };
+
+    useEffect(() => {
+        if (resetUploaders) {
+            setResetUploaders(false);
+        }
+    }, [resetUploaders]);
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
@@ -203,7 +240,7 @@ const SignUp = () => {
         const phoneNumber = parsePhoneNumberFromString(value);
         if (phoneNumber) {
             const countryCallingCode = `+${phoneNumber.countryCallingCode}`;
-            const nationalNumber = phoneNumber.nationalNumber;
+            const nationalNumber     = phoneNumber.nationalNumber;
             return `${countryCallingCode} ${nationalNumber}`;
         }
         return value;
@@ -434,17 +471,17 @@ const SignUp = () => {
                         </div>
                         <div className='signup-form-section-div'>
                             <label className='signup-form-section-label'>Upload License Image</label>
-                            <ImageUploader onUploadStatusChange={handleImageUpload} imageType="license" />
+                            <ImageUploader onUploadStatusChange={handleImageUpload} imageType="license" reset={resetUploaders} />
                             {errors.licenseImage && <div className='signup__errors'>{errors.licenseImage}</div>}
                         </div>
                         <div className='signup-form-section-div'>
                             <label className='signup-form-section-label'>Upload Tax Image</label>
-                             <ImageUploader onUploadStatusChange={handleImageUpload} imageType="tax" />
+                             <ImageUploader onUploadStatusChange={handleImageUpload} imageType="tax"  reset={resetUploaders}/>
                              {errors.taxImage && <div className='signup__errors'>{errors.taxImage}</div>}
                         </div>
                         <div className='signup-form-section-div'>
                             <label className='signup-form-section-label'>Upload Company Logo</label>
-                            <ImageUploader onUploadStatusChange={handleImageUpload} imageType="logo" />
+                            <ImageUploader onUploadStatusChange={handleImageUpload} imageType="logo" reset={resetUploaders}/>
                             {errors.logoImage && <div className='signup__errors'>{errors.logoImage}</div>}
                         </div>
                         <div className='signup-form-section-checkbox'>
