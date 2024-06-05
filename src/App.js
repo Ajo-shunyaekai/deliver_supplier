@@ -39,6 +39,8 @@ import BuyerDetails from './pages/BuyerDetails.js'
 import BuyerCompletedList from './pages/buyer/BuyerCompletedList.js';
 import BuyerActiveList from './pages/buyer/BuyerActiveList.js';
 import BuyerPendingList from './pages/buyer/BuyerPendingList.js';
+
+
 function ExcludeSidebar() {
   return (
     <div>

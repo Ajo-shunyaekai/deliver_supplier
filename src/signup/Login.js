@@ -5,6 +5,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import logincss from '../style/login.css';
 import logo from '../assest/signup.svg';
 import { Link } from 'react-router-dom';
+import { postRequest } from '../api/Requests';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -28,9 +29,10 @@ const Login = () => {
             newErrors.password = 'Password is required';
         } else if (!/(?=.*[A-Z])/.test(password)) {
             newErrors.password = 'Password must contain at least one uppercase letter';
-        } else if (!/(?=.*[!@#$%^&*])/.test(password)) {
-            newErrors.password = 'Password must contain at least one special character';
-        }
+        } 
+        // else if (!/(?=.*[!@#$%^&*])/.test(password)) {
+        //     newErrors.password = 'Password must contain at least one special character';
+        // }
 
         return newErrors;
     };
@@ -41,8 +43,32 @@ const Login = () => {
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         } else {
-            // Navigate to dashboard
-            navigate('/dashboard');
+            let obj = {
+                email,
+                password
+            }
+            postRequest('supplier/login', obj, async(response) => {
+                if(response.code === 200) {
+                    sessionStorage.setItem('supplier_id',response.result.supplier_id)
+                    sessionStorage.setItem('supplier_name',response.result.supplier_name)
+                    sessionStorage.setItem('supplier_email',response.result.supplier_email)
+                    sessionStorage.setItem('supplier_country_code',response.result.supplier_country_code)
+                    sessionStorage.setItem('supplier_mobile',response.result.supplier_mobile)
+                    sessionStorage.setItem('contact_person_country_code',response.result.contact_person_country_code)
+                    sessionStorage.setItem('contact_person_mobile',response.result.contact_person_mobile)
+                    sessionStorage.setItem('contact_person_name',response.result.contact_person_name)
+                    sessionStorage.setItem('supplier_image',response.result.supplier_image)
+                    sessionStorage.setItem('license_image',response.result.license_image)
+                    sessionStorage.setItem('tax_image',response.result.tax_image)
+                    sessionStorage.setItem('token',response.result.token)
+                    setTimeout(() => {
+                        navigate("/dashboard");
+                      }, 1000);
+                } else {
+                    console.log('error while login')
+                }
+            })
+            // navigate('/dashboard');
         }
     };
 
