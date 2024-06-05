@@ -17,7 +17,7 @@ export const postRequest = async (URL, requestData, callback) => {
     }
 }
 
-export const postRequestF = async (URL, requestData, callback) => {
+export const postRequestWithFile = async (URL, requestData, callback) => {
     try {
         
         const response = await axios({
@@ -65,7 +65,7 @@ export const postRequestWithToken = async (URL, requestData, callback) => {
     }
 }
 
-export const postRequestWithFile = async (URL, requestData, callback) => {
+export const postRequestWithTokenAndFile = async (URL, requestData, callback) => {
     try {
         const response = await axios({
             method  : "POST",
