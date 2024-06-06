@@ -34,6 +34,21 @@ const Sidebar = ({ children, dragWindow }) => {
 
     // Add full screen code
     const [isFullScreen, setIsFullScreen] = useState(false);
+    
+    useEffect(() => {
+        const handleFullScreenChange = () => {
+            const isCurrentlyFullScreen = document.fullscreenElement !== null;
+            setIsFullScreen(isCurrentlyFullScreen);
+        };
+
+        document.addEventListener('fullscreenchange', handleFullScreenChange);
+
+        // Cleanup the event listener on component unmount
+        return () => {
+            document.removeEventListener('fullscreenchange', handleFullScreenChange);
+        };
+    }, []);
+
     const toggleFullScreen = () => {
         if (!isFullScreen) {
             document.documentElement.requestFullscreen();
@@ -187,9 +202,15 @@ const Sidebar = ({ children, dragWindow }) => {
             window.removeEventListener('resize', calculateSidebarWidth);
         };
     }, []); // Empty dependency array to run this effect only once on mount
-
-
     // ======================
+
+    const handleSignout = () => {
+        setIsProfileOpen(!isProfileOpen);
+        localStorage.clear()
+        sessionStorage.clear()
+        navigate('/login')
+    }
+
     return (
         <>
             {/* Header Bar Code start from here  */}
@@ -283,7 +304,7 @@ const Sidebar = ({ children, dragWindow }) => {
                                     <div className={styles.profile_wrapper}>
                                         <div className={styles.profile_text}>
                                             <Link to='#'>
-                                                vikrant
+                                                 {localStorage.getItem('supplier_name') || sessionStorage.getItem('supplier_name')}
                                             </Link>
                                         </div>
                                         <div className={styles.profile_wrapper_mid}>
@@ -301,7 +322,7 @@ const Sidebar = ({ children, dragWindow }) => {
                                             </div>
                                         </div>
 
-                                        <div className={styles.profile_sign_out}>
+                                        <div className={styles.profile_sign_out} onClick={() => handleSignout()}>
                                             Sign out
                                         </div>
                                     </div>

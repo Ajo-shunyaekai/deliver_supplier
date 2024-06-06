@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import order from '../style/order.css';
 import order_list from '../assest/dashboard/order_list.svg'
 import OrderCancel from './OrderCancel';
@@ -9,10 +9,11 @@ import ActiveOrders from './ActiveOrder';
 import CompletedOrders from './CompleteOrder';
 import DeletedOrders from './DeletedOrder';
 import Sidebar from '../components/Sidebar';
+import { postRequestWithToken } from '../api/Requests';
 
 
-const Order = ({ children }) => {
-
+const Order = () => {
+    const navigate = useNavigate()
     // Alloted Order JSOn file
     const [allotedOrders, setAllotedOrders] = useState([
         {
@@ -232,12 +233,16 @@ const Order = ({ children }) => {
         }
     ]);
 
-
     // Active class apply
-    const [activeLink, setActiveLink] = useState('order-request'); // Default active link is 'alloted'
+    const [activeLink, setActiveLink]   = useState('order-request');
+    const [orderList, setOrderList]     = useState([])
+    const [totalOrders, setTotalOrders] = useState()
+    const [currentPage, setCurrentPage] = useState(1); 
+    const ordersPerPage = 2;
 
     const handleLinkClick = (link) => {
         setActiveLink(link);
+        setCurrentPage(1)
         // Here you can set the respective orders state variable based on the link clicked
         switch (link) {
             case 'order-request':
@@ -264,8 +269,6 @@ const Order = ({ children }) => {
     const ordersToShow = activeLink === 'order-request' ? allotedOrders : activeLink === 'completed' ?
         completeOrders : activeLink === 'deleted' ? deleteOrders : activeOrders;
 
-    const ordersPerPage = 2; // Change this to set the number of orders per page
-
 
     // Calculate total pages
     const totalPages = Math.ceil(ordersToShow.length / ordersPerPage);
@@ -281,7 +284,6 @@ const Order = ({ children }) => {
         setModal(!modal)
     }
 
-
     const [showOrder, showOrderDetails] = useState(false)
 
     const showOrderModal = () => {
@@ -289,6 +291,35 @@ const Order = ({ children }) => {
     }
 
     // pagination end
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    useEffect(() => {
+        const supplierIdSessionStorage = sessionStorage.getItem("supplier_id");
+        const supplierIdLocalStorage   = localStorage.getItem("supplier_id");
+
+        if (!supplierIdSessionStorage && !supplierIdLocalStorage) {
+        navigate("/login");
+        return;
+        }
+        const obj = {
+            supplier_id  : supplierIdSessionStorage || supplierIdLocalStorage,
+            filterKey    : activeLink,
+            page_no      : currentPage, 
+            limit        : ordersPerPage,
+        }
+
+        // postRequestWithToken('supplier/order/supplier-order-list', obj, async (response) => {
+        //     if (response.code === 200) {
+        //         setOrderList(response.result.data)
+        //         setTotalOrders(response.result.totalItems)
+        //     } else {
+        //        console.log('error in order list api',response);
+        //     }
+        //   })
+    },[activeLink, currentPage])
+
     return (
         <>
             <div className='order-main-container'>
@@ -317,8 +348,6 @@ const Order = ({ children }) => {
                             <img src={order_list} alt="order icon" />
                             <div>Active Orders</div>
                         </div>
-
-
                         <div onClick={() => handleLinkClick('completed')} className={activeLink === 'completed' ? 'active order-left-wrapper' : 'order-left-wrapper'}>
                             <img src={order_list} alt="order icon" />
                             <div>Completed Orders</div>
@@ -328,17 +357,41 @@ const Order = ({ children }) => {
                     {/* Order Right side table  */}
                     <div className="order-container-right">
                         <div responsive="xl" className='order-table-responsive'>
-
                             {
-                                activeLink === 'active' ? <ActiveOrders /> : activeLink === 'completed' ? <CompletedOrders /> : activeLink === 'deleted' ? <DeletedOrders /> : activeLink === 'order-request' ? <OrderRequest /> : ''
+                                activeLink === 'active' ? 
+                                <ActiveOrders 
+                                    orderList        = {orderList} 
+                                    totalOrders      = {totalOrders} 
+                                    currentPage      = {currentPage}
+                                    ordersPerPage    = {ordersPerPage}
+                                    handlePageChange = {handlePageChange}
+                                    activeLink       = {activeLink}
+                                /> 
+                                : activeLink === 'completed' ?
+                                 <CompletedOrders 
+                                    orderList        = {orderList} 
+                                    totalOrders      = {totalOrders} 
+                                    currentPage      = {currentPage}
+                                    ordersPerPage    = {ordersPerPage}
+                                    handlePageChange = {handlePageChange}
+                                    activeLink       = {activeLink}
+                                 /> 
+                                : activeLink === 'deleted' ? 
+                                <DeletedOrders /> 
+                                : activeLink === 'order-request' ? 
+                                <OrderRequest 
+                                    orderList        = {orderList} 
+                                    totalOrders      = {totalOrders} 
+                                    currentPage      = {currentPage}
+                                    ordersPerPage    = {ordersPerPage}
+                                    handlePageChange = {handlePageChange}
+                                    activeLink       = {activeLink}
+                                /> : ''
                             }
-
-
                         </div>
                         {
                             modal === true ? <OrderCancel setModal={setModal} /> : ''
                         }
-
                         {
                             showOrder === true ? <OrderDetails showOrderDetails={showOrderDetails} /> : ''
                         }

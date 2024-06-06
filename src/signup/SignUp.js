@@ -7,8 +7,11 @@ import ImageUploader from './ImageUploader';
 import SuccessModal from './SuccessModal';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { postRequestWithFile } from '../api/Requests';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         companyName        : '',
         companyAddress     : '',
@@ -245,6 +248,15 @@ const SignUp = () => {
         }
         return value;
     };
+
+    useEffect(() => {
+        if (
+          sessionStorage.getItem("supplier_id") !== undefined &&
+          sessionStorage.getItem("supplier_id")
+        ) {
+          navigate('/');
+        }
+      }, []);
 
     return (
         <>

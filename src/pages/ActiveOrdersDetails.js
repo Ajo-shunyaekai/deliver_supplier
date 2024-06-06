@@ -1,8 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import Orderdetails from '../style/orderdetails.css'
 import ActiveAssignDriver from '../pages/details/ActiveAssignDriver';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { postRequestWithToken } from '../api/Requests';
+
+
 const ActiveOrdersDetails = () => {
+    const { orderId } = useParams()
+    const navigate    = useNavigate()
+
+    const [orderDetails, setOrderDetails] = useState()
+
+    useEffect(() => {
+        const supplierIdSessionStorage = sessionStorage.getItem("supplier_id");
+        const supplierIdLocalStorage   = localStorage.getItem("supplier_id");
+
+        if (!supplierIdSessionStorage && !supplierIdLocalStorage) {
+        navigate("/login");
+        return;
+        }
+
+        const obj = {
+            order_id    : orderId,
+            supplier_id : supplierIdSessionStorage || supplierIdLocalStorage
+        }
+
+        postRequestWithToken('buyer/order/supplier-order-details', obj, async (response) => {
+            if (response.code === 200) {
+                setOrderDetails(response.result)
+            } else {
+               console.log('error in order details api');
+            }
+          })
+    },[])
 
     return (
         <div className='order-details-container'>

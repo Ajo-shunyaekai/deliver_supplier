@@ -4,6 +4,9 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import PendingInvoice from '../invoice/PendingInvoice';
 import PaidInvoice from '../invoice/CompleteInvoice';
 import { Link } from 'react-router-dom';
+import { postRequestWithToken } from '../../api/Requests';
+
+
 const Invoice = () => {
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -24,13 +27,13 @@ const Invoice = () => {
 
     // useEffect(() => {
     //     const obj = {
-    //         buyer_id: "BUY-jmn98sdanx",
+    //         buyer_id: "BYR-jmn98sdanx",
     //         filterKey: activeIndex === 0 ? 'pending' : activeIndex === 1 ? 'completed' : '',
     //         page_no: currentPage,
     //         limit: invoicesPerPage,
     //     }
 
-    //     postRequestWithToken('buyer/order/buyer-invoice-list', obj, async (response) => {
+    //     postRequestWithToken('supplier/order/supplier-invoice-list', obj, async (response) => {
     //         if (response.code === 200) {
     //             setInvoiceList(response.result.data)
     //             // setTotalOrders(response.result.totalItems)

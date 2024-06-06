@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import WorldMap from "react-svg-worldmap";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import dashboards from '../style/dashboard.css'
 import trending from "../assest/dashboard/trendingup.svg"
 import Arrow from "../assest/dashboard/arrow.svg"
@@ -16,16 +16,43 @@ import MonthlyBar from '../pages/chart/MonthlyBar';
 import ConversionChart from '../pages/chart/ConversionChart';
 import SearchEngineChart from '../pages/chart/SearchEngineChart'
 import DirectlyChart from '../pages/chart/DirectlyChart'
-const Dashboard = () => {
 
+
+const Dashboard = () => {
+    const navigate = useNavigate()
     const [countryData, setCountryData] = useState([]);
 
     const [activeButton, setActiveButton] = useState('1h');
     const handleButtonClick = (value) => {
         setActiveButton(value);
     };
-    return (
 
+    useEffect(() => {
+
+        const supplierIdSessionStorage = sessionStorage.getItem("supplier_id");
+        const supplierIdLocalStorage   = localStorage.getItem("supplier_id");
+
+        if (!supplierIdSessionStorage && !supplierIdLocalStorage) {
+        navigate("/login");
+        return;
+        }
+
+        const obj = {
+            supplier_id  : supplierIdSessionStorage || supplierIdLocalStorage
+        }
+
+        // postRequestWithToken('buyer/orders-seller-country', obj, async (response) => {
+        //     if (response.code === 200) {
+        //         setSellerCountry(response?.result)
+        //         const convertedData = convertCountryToCode(response?.result);
+        //         setCountryData(convertedData);
+        //     } else {
+        //        console.log('error in orders-seller-country api',response);
+        //     }
+        // })
+    },[])
+
+    return (
         <>
             <div className='dashboard-section'>
                 <div className='dashboard-heading'>Dashboard</div>

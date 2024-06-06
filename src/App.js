@@ -59,7 +59,7 @@ function ExcludeSidebar() {
           <Route path="/deleted-order" element={<DeletedOrder />} />
           <Route path="/popup-Modal" element={<PopupModal />} />
           <Route path="/ordercancel" element={<OrderCancel />} />
-          <Route path="/order-details" element={<OrderDetails />} />
+          <Route path="/order-details/:orderId" element={<OrderDetails />} />
           <Route path="/product-details" element={<ProductDetails />} />
           <Route path="/country-details" element={<CountryDetails />} />
           <Route path="/faq-support" element={<FaqSupport />} />
@@ -73,7 +73,7 @@ function ExcludeSidebar() {
           <Route path="/image-uploader" element={<ImageUploader />} />
           <Route path="/success-modal" element={<SuccessModal />} />
           <Route path="/invoice-design" element={<InvoiceDesign />} />
-          <Route path="/active-orders-details" element={<ActiveOrdersDetails />} />
+          <Route path="/active-orders-details/:orderId" element={<ActiveOrdersDetails />} />
           <Route path="/active-assign-driver" element={<ActiveAssignDriver />} />
           <Route path="/buyer-details" element={<BuyerDetails />} />
           <Route path="/buyer-completed-list" element={<BuyerCompletedList />} />

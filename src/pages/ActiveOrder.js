@@ -8,10 +8,19 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import OrderCancel from './OrderCancel';
+import moment from 'moment/moment';
 
-const ActiveOrder = () => {
-    const [show, setShow] = useState(false);
-    const [modal, setModal] = useState(false);
+
+const ActiveOrder = ({orderList, totalOrders, currentPage, ordersPerPage, handlePageChange,  activeLink }) => {
+    const [show, setShow]   = useState(false);
+
+    const [modal, setModal]                     = useState(false)
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
+
+    const showModal = (orderId) => {
+        setSelectedOrderId(orderId)
+        setModal(!modal)
+    }
 
     // Alloted Order JSON file
     const [allotedOrders, setAllotedOrders] = useState([
@@ -77,17 +86,17 @@ const ActiveOrder = () => {
         },
     ]);
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const ordersPerPage = 2; // Change this to set the number of orders per page
-    const indexOfLastOrder = currentPage * ordersPerPage;
+    // const [currentPage, setCurrentPage] = useState(1);
+    // const ordersPerPage = 2; 
+    const indexOfLastOrder  = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-    const currentOrders = allotedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+    const currentOrders     = allotedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
+    // const handlePageChange = (pageNumber) => {
+    //     setCurrentPage(pageNumber);
+    // };
 
-    const totalPages = Math.ceil(allotedOrders.length / ordersPerPage);
+    // const totalPages = Math.ceil(allotedOrders.length / ordersPerPage);
 
     return (
         <>
@@ -107,7 +116,7 @@ const ActiveOrder = () => {
                                         <th className="order-container-th-action"><div className="order-container-head">Action</div></th>
                                     </tr>
                                 </thead>
-                                {currentOrders.map(order => (
+                                {/* {currentOrders.map(order => (
                                     <tbody className='order-container-tbody' key={order.order_id}>
                                         <tr className="order-section-tr" >
                                             <td className='order-section-td'>
@@ -141,15 +150,103 @@ const ActiveOrder = () => {
                                             </td>
                                         </tr>
                                     </tbody>
-                                ))}
+                                ))} */}
+                                {
+                                    orderList && orderList.length > 0 ? (
+                                        orderList?.map((order, i) => {
+                                            const totalQuantity = order.items.reduce((total, item) => {
+                                                return total + item.quantity;
+                                              }, 0);
+                                              const orderedDate = moment(order.created_at).format("DD/MM/YYYY")
+                                            return (
+                                                <tbody className='order-container-tbody' key={order.order_id}>
+                                                    <tr className="order-section-tr" >
+                                                        <td className='order-section-td'>
+                                                            <div className="order-section-heading">{order.order_id}</div>
+                                                        </td>
+                                                        <td className='order-section-td'>
+                                                            <div className="order-section-heading">{orderedDate}</div>
+                                                        </td>
+                                                        <td className='order-section-tds'>
+                                                            <div className="order-section-heading">{order.buyer.buyer_name}</div>
+                                                        </td>
+                                                        <td className='order-section-td'>
+                                                            <div className="order-section-heading">{totalQuantity}</div>
+                                                        </td>
+                                                        <td className='order-section-td'>
+                                                            <div className="order-section-heading">{order.order_status}</div>
+                                                        </td>
+                                                        <td className='order-section-button-cont'>
+                                                            <div className='order-section-button'>
+                                                                {/* <Link to='/active-orders-details'> */}
+                                                                <Link to={`/active-orders-details/${order.order_id}`}>
+                                                                    <div className='order-section-view'>
+                                                                        <RemoveRedEyeOutlinedIcon className='order-section-eye' />
+                                                                    </div>
+                                                                </Link>
+                                                                {/* <Link to='#' onClick={() => setModal(true)}> */}
+                                                                    <div className='order-section-delete' onClick={() => showModal(order.order_id)}>
+                                                                        <HighlightOffIcon className='order-section-off' />
+                                                                    </div>
+                                                                {/* </Link> */}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            )
+                                        })
+                                    ) : (
+                                        <>
+                                        {allotedOrders.map((order, i) => {
+                                            const orderedDate = moment(order.date.date).format("DD/MM/YYYY")
+                                            return (
+                                                <tbody className='order-container-tbody'>
+                                                <tr className="order-section-tr" key={order.order_id}>
+                                                    <td className='order-section-td'>
+                                                        <div className="order-section-heading">{order.order_id}</div>
+                                                    </td>
+                                                    <td className='order-section-td'>
+                                                        <div className="order-section-heading">{orderedDate}</div>
+                                                    </td>
+                                                    <td className='order-section-tds'>
+                                                        <div className="order-section-heading">{order.source_destination.source}</div>
+                                                    </td>
+                                                    <td className='order-section-td'>
+                                                        <div className="order-section-heading">{order.number_of_TRWB}</div>
+                                                    </td>
+                                                    <td className='order-section-td'>
+                                                        <div className="order-section-heading">{order.status}</div>
+                                                    </td>
+                                                    <td className='order-section-button-cont'>
+                                                        <div className='order-section-button'>
+                                                            <Link to='/order-details/879824'>
+                                                                <div className='order-section-view'>
+                                                                    <RemoveRedEyeOutlinedIcon className='order-section-eye' />
+                                                                </div>
+                                                            </Link>
+                                                            <Link to='#' onClick={() => setModal(true)}>
+                                                                <div className='order-section-delete'>
+                                                                    <HighlightOffIcon className='order-section-off' />
+                                                                </div>
+                                                            </Link>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            )
+                                        })}
+                                    </>
+                                    )
+                                }
+
                             </table>
                         </div>
-                        {modal && <OrderCancel setModal={setModal} />}
+                        {modal && <OrderCancel setModal={setModal} orderId = {selectedOrderId}  activeLink = { activeLink} />}
                         <div className='pagi-container'>
                             <Pagination
                                 activePage={currentPage}
                                 itemsCountPerPage={ordersPerPage}
-                                totalItemsCount={allotedOrders.length}
+                                totalItemsCount={totalOrders || allotedOrders.length}
                                 pageRangeDisplayed={5}
                                 onChange={handlePageChange}
                                 itemClass="page-item"
@@ -160,7 +257,8 @@ const ActiveOrder = () => {
                             />
                             <div className='pagi-total'>
                                 <div className='pagi-total'>
-                                    Total Items: {allotedOrders.length}
+                                {/* Total Items: {totalOrders} */}
+                                Total Items: {totalOrders || allotedOrders.length}
                                 </div>
                             </div>
                         </div>
