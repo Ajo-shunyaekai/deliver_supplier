@@ -16,16 +16,45 @@ import MonthlyBar from '../pages/chart/MonthlyBar';
 import ConversionChart from '../pages/chart/ConversionChart';
 import SearchEngineChart from '../pages/chart/SearchEngineChart'
 import DirectlyChart from '../pages/chart/DirectlyChart'
+import { postRequestWithToken } from '../api/Requests';
+import {countryToCodeMapping, convertCountryToCode} from '../assest/countryCodes/countryCode'
 
 
 const Dashboard = () => {
     const navigate = useNavigate()
-    const [countryData, setCountryData] = useState([]);
 
-    const [activeButton, setActiveButton] = useState('1h');
+    const [countryData, setCountryData]     = useState([]);
+    const [orderSummary, setOrderSummary]   = useState()
+    const [sellerCountry, setSellerCountry] = useState()
+    const [activeButton, setActiveButton]   = useState('1h');
+
     const handleButtonClick = (value) => {
         setActiveButton(value);
     };
+
+    useEffect(() => {
+        const supplierIdSessionStorage = sessionStorage.getItem("supplier_id");
+        const supplierIdLocalStorage   = localStorage.getItem("supplier_id");
+
+        if (!supplierIdSessionStorage && !supplierIdLocalStorage) {
+        navigate("/login");
+        return;
+        }
+
+        const obj = {
+            supplier_id : supplierIdSessionStorage || supplierIdLocalStorage
+        }
+
+        postRequestWithToken('supplier/orders-buyer-country', obj, async (response) => {
+            if (response.code === 200) {
+                setSellerCountry(response?.result)
+                const convertedData = convertCountryToCode(response?.result);
+                setCountryData(convertedData);
+            } else {
+               console.log('error in orders-buyer-country api',response);
+            }
+        })
+    },[])
 
     useEffect(() => {
 
@@ -38,10 +67,19 @@ const Dashboard = () => {
         }
 
         const obj = {
-            supplier_id  : supplierIdSessionStorage || supplierIdLocalStorage
+            supplier_id  : supplierIdSessionStorage || supplierIdLocalStorage,
+            user_type    : 'supplier'
         }
 
-        // postRequestWithToken('buyer/orders-seller-country', obj, async (response) => {
+        postRequestWithToken('supplier/orders-summary-details', obj, async (response) => {
+            if (response.code === 200) {
+                setOrderSummary(response?.result)
+            } else {
+               console.log('error in orders-summary-details api',response);
+            }
+        })
+
+        // postRequestWithToken('seller/orders-seller-country', obj, async (response) => {
         //     if (response.code === 200) {
         //         setSellerCountry(response?.result)
         //         const convertedData = convertCountryToCode(response?.result);
@@ -68,19 +106,19 @@ const Dashboard = () => {
                                     <Link to='/order-requests'>
                                         <div className='top-content-section'>
                                             <div className='top-head'>Order Request</div>
-                                            <div className='top-text'>100</div>
+                                            <div className='top-text'>{orderSummary?.completedCount[0]?.count || 100}</div>
                                         </div>
                                     </Link>
                                     <Link to='/ongoing-orders'>
                                         <div className='top-content-section'>
                                             <div className='top-head'>Ongoing Orders</div>
-                                            <div className='top-text'>50</div>
+                                            <div className='top-text'>{orderSummary?.activeCount[0]?.count || 50}</div>
                                         </div>
                                     </Link>
                                     <Link to='/completed-orders'>
                                         <div className='top-content-section'>
                                             <div className='top-head'>Completed Orders</div>
-                                            <div className='top-text'>20</div>
+                                            <div className='top-text'>{orderSummary?.pendingCount[0].count || 20}</div>
                                         </div>
                                     </Link>
                                 </div>
@@ -102,7 +140,7 @@ const Dashboard = () => {
                             <div className='cart-top-left-section'>
                                 <div className='left-head'>Total Sales Amount</div>
                                 <div className='circular-process'>
-                                    <CircularBar />
+                                    <CircularBar totalSalesAmount = {orderSummary?.totalPurchaseAmount[0].total_purchase} />
                                 </div>
                             </div>
                         </div>
@@ -151,17 +189,17 @@ const Dashboard = () => {
                         <div className='right-head'>Your buyer countries</div>
                         <div className='right-country-section'>
                             <div className='country-sect'>
-                                <span className='country-names'>USA</span>
-                                <span className='country-price'>$2340</span>
+                                <span className='country-names'>{countryData[0]?.country}</span>
+                                <span className='country-price'>{countryData[0]?.value} AED</span>
                             </div>
                             <div className='country-sect'>
-                                <span className='country-name'>UK</span>
-                                <span className='country-price'>$2345</span>
+                                <span className='country-name'>{countryData[1]?.country}</span>
+                                <span className='country-price'>{countryData[1]?.value} AED</span>
                             </div>
-                            <div className='country-sect'>
+                            {/* <div className='country-sect'>
                                 <span className='country-name'>India</span>
                                 <span className='country-price'>$1234</span>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

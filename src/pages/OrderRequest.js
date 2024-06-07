@@ -213,11 +213,11 @@ const OrderRequest = ({orderList, totalOrders, currentPage, ordersPerPage, handl
                                                                     <RemoveRedEyeOutlinedIcon className='order-section-eye' />
                                                                 </div>
                                                             </Link>
-                                                            <Link to='#' onClick={() => setModal(true)}>
-                                                                <div className='order-section-delete'>
+                                                            {/* <Link to='#' onClick={() => setModal(true)}> */}
+                                                                <div className='order-section-delete' onClick={() => showModal('786755')} >
                                                                     <HighlightOffIcon className='order-section-off' />
                                                                 </div>
-                                                            </Link>
+                                                            {/* </Link> */}
                                                         </div>
                                                     </td>
                                                 </tr>

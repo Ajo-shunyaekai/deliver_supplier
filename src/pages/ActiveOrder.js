@@ -12,8 +12,8 @@ import moment from 'moment/moment';
 
 
 const ActiveOrder = ({orderList, totalOrders, currentPage, ordersPerPage, handlePageChange,  activeLink }) => {
-    const [show, setShow]   = useState(false);
 
+    const [show, setShow]                       = useState(false);
     const [modal, setModal]                     = useState(false)
     const [selectedOrderId, setSelectedOrderId] = useState(null);
 
@@ -85,18 +85,10 @@ const ActiveOrder = ({orderList, totalOrders, currentPage, ordersPerPage, handle
             "status": "Order Placed"
         },
     ]);
-
-    // const [currentPage, setCurrentPage] = useState(1);
-    // const ordersPerPage = 2; 
+    
     const indexOfLastOrder  = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
     const currentOrders     = allotedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
-
-    // const handlePageChange = (pageNumber) => {
-    //     setCurrentPage(pageNumber);
-    // };
-
-    // const totalPages = Math.ceil(allotedOrders.length / ordersPerPage);
 
     return (
         <>
@@ -219,16 +211,16 @@ const ActiveOrder = ({orderList, totalOrders, currentPage, ordersPerPage, handle
                                                     </td>
                                                     <td className='order-section-button-cont'>
                                                         <div className='order-section-button'>
-                                                            <Link to='/order-details/879824'>
+                                                            <Link to='/active-orders-details/879824'>
                                                                 <div className='order-section-view'>
                                                                     <RemoveRedEyeOutlinedIcon className='order-section-eye' />
                                                                 </div>
                                                             </Link>
-                                                            <Link to='#' onClick={() => setModal(true)}>
-                                                                <div className='order-section-delete'>
+                                                            {/* <Link to='#' onClick={() => setModal(true)}> */}
+                                                                <div className='order-section-delete' onClick={() => showModal('786755')}>
                                                                     <HighlightOffIcon className='order-section-off' />
                                                                 </div>
-                                                            </Link>
+                                                            {/* </Link> */}
                                                         </div>
                                                     </td>
                                                 </tr>

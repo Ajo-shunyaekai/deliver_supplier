@@ -1,10 +1,65 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DashboardOrder from '../../style/dashboardorder.css'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import moment from 'moment/moment';
+import { postRequestWithToken } from '../../api/Requests';
+import OrderCancel from '../OrderCancel';
 
 const OrderRequest = () => {
+
+    const navigate = useNavigate()
+
+    const [show, setShow] = useState(false);
+
+    const [modal, setModal] = useState(false)
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
+
+    const showModal = (orderId) => {
+        setSelectedOrderId(orderId)
+        setModal(!modal)
+    }
+
+    const [orderList, setOrderList]     = useState([])
+    const [totalOrders, setTotalOrders] = useState()
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const ordersPerPage     = 2;
+    const indexOfLastOrder  = currentPage * ordersPerPage;
+    const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+    // const currentOrders     = activeOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    useEffect(() => {
+        const supplierIdSessionStorage = sessionStorage.getItem('supplier_id')
+        const supplierIdLocalStorage   = localStorage.getItem('supplier_id')
+
+        if (!supplierIdSessionStorage && !supplierIdLocalStorage) {
+        navigate("/login");
+        return;
+        }
+        
+        const obj = {
+            supplier_id : supplierIdSessionStorage || supplierIdLocalStorage,
+            filterKey   : 'pending',
+            page_no     : currentPage, 
+            limit       : ordersPerPage,
+        }
+
+        postRequestWithToken('supplier/order/supplier-order-list', obj, async (response) => {
+            if (response.code === 200) {
+                setOrderList(response.result.data)
+                setTotalOrders(response.result.totalItems)
+            } else {
+               console.log('error in order list api',response);
+            }
+          })
+    },[currentPage])
+
 
     return (
         <>
@@ -43,16 +98,16 @@ const OrderRequest = () => {
                                         </td>
                                         <td className='request-section-button-cont'>
                                             <div className='request-section-button'>
-                                                <Link to='/order-details'>
+                                                <Link to='/order-details/087565'>
                                                     <div className='request-section-view'>
                                                         <RemoveRedEyeOutlinedIcon className='request-section-eye' />
                                                     </div>
                                                 </Link>
-                                                <Link to='#'>
-                                                    <div className='request-section-delete'>
+                                                {/* <Link to='#'> */}
+                                                    <div className='request-section-delete' onClick={() => showModal('087565')}>
                                                         <HighlightOffIcon className='request-section-off' />
                                                     </div>
-                                                </Link>
+                                                {/* </Link> */}
                                             </div>
                                         </td>
                                     </tr>
@@ -76,16 +131,16 @@ const OrderRequest = () => {
                                         </td>
                                         <td className='request-section-button-cont'>
                                             <div className='request-section-button'>
-                                                <Link to='/order-details'>
+                                                <Link to='/order-details/087565'>
                                                     <div className='request-section-view'>
                                                         <RemoveRedEyeOutlinedIcon className='request-section-eye' />
                                                     </div>
                                                 </Link>
-                                                <Link to='#'>
-                                                    <div className='request-section-delete'>
+                                                {/* <Link to='#'> */}
+                                                    <div className='request-section-delete' onClick={() => showModal('087565')}>
                                                         <HighlightOffIcon className='request-section-off' />
                                                     </div>
-                                                </Link>
+                                                {/* </Link> */}
                                             </div>
                                         </td>
                                     </tr>
@@ -109,22 +164,71 @@ const OrderRequest = () => {
                                         </td>
                                         <td className='request-section-button-cont'>
                                             <div className='request-section-button'>
-                                                <Link to='/order-details'>
+                                                <Link to='/order-details/087565'>
                                                     <div className='request-section-view'>
                                                         <RemoveRedEyeOutlinedIcon className='request-section-eye' />
                                                     </div>
                                                 </Link>
-                                                <Link to='#'>
-                                                    <div className='request-section-delete'>
+                                                {/* <Link to='#'> */}
+                                                    <div className='request-section-delete' onClick={() => showModal('087565')}>
                                                         <HighlightOffIcon className='request-section-off' />
                                                     </div>
-                                                </Link>
+                                                {/* </Link> */}
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
+                                {/* {
+                                    orderList && orderList.length > 0 ? (
+                                        orderList.map((order, i) => {
+                                            const totalQuantity = order.items.reduce((total, item) => {
+                                                return total + item.quantity;
+                                              }, 0);
+                                              const orderedDate = moment(order.created_at).format("DD/MM/YYYY")
+                                            return (
+                                                <tbody className='request-container-tbody'>
+                                                <tr className="request-section-tr">
+                                                    <td className='request-section-td'>
+                                                        <div className="request-section-heading">{order.order_id}</div>
+                                                    </td>
+                                                    <td className='request-section-td'>
+                                                        <div className="request-section-heading">{orderedDate}</div>
+                                                    </td>
+                                                    <td className='request-section-tds'>
+                                                        <div className="request-section-heading">{order.buyer.buyer_name}</div>
+                                                    </td>
+                                                    <td className='request-section-td'>
+                                                        <div className="request-section-heading">{totalQuantity}</div>
+                                                    </td>
+                                                    <td className='request-section-td'>
+                                                        <div className="request-section-heading">{order.order_status}</div>
+                                                    </td>
+                                                    <td className='request-section-button-cont'>
+                                                        <div className='request-section-button'>
+                                                            <Link to={`/order-details/${order.order_id}`}>
+                                                                <div className='request-section-view'>
+                                                                    <RemoveRedEyeOutlinedIcon className='request-section-eye' />
+                                                                </div>
+                                                            </Link>
+                                                            <Link to='#'>
+                                                                <div className='request-section-delete'>
+                                                                    <HighlightOffIcon className='request-section-off' />
+                                                                </div>
+                                                            </Link>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            ) 
+                                        })
+                                    ) : 'no orders'
+                                } */}
+                               
                             </table>
                         </div>
+                        {
+                            modal === true ? <OrderCancel setModal={setModal} orderId = {selectedOrderId} activeLink = {'pending'} /> : ''
+                        }
 
                     </div>
                 </div>

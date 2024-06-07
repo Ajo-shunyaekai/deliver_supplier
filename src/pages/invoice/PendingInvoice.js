@@ -3,8 +3,12 @@ import { Link } from 'react-router-dom';
 import styles from '../../style/pendingInvoice.css';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+
+
 const PendingInvoice = ({ invoiceList }) => {
+
     const [showModal, setShowModal] = useState(false);
+
     const invoiceListt = [
         {
             invoice_number: "INV-001",
@@ -34,6 +38,7 @@ const PendingInvoice = ({ invoiceList }) => {
             order_status: "Pending"
         }
     ];
+
     return (
         <div className='pending-invo-container' >
             <div className='table-responsive mh-2 50'>
@@ -90,8 +95,6 @@ const PendingInvoice = ({ invoiceList }) => {
                         }
 
                     </tbody>
-
-
                 </table>
             </div>
         </div>

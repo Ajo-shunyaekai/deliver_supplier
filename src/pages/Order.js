@@ -243,32 +243,22 @@ const Order = () => {
     const handleLinkClick = (link) => {
         setActiveLink(link);
         setCurrentPage(1)
-        // Here you can set the respective orders state variable based on the link clicked
+        
         switch (link) {
             case 'order-request':
-                // Set allotedOrders state
                 break;
             case 'active':
-                // Set activeOrders state
                 break;
-
             case 'completed':
-                // Set completeOrders state
                 break;
-            // case 'delete':
-            // Set deleteOrders state
-            // break;
-            // Add cases for completed and deleted orders similarly
             default:
                 break;
         }
     };
 
-
     // Based on the activeLink, select the appropriate orders
     const ordersToShow = activeLink === 'order-request' ? allotedOrders : activeLink === 'completed' ?
         completeOrders : activeLink === 'deleted' ? deleteOrders : activeOrders;
-
 
     // Calculate total pages
     const totalPages = Math.ceil(ordersToShow.length / ordersPerPage);
@@ -276,7 +266,7 @@ const Order = () => {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow  = () => setShow(true);
 
     const [modal, setModal] = useState(false)
 
@@ -290,7 +280,6 @@ const Order = () => {
         showOrderDetails(!showOrder)
     }
 
-    // pagination end
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
@@ -320,6 +309,7 @@ const Order = () => {
         //   })
     },[activeLink, currentPage])
 
+    
     return (
         <>
             <div className='order-main-container'>
@@ -337,7 +327,6 @@ const Order = () => {
                         }
                     })()}
                 </div>
-                {/* <div className="order-name">Orders</div> */}
                 <div className="order-container">
                     <div className="order-container-left">
                         <div onClick={() => handleLinkClick('order-request')} className={activeLink === 'order-request' ? 'active order-left-wrapper' : 'order-left-wrapper'}>
@@ -354,7 +343,6 @@ const Order = () => {
                         </div>
                     </div>
 
-                    {/* Order Right side table  */}
                     <div className="order-container-right">
                         <div responsive="xl" className='order-table-responsive'>
                             {
@@ -395,7 +383,6 @@ const Order = () => {
                         {
                             showOrder === true ? <OrderDetails showOrderDetails={showOrderDetails} /> : ''
                         }
-
 
                     </div>
                 </div>

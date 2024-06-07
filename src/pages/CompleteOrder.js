@@ -218,16 +218,16 @@ const CompleteOrder = ({orderList, totalOrders, currentPage, ordersPerPage, hand
                                                         </td>
                                                         <td className='order-section-button-cont'>
                                                             <div className='order-section-button'>
-                                                                <Link to='/order-details/879824'>
+                                                                <Link to='/active-orders-details/879824'>
                                                                     <div className='order-section-view'>
                                                                         <RemoveRedEyeOutlinedIcon className='order-section-eye' />
                                                                     </div>
                                                                 </Link>
-                                                                <Link to='#' onClick={() => setModal(true)}>
-                                                                    <div className='order-section-delete'>
+                                                                {/* <Link to='#' onClick={() => setModal(true)}> */}
+                                                                    <div className='order-section-delete' onClick={() => showModal('879824')}>
                                                                         <HighlightOffIcon className='order-section-off' />
                                                                     </div>
-                                                                </Link>
+                                                                {/* </Link> */}
                                                             </div>
                                                         </td>
                                                     </tr>

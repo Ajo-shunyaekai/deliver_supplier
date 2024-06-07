@@ -5,7 +5,7 @@ import Dashboard from '../../style/dashboard.css';
 
 const initialPercentage = 55;
 
-function CircularBar() {
+function CircularBar({totalSalesAmount}) {
     const [percentage, setPercentage] = useState(initialPercentage);
 
     return (
@@ -13,7 +13,7 @@ function CircularBar() {
             <div className='circular-bar-container'>
                 <CircularProgressbar
                     value={percentage}
-                    text={`39,500`}
+                    text={totalSalesAmount || `36,345`}
                     strokeWidth={5}
                     styles={{
                         path: {
@@ -27,7 +27,7 @@ function CircularBar() {
                     }}
                 />
                 <div style={{ position: 'absolute', top: '56%', left: '50%', transform: 'translateX(-50%)' }}>
-                    <p style={{ textAlign: 'center', fontSize: '13px', margin: '0', color: '#99a0ac' }}>usd</p>
+                    <p style={{ textAlign: 'center', fontSize: '13px', margin: '0', color: '#99a0ac' }}>AED</p>
                 </div>
                 <svg style={{ height: 0 }}>
                     <defs>
