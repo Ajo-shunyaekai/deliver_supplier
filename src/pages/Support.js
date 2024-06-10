@@ -4,9 +4,9 @@ import FaqSupport from './FaqSupport';
 import { Link } from 'react-router-dom';
 
 const Support = () => {
-    const [feedbackVisible, setFeedbackVisible] = useState(true); // Set feedbackVisible to true by default
+    const [feedbackVisible, setFeedbackVisible] = useState(true); 
     const [complaintVisible, setComplaintVisible] = useState(false);
-    const [activeButton, setActiveButton] = useState('feedback'); // Set activeButton to 'feedback' by default
+    const [activeButton, setActiveButton] = useState('feedback'); 
 
     const toggleFeedbackForm = () => {
         setFeedbackVisible(true);
