@@ -4,7 +4,6 @@ import html2pdf from 'html2pdf.js';
 import { useParams} from 'react-router-dom';
 import moment from 'moment/moment';
 
-
 function InvoiceDesign() {
 
     const handleDownload = () => {
@@ -19,7 +18,6 @@ function InvoiceDesign() {
         html2pdf().from(element).set(options).save()
     };
 
-    
     return (
         <div className='invoice-template-design'>
             <div className='scroll-wrapper'>
