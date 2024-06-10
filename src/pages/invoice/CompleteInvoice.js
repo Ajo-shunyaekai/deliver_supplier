@@ -3,6 +3,9 @@ import styles from '../../style/pendingInvoice.css';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import { Link } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+import html2pdf from 'html2pdf.js';
+import InvoiceDesign from './InvoiceDesign';
 
 
 const CompleteInvoice = ({ invoiceList }) => {
@@ -35,6 +38,31 @@ const CompleteInvoice = ({ invoiceList }) => {
             order_status: "Paid"
         }
     ];
+
+    //invoice download
+    const handleDownload = (invoice) => {
+        const element = document.createElement('div');
+        document.body.appendChild(element);
+
+        // Render the InvoiceTemplate with the given invoice data
+        ReactDOM.render(<InvoiceDesign invoice={invoice} />, element);
+
+        // Set options for html2pdf
+        const options = {
+            margin: 0.5,
+            filename: `invoice_${invoice.invoice_number}.pdf`,
+            image: { type: 'jpeg', quality: 1.00 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        // Generate PDF
+        html2pdf().from(document.getElementById('invoice-content')).set(options).save().then(() => {
+            // Clean up the temporary container
+            ReactDOM.unmountComponentAtNode(element);
+            document.body.removeChild(element);
+        });
+    };
 
     return (
         <>
@@ -85,7 +113,7 @@ const CompleteInvoice = ({ invoiceList }) => {
                                                         <VisibilityOutlinedIcon className='invoice-view' />
                                                     </div>
                                                 </Link>
-                                                <div className='invoice-details-button-column-download'>
+                                                <div className='invoice-details-button-column-download' onClick={() => handleDownload(invoice)}>
                                                     <CloudDownloadOutlinedIcon className='invoice-view' />
                                                 </div>
                                             </div>

@@ -78,16 +78,6 @@ const Dashboard = () => {
                console.log('error in orders-summary-details api',response);
             }
         })
-
-        // postRequestWithToken('seller/orders-seller-country', obj, async (response) => {
-        //     if (response.code === 200) {
-        //         setSellerCountry(response?.result)
-        //         const convertedData = convertCountryToCode(response?.result);
-        //         setCountryData(convertedData);
-        //     } else {
-        //        console.log('error in orders-seller-country api',response);
-        //     }
-        // })
     },[])
 
     return (
