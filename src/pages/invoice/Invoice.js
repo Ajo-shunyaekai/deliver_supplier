@@ -8,8 +8,9 @@ import { postRequestWithToken } from '../../api/Requests';
 
 
 const Invoice = () => {
-    const [activeIndex, setActiveIndex] = useState(0);
 
+    const [activeIndex, setActiveIndex] = useState(0);
+    
     const headings = ['Pending Invoices', 'Paid Invoices'];
 
     const handleItemClick = (index) => {

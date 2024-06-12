@@ -172,10 +172,12 @@
   margin: auto;
 }
 .signup-form-inner-section-checkbox {
+  width: 100%;
   display: flex;
   align-items: center;
 }
 .signup-form-checkbox-label {
+  width: 100%;
   display: flex;
   justify-content: start;
   align-items: center;
@@ -212,7 +214,85 @@
   outline: none !important;
   border: none !important;
 }
+
+.company-type-container{
+  width: 48.4%;
+}
+
+
+.company-type-header{
+  font-size: 20px;
+}
+
+.select-drop{
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  width: 100%;
+  padding: 12px;
+}
+
+.signup-form-checkbox-input.placeholder {
+  color: black; /* Change this to your desired placeholder color */
+}
+
+.signup-form-checkbox-input:not(.placeholder) {
+  color: #5e676f !important; /* Change this to your desired option color */
+}
+
+.select-option-type{
+  color: #99a0ac;
+}
+
+.css-13cymwt-control {
+  border: none !important;
+  outline: none !important;
+}
+.css-1r4vtzz {
+  width: 100% !important;
+  padding: 12px !important;
+}
+.css-48ayfv {
+  width: 100% !important;
+  padding: 12px !important;
+}
+.custom-multi-select{
+  width: 100% !important;
+}
 /* end the phone inout deisgn */
+
+/* start the country code css */
+.css-1fdsijx-ValueContainer {
+  padding:9px !important;
+  font-size: 14px !important;
+  color:#99a0ac !important;
+ }
+ .css-13cymwt-control {
+   outline: none !important;
+   min-height: 0px !important;
+   border: none !important;
+   cursor:  pointer !important;
+   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px !important;
+ }
+ .css-qbdosj-Input {
+   margin: 0px !important;
+   color: #99a0ac !important;
+ }
+ .css-t3ipsp-control {
+   min-height: 0px !important;
+   outline: 0 !important;
+   border-color: #fff !important;
+   box-shadow: unset !important;
+   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px !important;
+ }
+ .css-t3ipsp-control:hover {
+   border-color: #fff !important;
+ }
+ .css-3w2yfm-ValueContainer {
+   padding: 10px 8px!important;
+ 
+ }
+ /* end the country code css */
 @media screen and (max-width: 1400px) {
   .signup-logo-section {
     width: 40%;
