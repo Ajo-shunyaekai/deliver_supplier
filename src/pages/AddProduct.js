@@ -253,7 +253,7 @@ const AddProduct = () => {
                         <ImageAddUploader />
                     </form>
                 </div>
-
+                
                 <div className={styles['craete-invoices-button']}>
                     <div className={styles['create-invoices-cancel']}>Cancel</div>
                     <div className={styles['create-invoices-submit']}>Add Product</div>

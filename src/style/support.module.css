@@ -2,12 +2,22 @@
   width: 100%;
   height: 100vh;
   overflow: scroll;
+  background-attachment: fixed;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   margin-bottom: 80px;
 }
 .support-main-container::-webkit-scrollbar {
   display: none;
 }
-
+.form-main-container {
+  margin-top: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
 .support-container {
   display: flex;
   justify-content: start;
@@ -17,7 +27,23 @@
   max-width: 80%;
   margin: auto;
 }
-
+.form-support-main-section {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.form-cont-input-sec {
+  width: 100%;
+}
+.form-main-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.form-support-textarea {
+  width: 100%;
+}
 .support-heading {
   padding-top: 5px;
   font-size: 20px;
@@ -27,6 +53,12 @@
 
 .product-range-text {
   margin-bottom: 20px;
+}
+
+.form-submit-btn-cont {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
 }
 
 .product-range-input {
@@ -54,33 +86,14 @@
   max-width: 100%;
   margin: auto;
 }
-
-/* .form-submit-btn {
-      background: linear-gradient(to left, #00dcff, #0075ce);
-      color: white;
-      border: none;
-      padding: 6px 16px;
-      border-radius: 4px;
-      font-size: 14px;
-      cursor: pointer;
-  } */
-
 .form-submit-btn {
+  cursor: pointer;
   margin: auto;
   border: none;
-  padding: 6px 40px;
+  padding: 6px 30px;
   border-radius: 4px;
   background: linear-gradient(to left, #00dcff, #0075ce);
   color: white;
-  /* border: 1px solid #448bff; */
-}
-
-.form-submit-btn:hover {
-  /* background-color: #e1e1e4; */
-  background-color: #448bff;
-  /* color: #99a0ac; */
-  color: #ffffff;
-  border: 1px solid #e1e1e4;
 }
 
 .support-btn-container {
@@ -118,14 +131,31 @@
   text-transform: capitalize;
   padding: 1rem 0px;
 }
-
 .form-input {
+  width: 100%;
   font-size: 14px;
   border: none;
-  padding: 10px 15px;
+  padding: 12px 15px;
   border-radius: 4px;
   outline: none;
-  color: #99a0ac;
+  color: #5e676f;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.form-textarea {
+  width: 100%;
+  font-size: 14px;
+  border: none;
+  padding: 12px 15px;
+  border-radius: 4px;
+  outline: none;
+  color: #5e676f;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.form-support-image {
+  width: 50%;
+  height: 100px;
 }
 
 .support-heading {
@@ -150,16 +180,32 @@
   display: none;
 }
 
+
+.error-message {
+    font-size: 12px;
+    margin-top: 4px;
+    color: #ff0000;
+}
 /* add media quries here */
-@media screen and (max-width: 1350px) {
+
+@media screen and (max-width: 1400px) {
   .support-container {
     max-width: 90%;
   }
   .support-heading {
     max-width: 90%;
   }
+  .form-support-main-section {
+    width: 50%;
+  }
+
 }
 
+@media screen and (max-width: 1150px) {
+  .form-support-image {
+    width: 50%;
+  }
+}
 @media screen and (max-width: 992px) {
   .support-container {
     max-width: 100%;
@@ -167,15 +213,55 @@
   .support-heading {
     max-width: 100%;
   }
+  .support-main-container {
+    padding: 0px 20px;
+  }
+  .form-container {
+    gap: 2rem;
+  }
+  .form-support-main-section {
+    width: 100%;
+  }
+  .form-support-image {
+    width: 32%;
+  }
+  .form-submit-btn {
+    padding: 6px 24px;
+    font-size: 14px;
+  }
+
+  .form-container {
+      gap: 1rem;
+      flex-direction: column;
+    }
+    .form-support-image {
+      width: 100%;
+    }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
   .faq-container {
     max-height: 65vh;
   }
-
+  .form-container {
+    gap: 1.4rem;
+  }
   .form-heading {
     font-size: 18px;
     padding-bottom: 10px;
+  }
+ 
+}
+
+
+@media screen and (max-width: 600px) {
+  .form-support-main-section {
+    width: 100%;
+  }
+  .form-support-image {
+    width: 100%;
+  }
+  .support-main-container {
+    padding: 0px 10px;
   }
 }

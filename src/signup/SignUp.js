@@ -11,6 +11,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import { postRequestWithFile } from '../api/Requests';
 
+
 const MultiSelectOption = ({ children, ...props }) => (
     <components.Option {...props}>
         <input
@@ -40,14 +41,14 @@ const MultiSelectDropdown = ({ options, value, onChange }) => {
 
 
 const SignUp = () => {
-    const [errors, setErrors] = useState({});
-    const [isChecked, setIsChecked] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [countries, setCountries] = useState([]);
-    const [companyPhone, setCompanyPhone] = useState('');
-    const [mobile, setMobile] = useState('');
-    const [resetUploaders, setResetUploaders] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [errors, setErrors]                           = useState({});
+    const [isChecked, setIsChecked]                     = useState(false);
+    const [showModal, setShowModal]                     = useState(false);
+    const [countries, setCountries]                     = useState([]);
+    const [companyPhone, setCompanyPhone]               = useState('');
+    const [mobile, setMobile]                           = useState('');
+    const [resetUploaders, setResetUploaders]           = useState(false);
+    const [selectedOption, setSelectedOption]           = useState(null);
     const [selectedCompanyType, setSelectedCompanyType] = useState(null);
 
     // Initialize formData state
@@ -67,7 +68,7 @@ const SignUp = () => {
         originCountry: '',
         operationCountries: [],
         companyLicenseNo: '',
-        companyLicenseExpiry: '',
+        companyLicenseExpiry : '',
         companyTaxNo: '',
         description: '',
         taxImage: null,
@@ -125,6 +126,7 @@ const SignUp = () => {
         }));
 
     };
+    
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
@@ -175,12 +177,12 @@ const SignUp = () => {
         if (!formData.designation) formErrors.designation = 'Designation is required';
         if (!formData.email) formErrors.email = 'Email ID is required';
         if (formData.email && !validateEmail(formData.email)) formErrors.email = 'Invalid Email ID';
-        if (!mobile) formErrors.mobile = 'Mobile No. is required';
-        if (!formData.originCountry) formErrors.originCountry = 'Country of Origin is required';
+        if (!mobile) formErrors.mobile                                         = 'Mobile No. is required';
+        if (!formData.originCountry) formErrors.originCountry                  = 'Country of Origin is required';
         if (!formData.operationCountries.length) formErrors.operationCountries = 'Country of Operation is required';
-        if (!formData.companyLicenseNo) formErrors.companyLicenseNo = 'Company License No. is required';
-        if (!formData.companyLicenseExpiry) formErrors.companyLicenseExpiry = 'Company License Expiry Date is required';
-        if (!formData.companyTaxNo) formErrors.companyTaxNo = 'Company Tax No. is required';
+        if (!formData.companyLicenseNo) formErrors.companyLicenseNo            = 'Company License No. is required';
+        if (!formData.companyLicenseExpiry) formErrors.companyLicenseExpiry    = 'Company License Expiry Date is required';
+        if (!formData.companyTaxNo) formErrors.companyTaxNo                    = 'Company Tax No. is required';
         if (!isChecked) formErrors.terms = 'You must agree to the terms and conditions';
         if (!formData.paymentterms) formErrors.paymentterms = 'Payment Terms are required';
         if (!formData.delivertime) formErrors.delivertime = 'Estimated Delivery Time is required';
@@ -281,51 +283,54 @@ const SignUp = () => {
                 certificate_image : certificateImages,
                 contact_person_mobile: mobile,
                 contact_person_email: formData.email,
-                country_of_operation: countryLabels.toString(),
+                country_of_operation: countryLabels,
                 tax_no: formData.companyTaxNo
             }
+
+            console.log(regObj);
            
-            postRequestWithFile('supplier/register', regObj, async (response) => {
-                if (response.code === 200) {
-                    setFormData({
-                        companyType: '',
-                        companyName: '',
-                        companyAddress: '',
-                        companyEmail: '',
-                        companyPhone: '',
-                        contactPersonName: '',
-                        designation: '',
-                        email: '',
-                        mobile: '',
-                        paymentterms: '',
-                        delivertime: '',
-                        tags: '',
-                        originCountry: '',
-                        operationCountries: [],
-                        companyLicenseNo: '',
-                        companyLicenseExpiry: '',
-                        companyTaxNo: '',
-                        description: '',
-                        taxImage: null,
-                        taxImageType: 'tax',
-                        logoImage: null,
-                        logoImageType: 'logo',
-                        licenseImage: null,
-                        licenseImageType: 'license',
-                        certificateImage: null,
-                        certificateImageType: 'certificate'
-                    });
-                    setErrors({});
-                    setIsChecked(false);
-                    setCompanyPhone('');
-                    setMobile('');
-                    setResetUploaders(true);
-                    setShowModal(true);
+            // postRequestWithFile('supplier/register', regObj, async (response) => {
+            //     if (response.code === 200) {
+            //         setFormData({
+            //             companyType: '',
+            //             companyName: '',
+            //             companyAddress: '',
+            //             companyEmail: '',
+            //             companyPhone: '',
+            //             contactPersonName: '',
+            //             designation: '',
+            //             email: '',
+            //             mobile: '',
+            //             paymentterms: '',
+            //             delivertime: '',
+            //             tags: '',
+            //             originCountry: '',
+            //             operationCountries: [],
+            //             companyLicenseNo: '',
+            //             companyLicenseExpiry: '',
+            //             companyTaxNo: '',
+            //             description: '',
+            //             taxImage: null,
+            //             taxImageType: 'tax',
+            //             logoImage: null,
+            //             logoImageType: 'logo',
+            //             licenseImage: null,
+            //             licenseImageType: 'license',
+            //             certificateImage: null,
+            //             certificateImageType: 'certificate'
+            //         });
+            //         setErrors({});
+            //         setIsChecked(false);
+            //         setCompanyPhone('');
+            //         setMobile('');
+            //         setSelectedCompanyType(null)
+            //         setResetUploaders(true);
+            //         setShowModal(true);
                     
-                } else {
-                   console.log('error in supplier/register api');
-                }
-            }) 
+            //     } else {
+            //        console.log('error in supplier/register api');
+            //     }
+            // }) 
         }
     };
 
@@ -334,7 +339,6 @@ const SignUp = () => {
         handleSubmit();
     };
 
-    
     return (
         <>
             <div className='signup-container'>
@@ -506,13 +510,13 @@ const SignUp = () => {
                                 //     style={{width:'100%!important'}}
                                 // />
                                < ReactMultiSelectCheckboxes
-            className='signup-forms-sections-select custom-multi-select'
-            options={countries}
-            value={formData.operationCountries}
-            onChange={handleOperationCountriesChange}
-            getDropdownButtonLabel={getDropdownButtonLabel}
-            style={{ width: '100%!important' }}
-        />
+                                className='signup-forms-sections-select custom-multi-select'
+                                options={countries}
+                                value={formData.operationCountries}
+                                onChange={handleOperationCountriesChange}
+                                getDropdownButtonLabel={getDropdownButtonLabel}
+                                style={{ width: '100%!important' }}
+                            />
                             )}
                              {errors.operationCountries && <div className='signup__errors'>{errors.operationCountries}</div>}
                         </div>

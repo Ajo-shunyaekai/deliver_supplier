@@ -5,6 +5,9 @@
   width: 100%;
   max-width: 97%;
   overflow: scroll;
+  background-attachment: fixed;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   height: 100vh;
   margin: auto;
 }
@@ -23,13 +26,13 @@
   margin: 0px auto;
 }
 .create-invoice-section {
-  background: linear-gradient(to left, #f5f5f7, #e1f2ff);
+ background-color: #fff;
   border-radius: 4px;
-  padding: 30px 20px 30px 40px;
+  padding: 30px 20px;
   display: flex;
   justify-content: start;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 16px;
 }
 .craete-invoice-form {
   width: 100%;
@@ -42,8 +45,7 @@
   display: flex;
   flex-direction: column;
   justify-content: start;
-  /* width: 23.8%; */
-  width: 23.3%;
+  width: 23.8%;
   row-gap: 6px;
 }
 .create-invoice-div-label {
@@ -57,7 +59,7 @@
   padding: 12px !important;
   font-size: 14px !important;
   border-radius: 4px !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px !important;
 }
 .craete-invoices-button {
   display: flex;
@@ -96,6 +98,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   /* padding-right: 45px; */
 }
 .create-invoice-add-tem-button {
@@ -108,7 +111,14 @@
   align-items: center;
   font-size: 14px;
   padding: 6px 16px;
-  /* margin-right: 45px; */
+  margin-right: 18px;
+}
+.craete-add-cross-icon{
+  display: flex;
+  cursor: pointer;
+  position: relative;
+  top: 38px;
+ 
 }
 .create-invoice-close-btn {
   display: flex;
@@ -125,7 +135,14 @@
   align-items: center;
   /* border: 2px solid red; */
 }
-
+@media screen and (max-width: 1580px) {
+.create-invoice-div-container {
+  width: 23.6%
+}
+.create-invoice-add-item-button {
+  margin-right: 10px;
+}
+}
 @media screen and (max-width: 1500px) {
   .create-invoice-section {
     padding: 30px 20px 30px 20px;

@@ -20,7 +20,8 @@
     column-gap: 20px;
     row-gap: 6px;
     border-radius: 4px;
-    padding: 29px 10px;
+    padding: 24px 10px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
   }
   .buy-product-card-first-section {
     display: flex;
@@ -130,18 +131,26 @@
       column-gap: 20px;
     }
   }
-  @media screen and (max-width: 1168px) {
+  @media screen and (max-width: 1170px) {
     .buy-product-card-section {
-      width: 600px;
-      column-gap: 3rem;
-    }
-    .buy-product-card-second-head {
-      width: 140px;
+      width: 380px;
+      column-gap: 6px;
     }
     .buy-product-card-first-medicine-image {
-      width: 200px;
-    }
+      width: 150px;
   }
+  .buy-product-card-second-head {
+    width: 106px;
+    font-size: 13px;
+  }
+  .buy-product-card-first-section {
+    row-gap: 4px;
+  }
+  .buy-product-card-first-send-button {
+    padding: 5px 13px;
+    font-size: 13px;
+}
+}
   @media screen and (max-width: 630px) {
     .buy-product-card-second-head {
       width: 150px;

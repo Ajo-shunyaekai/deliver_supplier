@@ -36,7 +36,7 @@
   position: absolute;
   right: 10px;
   cursor: pointer;
-  width: 12px;
+  width: 10px;
   height: 14px;
   color: #5e676f !important;
 }
@@ -55,7 +55,7 @@
   display: inline-block;
 }
 .upload-text {
-  font-size: 14px;
+  font-size: 13px;
 }
 .uploaded-image {
   max-width: 100%;
