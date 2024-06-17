@@ -39,6 +39,7 @@ import BuyerDetails from './pages/BuyerDetails.js'
 import BuyerCompletedList from './pages/buyer/BuyerCompletedList.js';
 import BuyerActiveList from './pages/buyer/BuyerActiveList.js';
 import BuyerPendingList from './pages/buyer/BuyerPendingList.js';
+import AddProduct from './pages/AddProduct.js';
 
 
 function ExcludeSidebar() {
@@ -79,6 +80,7 @@ function ExcludeSidebar() {
           <Route path="/buyer-completed-list" element={<BuyerCompletedList />} />
           <Route path="/buyer-active-list" element={<BuyerActiveList />} />
           <Route path="/buyer-pending-list" element={<BuyerPendingList />} />
+          <Route path="/add-product" element={<AddProduct/>} />
         </Routes>
       </Sidebar>
     </div>

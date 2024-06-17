@@ -1,7 +1,10 @@
 .order-details-container {
   width: 100%;
   height: 100vh;
-  overflow-x: scroll;
+  overflow: scroll;
+  background-attachment: fixed;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   max-width: 90%;
   display: flex;
   flex-direction: column;
@@ -150,13 +153,14 @@
   /* border: 1px solid red; */
 }
 .order-details-left-top-main-heading-button {
-  background-color: #e1e1e4;
-  border-color: #dadade;
-  font-size: 12px;
-  padding: 6px 20px;
-  font-weight: 500;
+  background: linear-gradient(to left, #00dcff, #0075ce);
+  color: white;
+  padding: 6px 16px;
   border-radius: 4px;
-  color: #99a0ac;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  font-size: 14px;
   cursor: pointer;
 }
 /* start the assign driver table list */

@@ -1,9 +1,12 @@
 .product-main-conatiners {
   width: 100%;
-  max-width: 80%;
+  max-width: 1400px;
   margin: auto;
   height: 100vh;
   overflow: scroll;
+  background-attachment: fixed;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .product-main-conatiners::-webkit-scrollbar {
   display: none;
@@ -80,11 +83,17 @@
 .support-container {
   /* border: 1px solid red; */
   padding: 30px 0px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 8rem;
 }
 
 .support-add-card {
-  width: 250px;
-  height: 250px;
+  width: 450px  ;
+  height: 240px;
   background-color: #ffffff;
   border-radius: 4px;
   display: flex;
@@ -119,11 +128,59 @@
 }
 
 .support-container-text-add {
-  position: absolute;
-  top: 110px;
+  position: relative;
+  top: 55px;
   font-size: 16px;
   color: #5e676f;
-  width: 250px;
   text-align: center;
   font-weight: 500;
 }
+
+
+
+@media screen and (max-width: 1645px) {
+.support-add-card {
+  width: 420px  ;
+}
+.product-main-conatiners {
+  max-width: 1300px;
+}
+}
+
+
+@media screen and (max-width: 1555px) {
+.support-add-card {
+  width: 530px;
+}
+.product-main-conatiners {
+  max-width: 1080px;
+}
+}
+@media screen and (max-width: 1340px) {
+  .support-add-card {
+    width: 39vw;
+  }
+  .product-main-conatiners {
+   max-width: 100%;
+  }
+  }
+  @media screen and (max-width: 1265px) {
+    .support-add-card {
+      width: 450px;
+    }
+    .product-main-conatiners {
+      max-width: 930px;
+     }
+  }
+  @media screen and (max-width: 1170px) {
+    .support-add-card {
+      width: 380px;
+      height: 220px;
+    }
+    .product-main-conatiners {
+     max-width: 780px;
+     }
+     .buy-product-card-section {
+      padding: 30px 6px;
+  }
+  }
