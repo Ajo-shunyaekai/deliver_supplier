@@ -6,6 +6,8 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import MedicineOne from '../assest/paracetamol.png';
 import '../style/addproductlist.css'
+
+
 const Buy = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -74,15 +76,15 @@ const Buy = () => {
 
                         <div className='buy-product-card-first-section'>
                             <div className='buy-product-card-first-left'>
-                                <div className='buy-product-card-first-copmany-name'>Medicine Name</div>
-                                <div className='buy-product-card-first-copmany-description'>Drugs Name</div>
+                                <div className='buy-product-card-first-copmany-name'>Liv-Peptidase 5</div>
+                                <div className='buy-product-card-first-copmany-description'>Serratiopeptidase, Livealth Biopharma</div>
                             </div>
                             <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Country of origin</div>
+                                <div className='buy-product-card-second-head'>Country of Origin</div>
                                 <div className='buy-product-card-second-text'>Dubai UAE</div>
                             </div>
                             <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Stocked in</div>
+                                <div className='buy-product-card-second-head'>Stocked In</div>
                                 <div className='buy-product-card-second-text'>450</div>
                             </div>
                             <div className='buy-product-card-second-section'>
@@ -116,16 +118,16 @@ const Buy = () => {
                         </div>
 
                         <div className='buy-product-card-first-section'>
-                            <div className='buy-product-card-first-left'>
-                                <div className='buy-product-card-first-copmany-name'>Medicine Name</div>
-                                <div className='buy-product-card-first-copmany-description'>Drugs Name</div>
+                        <div className='buy-product-card-first-left'>
+                                <div className='buy-product-card-first-copmany-name'>Liv-Peptidase 5</div>
+                                <div className='buy-product-card-first-copmany-description'>Serratiopeptidase, Livealth Biopharma</div>
                             </div>
                             <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Country of origin</div>
+                                <div className='buy-product-card-second-head'>Country of Origin</div>
                                 <div className='buy-product-card-second-text'>Dubai UAE</div>
                             </div>
                             <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Stocked in</div>
+                                <div className='buy-product-card-second-head'>Stocked In</div>
                                 <div className='buy-product-card-second-text'>450</div>
                             </div>
                             <div className='buy-product-card-second-section'>
@@ -159,16 +161,16 @@ const Buy = () => {
                         </div>
 
                         <div className='buy-product-card-first-section'>
-                            <div className='buy-product-card-first-left'>
-                                <div className='buy-product-card-first-copmany-name'>Medicine Name</div>
-                                <div className='buy-product-card-first-copmany-description'>Drugs Name</div>
+                        <div className='buy-product-card-first-left'>
+                                <div className='buy-product-card-first-copmany-name'>Liv-Peptidase 5</div>
+                                <div className='buy-product-card-first-copmany-description'>Serratiopeptidase, Livealth Biopharma</div>
                             </div>
                             <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Country of origin</div>
+                                <div className='buy-product-card-second-head'>Country of Origin</div>
                                 <div className='buy-product-card-second-text'>Dubai UAE</div>
                             </div>
                             <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Stocked in</div>
+                                <div className='buy-product-card-second-head'>Stocked In</div>
                                 <div className='buy-product-card-second-text'>450</div>
                             </div>
                             <div className='buy-product-card-second-section'>
@@ -202,16 +204,16 @@ const Buy = () => {
                         </div>
 
                         <div className='buy-product-card-first-section'>
-                            <div className='buy-product-card-first-left'>
-                                <div className='buy-product-card-first-copmany-name'>Medicine Name</div>
-                                <div className='buy-product-card-first-copmany-description'>Drugs Name</div>
+                        <div className='buy-product-card-first-left'>
+                                <div className='buy-product-card-first-copmany-name'>Liv-Peptidase 5</div>
+                                <div className='buy-product-card-first-copmany-description'>Serratiopeptidase, Livealth Biopharma</div>
                             </div>
                             <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Country of origin</div>
+                                <div className='buy-product-card-second-head'>Country of Origin</div>
                                 <div className='buy-product-card-second-text'>Dubai UAE</div>
                             </div>
                             <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Stocked in</div>
+                                <div className='buy-product-card-second-head'>Stocked In</div>
                                 <div className='buy-product-card-second-text'>450</div>
                             </div>
                             <div className='buy-product-card-second-section'>
@@ -245,16 +247,16 @@ const Buy = () => {
                         </div>
 
                         <div className='buy-product-card-first-section'>
-                            <div className='buy-product-card-first-left'>
-                                <div className='buy-product-card-first-copmany-name'>Medicine Name</div>
-                                <div className='buy-product-card-first-copmany-description'>Drugs Name</div>
+                        <div className='buy-product-card-first-left'>
+                                <div className='buy-product-card-first-copmany-name'>Liv-Peptidase 5</div>
+                                <div className='buy-product-card-first-copmany-description'>Serratiopeptidase, Livealth Biopharma</div>
                             </div>
                             <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Country of origin</div>
+                                <div className='buy-product-card-second-head'>Country of Origin</div>
                                 <div className='buy-product-card-second-text'>Dubai UAE</div>
                             </div>
                             <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Stocked in</div>
+                                <div className='buy-product-card-second-head'>Stocked In</div>
                                 <div className='buy-product-card-second-text'>450</div>
                             </div>
                             <div className='buy-product-card-second-section'>
@@ -288,16 +290,16 @@ const Buy = () => {
                         </div>
 
                         <div className='buy-product-card-first-section'>
-                            <div className='buy-product-card-first-left'>
-                                <div className='buy-product-card-first-copmany-name'>Medicine Name</div>
-                                <div className='buy-product-card-first-copmany-description'>Drugs Name</div>
+                        <div className='buy-product-card-first-left'>
+                                <div className='buy-product-card-first-copmany-name'>Liv-Peptidase 5</div>
+                                <div className='buy-product-card-first-copmany-description'>Serratiopeptidase, Livealth Biopharma</div>
                             </div>
                             <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Country of origin</div>
+                                <div className='buy-product-card-second-head'>Country of Origin</div>
                                 <div className='buy-product-card-second-text'>Dubai UAE</div>
                             </div>
                             <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Stocked in</div>
+                                <div className='buy-product-card-second-head'>Stocked In</div>
                                 <div className='buy-product-card-second-text'>450</div>
                             </div>
                             <div className='buy-product-card-second-section'>

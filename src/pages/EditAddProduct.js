@@ -4,7 +4,7 @@ import Select, { components } from 'react-select';
 import countryList from 'react-select-country-list';
 import ImageAddUploader from './ImageAppUploader';
 import CloseIcon from '@mui/icons-material/Close';
-import AddPdfUpload from './AddPdfUpload';
+import axios from 'axios';
 
 const MultiSelectOption = ({ children, ...props }) => (
     <components.Option {...props}>
@@ -34,7 +34,7 @@ const MultiSelectDropdown = ({ options, value, onChange }) => {
 const AddProduct = () => {
     const productTypeOptions = [
         { value: 'new_product', label: 'New Product' },
-        { value: 'secondary_market', label: 'Secondary Market' }
+        // { value: 'secondary_market', label: 'Secondary Market' }
     ];
 
     const formTypes = [
@@ -53,13 +53,6 @@ const AddProduct = () => {
         { value: '1000-2000', label: '1000-2000' },
         { value: '2000-5000', label: '2000-5000' },
     ];
-    const productCategoryOptions = [
-        { value: 'generies', label: 'Generies' },
-        { value: 'orignals', label: 'Orignals' },
-        { value: 'biosimilars', label: 'Biosimilars' },
-        { value: 'medicaldevices', label: 'Medical Devices' },
-        { value: 'nutraceuticals', label: 'Nutraceuticals' }
-    ];
 
     const [productType, setProductType] = useState({ value: 'new_product', label: 'New Product' });
     const [formSections, setFormSections] = useState([
@@ -67,10 +60,9 @@ const AddProduct = () => {
             strength: '',
             quantity: null,
             typeOfForm: null,
-            productCategory: null,
             unitPrice: '',
             estDeliveryTime: '',
-            condition: ''
+            condition: '' // Added condition field
         }
     ]);
     const [countries, setCountries] = useState([]);
@@ -103,11 +95,7 @@ const AddProduct = () => {
         newFormSections[index][name] = value;
         setFormSections(newFormSections);
     };
-    const handleCategoryChange = (index, selected) => {
-        const newFormSections = [...formSections];
-        newFormSections[index].productCategory = selected;
-        setFormSections(newFormSections);
-    };
+
     const addFormSection = () => {
         setFormSections([
             ...formSections,
@@ -134,10 +122,11 @@ const AddProduct = () => {
     const handleProductTypeChange = (selected) => {
         setProductType(selected);
     };
+
     return (
         <>
             <div className={styles['create-invoice-container']}>
-                <div className={styles['create-invoice-heading']}>Add Product</div>
+                <div className={styles['create-invoice-heading']}>Edit Product</div>
                 <div className={styles['create-invoice-section']}>
                     <div className={styles['create-invoice-form-heading']}>Product Details</div>
                     <form className={styles['craete-invoice-form']} >
@@ -160,7 +149,11 @@ const AddProduct = () => {
                                 placeholder="Select Product Type"
                             />
                         </div>
-
+                        {productType && productType.value === 'new_product' && (
+                            <>
+                               
+                            </>
+                        )}
                         {productType && productType.value === 'secondary_market' && (
                             <>
                                 <div className={styles['create-invoice-div-container']}>
@@ -168,15 +161,17 @@ const AddProduct = () => {
                                     <input
                                         className={styles['create-invoice-div-input']}
                                         type='text'
-                                        name='purchasedOn'
+                                        name='shippingTime'
                                         placeholder='Enter Purchased On'
                                     />
                                 </div>
                                 <div className={styles['create-invoice-div-container']}>
                                     <label className={styles['create-invoice-div-label']}>Country Available In</label>
-                                    <MultiSelectDropdown
-                                        options={countries}
-                                        placeholderButtonLabel="Select Countries"
+                                    <input
+                                        className={styles['create-invoice-div-input']}
+                                        type='text'
+                                        name='shippingTime'
+                                        placeholder='Enter Shipping Time'
                                     />
                                 </div>
                                 <div className={styles['create-invoice-div-container']}>
@@ -184,7 +179,7 @@ const AddProduct = () => {
                                     <input
                                         className={styles['create-invoice-div-input']}
                                         type='text'
-                                        name='minPurchaseUnit'
+                                        name='shippingTime'
                                         placeholder='Enter Min Purchase Unit'
                                     />
                                 </div>
@@ -199,14 +194,6 @@ const AddProduct = () => {
                                 placeholder='Enter Composition'
                             />
                         </div>
-                        <div className={styles['create-invoice-div-container']}>
-                                <label className={styles['create-invoice-div-label']}>Type of form</label>
-                                <Select
-                                    className={styles['create-invoice-div-input-select']}
-                                     options={formTypes}
-                                placeholder="Select Type of Form"
-                                />
-                            </div>
                         <div className={styles['create-invoice-div-container']}>
                             <label className={styles['create-invoice-div-label']}>Dossier Type</label>
                             <input
@@ -226,27 +213,6 @@ const AddProduct = () => {
                             />
                         </div>
                         <div className={styles['create-invoice-div-container']}>
-                            <label className={styles['create-invoice-div-label']}>Product Category</label>
-                            <Select
-                                className={styles['create-invoice-div-input-select']}
-                                options={productCategoryOptions}
-                                placeholder="Select Product Category"
-                            />
-                        </div>
-                        {productType && productType.value === 'new_product' && (
-                            <>
-                                <div className={styles['create-invoice-div-container']}>
-                                    <label className={styles['create-invoice-div-label']}>Total Quantity</label>
-                                    <input
-                                        className={styles['create-invoice-div-input']}
-                                        type='text'
-                                        name='gmpApprovals'
-                                        placeholder='Enter Total Quantity'
-                                    />
-                                </div>
-                            </>
-                        )}
-                        <div className={styles['create-invoice-div-container']}>
                             <label className={styles['create-invoice-div-label']}>GMP Approvals</label>
                             <input
                                 className={styles['create-invoice-div-input']}
@@ -260,7 +226,7 @@ const AddProduct = () => {
                             <input
                                 className={styles['create-invoice-div-input']}
                                 type='text'
-                                name='shippingTime'
+                                name='gmpApprovals'
                                 placeholder='Enter Shipping Time'
                             />
                         </div>
@@ -319,117 +285,83 @@ const AddProduct = () => {
                                     onChange={(event) => handleInputChange(index, event)}
                                 />
                             </div>
-                          
-                            {productType && productType.value === 'new_product' && (
-                                <>
-                                    <div className={styles['create-invoice-div-container']}>
-                                        <label className={styles['create-invoice-div-label']}>Quantity</label>
-                                        <Select
-                                            className={styles['create-invoice-div-input-select']}
-                                            value={section.quantity}
-                                            onChange={(selected) => handleQuantityChange(index, selected)}
-                                            options={quantityOptions}
-                                            placeholder="Select Quantity"
-                                        />
-                                    </div>
-
-                                    <div className={styles['create-invoice-div-container']}>
-                                        <label className={styles['create-invoice-div-label']}>Unit Price</label>
-                                        <input
-                                            className={styles['create-invoice-div-input']}
-                                            type='text'
-                                            name='unitPrice'
-                                            placeholder='Enter Unit Price'
-                                            value={section.unitPrice}
-                                            onChange={(event) => handleInputChange(index, event)}
-                                        />
-                                    </div>
-                                    <div className={styles['create-invoice-div-container']}>
-                                        <label className={styles['create-invoice-div-label']}>Total Price</label>
-                                        <input
-                                            className={styles['create-invoice-div-input']}
-                                            type='text'
-                                            name='totalPrice'
-                                            placeholder='Enter Total Price'
-                                            value={section.totalPrice}
-                                            onChange={(event) => handleInputChange(index, event)}
-                                        />
-                                    </div>
-                                    <div className={styles['create-invoice-div-container']}>
-                                        <label className={styles['create-invoice-div-label']}>Shelf Life</label>
-                                        <input
-                                            className={styles['create-invoice-div-input']}
-                                            type='text'
-                                            name='shelfLife'
-                                            placeholder='Enter Shelf Life'
-                                            value={section.shelfLife}
-                                            onChange={(event) => handleInputChange(index, event)}
-                                        />
-                                    </div>
-                                    <div className={styles['create-invoice-div-container']}>
-                                        <label className={styles['create-invoice-div-label']}>Est. Delivery Time</label>
-                                        <input
-                                            className={styles['create-invoice-div-input']}
-                                            type='text'
-                                            name='estDeliveryTime'
-                                            placeholder='Enter Est. Delivery Time'
-                                            value={section.estDeliveryTime}
-                                            onChange={(event) => handleInputChange(index, event)}
-                                        />
-                                    </div>
-
-                                </>
-                            )}
+                            <div className={styles['create-invoice-div-container']}>
+                                <label className={styles['create-invoice-div-label']}>Type of form</label>
+                                <Select
+                                    className={styles['create-invoice-div-input-select']}
+                                    value={section.typeOfForm}
+                                    onChange={(selected) => handleTypeChange(index, selected)}
+                                    options={formTypes}
+                                    placeholder="Select Form Type"
+                                />
+                            </div>
+                            <div className={styles['create-invoice-div-container']}>
+                                <label className={styles['create-invoice-div-label']}>Quantity</label>
+                                <Select
+                                    className={styles['create-invoice-div-input-select']}
+                                    value={section.quantity}
+                                    onChange={(selected) => handleQuantityChange(index, selected)}
+                                    options={quantityOptions}
+                                    placeholder="Select Quantity"
+                                />
+                            </div>
+                            <div className={styles['create-invoice-div-container']}>
+                                <label className={styles['create-invoice-div-label']}>Unit Price</label>
+                                <input
+                                    className={styles['create-invoice-div-input']}
+                                    type='text'
+                                    name='unitPrice'
+                                    placeholder='Enter Unit Price'
+                                    value={section.unitPrice}
+                                    onChange={(event) => handleInputChange(index, event)}
+                                />
+                            </div>
+                            <div className={styles['create-invoice-div-container']}>
+                                <label className={styles['create-invoice-div-label']}>Total Price</label>
+                                <input
+                                    className={styles['create-invoice-div-input']}
+                                    type='text'
+                                    name='totalPrice'
+                                    placeholder='Enter Total Price'
+                                    value={section.totalPrice}
+                                    onChange={(event) => handleInputChange(index, event)}
+                                />
+                            </div>
                             {productType && productType.value === 'secondary_market' && (
-                                <>
-                                    <div className={styles['create-invoice-div-container']}>
-                                        <label className={styles['create-invoice-div-label']}>Quantity</label>
-                                        <input
-                                            className={styles['create-invoice-div-input']}
-                                            type='text'
-                                            name='quantity'
-                                            placeholder='Enter Quantity'
-                                            value={section.quantity}
-                                            onChange={(event) => handleInputChange(index, event)}
-                                        />
-                                    </div>
-
-                                    <div className={styles['create-invoice-div-container']}>
-                                        <label className={styles['create-invoice-div-label']}>Unit Price</label>
-                                        <input
-                                            className={styles['create-invoice-div-input']}
-                                            type='text'
-                                            name='unitPrice'
-                                            placeholder='Enter Unit Price'
-                                            value={section.unitPrice}
-                                            onChange={(event) => handleInputChange(index, event)}
-                                        />
-                                    </div>
-                                    <div className={styles['create-invoice-div-container']}>
-                                        <label className={styles['create-invoice-div-label']}>Shelf Life</label>
-                                        <input
-                                            className={styles['create-invoice-div-input']}
-                                            type='text'
-                                            name='shelfLife'
-                                            placeholder='Enter Shelf Life'
-                                            value={section.shelfLife}
-                                            onChange={(event) => handleInputChange(index, event)}
-                                        />
-                                    </div>
-                                    <div className={styles['create-invoice-div-container']}>
-                                        <label className={styles['create-invoice-div-label']}>Condition</label>
-                                        <Select
-                                            className={styles['create-invoice-div-input-select']}
-                                            value={section.condition}
-                                            onChange={(selected) => handleConditionChange(index, selected)}
-                                            options={conditionOptions}
-                                            placeholder="Select Condition"
-                                        />
-                                    </div>
-                                </>
+                                <div className={styles['create-invoice-div-container']}>
+                                    <label className={styles['create-invoice-div-label']}>Condition</label>
+                                    <Select
+                                        className={styles['create-invoice-div-input-select']}
+                                        value={section.condition}
+                                        onChange={(selected) => handleConditionChange(index, selected)}
+                                        options={conditionOptions}
+                                        placeholder="Select Condition"
+                                    />
+                                </div>
                             )}
-
-
+                            <div className={styles['create-invoice-div-container']}>
+                                <label className={styles['create-invoice-div-label']}>Shelf Life</label>
+                                <input
+                                    className={styles['create-invoice-div-input']}
+                                    type='text'
+                                    name='shelfLife'
+                                    placeholder='Enter Shelf Life'
+                                    value={section.shelfLife}
+                                    onChange={(event) => handleInputChange(index, event)}
+                                />
+                            </div>
+                            <div className={styles['create-invoice-div-container']}>
+                                <label className={styles['create-invoice-div-label']}>Est. Delivery Time</label>
+                                <input
+                                    className={styles['create-invoice-div-input']}
+                                    type='text'
+                                    name='estDeliveryTime'
+                                    placeholder='Enter Est. Delivery Time'
+                                    value={section.estDeliveryTime}
+                                    onChange={(event) => handleInputChange(index, event)}
+                                />
+                            </div>
+                           
                             {formSections.length > 1 && (
                                 <div className={styles['create-invoice-div-container']}>
                                     <div className={styles['craete-add-cross-icon']} onClick={() => removeFormSection(index)}>
@@ -441,25 +373,24 @@ const AddProduct = () => {
                     ))}
                 </div>
                 <div className={styles['create-invoice-section']}>
-                    <div className={styles['create-invoice-form-heading']}>Upload Product Image</div>
+                    <div className={styles['create-invoice-form-heading']}>Uplaod Product Image</div>
                     <form className={styles['craete-invoice-form']}>
                         <div>
-                            <ImageAddUploader />
+                        <ImageAddUploader />
                         </div>
-                        {productType && productType.value === 'secondary_market' && (
-                            <>
-                                <div className={styles['create-invoice-upload-purchase']}>
-                                    <div className={styles['create-invoice-form-heading']}>Upload Purchase Invoice</div>
-
-                                    <AddPdfUpload />
-                                </div>
-                            </>
-                        )}
+                        {/* <div className={styles['create-invoice-div-container']}>
+                            <label className={styles['create-invoice-div-label']}>Upload Purchase Invoice</label>
+                            <input
+                                className={styles['create-invoice-div-input']}
+                                type='file'
+                                name='invoiceUpload'
+                            />
+                        </div> */}
                     </form>
                 </div>
                 <div className={styles['craete-invoices-button']}>
                     <div className={styles['create-invoices-cancel']}>Cancel</div>
-                    <button type="submit" className={styles['create-invoices-submit']}>Add Product</button>
+                    <button type="submit" className={styles['create-invoices-submit']}>Edit Product</button>
                 </div>
             </div>
         </>
