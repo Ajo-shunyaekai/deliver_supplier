@@ -5,6 +5,7 @@ import countryList from 'react-select-country-list';
 import ImageAddUploader from './ImageAppUploader';
 import CloseIcon from '@mui/icons-material/Close';
 import AddPdfUpload from './AddPdfUpload';
+import ImageUploader from '../signup/ImageUploader';
 
 const MultiSelectOption = ({ children, ...props }) => (
     <components.Option {...props}>
@@ -137,7 +138,8 @@ const AddProduct = () => {
     return (
         <>
             <div className={styles['create-invoice-container']}>
-                <div className={styles['create-invoice-heading']}>Add Product</div>
+            <div className={styles['create-invoice-heading']}>Add Product</div>
+              {/* <form> */}
                 <div className={styles['create-invoice-section']}>
                     <div className={styles['create-invoice-form-heading']}>Product Details</div>
                     <form className={styles['craete-invoice-form']} >
@@ -445,6 +447,7 @@ const AddProduct = () => {
                     <form className={styles['craete-invoice-form']}>
                         <div>
                             <ImageAddUploader />
+                            {/* <ImageUploader imageType="product"  allowMultiple={true}/> */}
                         </div>
                         {productType && productType.value === 'secondary_market' && (
                             <>
@@ -461,6 +464,7 @@ const AddProduct = () => {
                     <div className={styles['create-invoices-cancel']}>Cancel</div>
                     <button type="submit" className={styles['create-invoices-submit']}>Add Product</button>
                 </div>
+             {/* </form> */}
             </div>
         </>
     );
