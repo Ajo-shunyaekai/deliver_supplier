@@ -7,10 +7,9 @@ import '../style/signup.css';
 import logo from '../assest/signup.svg'
 import SuccessModal from './SuccessModal';
 import ImageUploader from './ImageUploader';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { parsePhoneNumberFromString, AsYouType  } from 'libphonenumber-js';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import { postRequestWithFile } from '../api/Requests';
-
 
 const MultiSelectOption = ({ children, ...props }) => (
     <components.Option {...props}>
@@ -38,20 +37,19 @@ const MultiSelectDropdown = ({ options, value, onChange }) => {
     );
 };
 
-
-
 const SignUp = () => {
     const [errors, setErrors]                           = useState({});
     const [isChecked, setIsChecked]                     = useState(false);
     const [showModal, setShowModal]                     = useState(false);
     const [countries, setCountries]                     = useState([]);
     const [companyPhone, setCompanyPhone]               = useState('');
+    const [companyCountryCode, setCompanyCountryCode]   = useState('')
     const [mobile, setMobile]                           = useState('');
+    const [countryCode, setCountryCode]                 = useState('')
     const [resetUploaders, setResetUploaders]           = useState(false);
     const [selectedOption, setSelectedOption]           = useState(null);
     const [selectedCompanyType, setSelectedCompanyType] = useState(null);
 
-    // Initialize formData state
     const [formData, setFormData] = useState({
         companyType: '',
         companyName: '',
@@ -78,14 +76,15 @@ const SignUp = () => {
         licenseImage: null,
         licenseImageType: 'license',
         certificateImage: null,
-        certificateImageType: 'certificate'
+        certificateImageType: 'certificate',
+        terms : '',
     });
     const [selectedOptions, setSelectedOptions] = React.useState([]);
 
     const handleMultiSelectChange = (selected) => {
         setSelectedOptions(selected);
     };
-    // Fetch country list on component mount
+
     useEffect(() => {
         const options = countryList().getData();
         setCountries(options);
@@ -96,6 +95,7 @@ const SignUp = () => {
         { value: 'distributor', label: 'Distributor' },
         // Add more options as needed
     ];
+
     const handleCompanyTypeChange = (selectedOption) => {
         setSelectedCompanyType(selectedOption);
         setFormData(prevState => ({ ...prevState, companyType: selectedOption }));
@@ -140,19 +140,19 @@ const SignUp = () => {
     const handlePhoneChange = (name, value) => {
         setErrors(prevState => ({ ...prevState, [name]: '' }));
         if (value.trim() !== '') {
-            const phoneRegex = /^[0-9]{10,15}$/;
+            // const phoneRegex = /^[0-9]{10,15}$/;
+            const phoneRegex = /^(\+[1-9]{1}[0-9]{3,14})?([0-9]{9,14})$/;
             if (phoneRegex.test(value)) {
                 const countryCode = value.slice(0, value.indexOf('-'));
                 const nationalNumber = value.slice(value.indexOf('-') + 1);
                 const formattedNumber = `+${countryCode} ${nationalNumber}`;
 
-                setFormData(prevState => ({ ...prevState, [name]: formattedNumber }));
+                setFormData(prevState => ({ ...prevState, [name]:formattedNumber }));
             } else {
                 // setErrors(prevState => ({ ...prevState, [name]: 'Invalid phone number' }));
             }
         }
     };
-
 
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
@@ -164,20 +164,26 @@ const SignUp = () => {
         return emailRegex.test(email);
     };
 
-    const validateForm = () => {
-        let formErrors = {};
 
+    const validateForm = async() => {
+        let formErrors = {};
+    
         if (!formData.companyType) formErrors.companyType = 'Company Type is required';
         if (!formData.companyName) formErrors.companyName = 'Company Name is required';
         if (!formData.companyAddress) formErrors.companyAddress = 'Company Address is required';
         if (!formData.companyEmail) formErrors.companyEmail = 'Company Email ID is required';
         if (formData.companyEmail && !validateEmail(formData.companyEmail)) formErrors.companyEmail = 'Invalid Company Email ID';
-        if (!companyPhone) formErrors.companyPhone = 'Company Phone No. is required';
+        if (!companyPhone || companyPhone.length <= 6) {
+            formErrors.companyPhone = 'Company phone no. is required';
+        }
+        // if (!companyPhone) formErrors.companyPhone = 'Company Phone No. is required';
         if (!formData.contactPersonName) formErrors.contactPersonName = 'Contact Person Name is required';
         if (!formData.designation) formErrors.designation = 'Designation is required';
         if (!formData.email) formErrors.email = 'Email ID is required';
         if (formData.email && !validateEmail(formData.email)) formErrors.email = 'Invalid Email ID';
-        if (!mobile) formErrors.mobile                                         = 'Mobile No. is required';
+        if (!mobile || mobile.length <= 6) {
+            formErrors.mobile = 'Mobile No. is required';
+        }
         if (!formData.originCountry) formErrors.originCountry                  = 'Country of Origin is required';
         if (!formData.operationCountries.length) formErrors.operationCountries = 'Country of Operation is required';
         if (!formData.companyLicenseNo) formErrors.companyLicenseNo            = 'Company License No. is required';
@@ -195,6 +201,7 @@ const SignUp = () => {
         if (!formData.licenseImage) formErrors.licenseImage = 'License image is required';
         if (!formData.certificateImage) formErrors.certificateImage = 'Certificate image is required';
         
+        
         setErrors(formErrors);
 
         return Object.keys(formErrors).length === 0;
@@ -210,6 +217,16 @@ const SignUp = () => {
     const handleCloseModal = () => setShowModal(false);
 
     const formatPhoneNumber = (value) => {
+        const phoneNumber = parsePhoneNumberFromString(value);
+        if (phoneNumber) {
+            const countryCallingCode = `+${phoneNumber.countryCallingCode}`;
+            const nationalNumber     = phoneNumber.nationalNumber;
+            return `${countryCallingCode} ${nationalNumber}`;
+        }
+        return value;
+    };
+
+    const formatCompanyPhoneNumber = (value) => {
         const phoneNumber = parsePhoneNumberFromString(value);
         if (phoneNumber) {
             const countryCallingCode = `+${phoneNumber.countryCallingCode}`;
@@ -251,86 +268,78 @@ const SignUp = () => {
     };
     
     const handleSubmit = () => {
-        if (validateForm()) {
-            const countryLabels = formData.operationCountries.map(country => {
+        if (validateForm() && isChecked) {
+            
+            const formDataToSend = new FormData();
+
+             const countryLabels = formData.operationCountries.map(country => {
                 return country ? country.label : '';
             });
+            formDataToSend.append('supplier_type', formData.companyType?.label);
+            formDataToSend.append('supplier_name', formData.companyName);
+            formDataToSend.append('description', formData.description);
+            formDataToSend.append('supplier_address', formData.companyAddress);
+            formDataToSend.append('supplier_email', formData.companyEmail);
+            formDataToSend.append('supplier_mobile_no', companyPhone);
+            formDataToSend.append('license_no', formData.companyLicenseNo);
+            formDataToSend.append('license_expiry_date', formData.companyLicenseExpiry);
+            formDataToSend.append('country_of_origin', formData.originCountry);
+            formDataToSend.append('contact_person_name', formData.contactPersonName);
+            formDataToSend.append('designation', formData.designation);
+            formDataToSend.append('payment_terms', formData.paymentterms);
+            formDataToSend.append('tags', formData.tags);
+            formDataToSend.append('estimated_delivery_time', formData.delivertime);
+            formDataToSend.append('contact_person_mobile', mobile);
+            formDataToSend.append('contact_person_email', formData.email);
+            formDataToSend.append('country_of_operation', countryLabels);
+            formDataToSend.append('tax_no', formData.companyTaxNo);
+            Array.from(formData.logoImage).forEach(file => formDataToSend.append('supplier_image', file));
+            Array.from(formData.licenseImage).forEach(file => formDataToSend.append('license_image', file));
+            Array.from(formData.taxImage).forEach(file => formDataToSend.append('tax_image', file));
+            Array.from(formData.certificateImage).forEach(file => formDataToSend.append('certificate_image', file));
 
-
-            const certificateImages = Array.from(formData.certificateImage).map(file => file);
-            const licenseImages = Array.from(formData.licenseImage).map(file => file);
-            const taxImages = Array.from(formData.taxImage).map(file => file);
-            const logoImages = Array.from(formData.logoImage).map(file => file);
-
-            const regObj = {
-                supplier_type: formData.companyType?.label,
-                supplier_name: formData.companyName,
-                description: formData.description,
-                supplier_address: formData.companyAddress,
-                supplier_email: formData.companyEmail,
-                supplier_mobile_no: companyPhone,
-                license_no: formData.companyLicenseNo,
-                license_expiry_date : formData.companyLicenseExpiry,
-                country_of_origin: formData.originCountry,
-                contact_person_name: formData.contactPersonName,
-                designation: formData.designation,
-                payment_terms: formData.paymentterms,
-                tags: formData.tags,
-                supplier_image: logoImages,
-                estimated_delivery_time: formData.delivertime,
-                license_image: licenseImages,
-                tax_image: taxImages,
-                certificate_image : certificateImages,
-                contact_person_mobile: mobile,
-                contact_person_email: formData.email,
-                country_of_operation: countryLabels,
-                tax_no: formData.companyTaxNo
-            }
-
-            console.log(regObj);
-           
-            // postRequestWithFile('supplier/register', regObj, async (response) => {
-            //     if (response.code === 200) {
-            //         setFormData({
-            //             companyType: '',
-            //             companyName: '',
-            //             companyAddress: '',
-            //             companyEmail: '',
-            //             companyPhone: '',
-            //             contactPersonName: '',
-            //             designation: '',
-            //             email: '',
-            //             mobile: '',
-            //             paymentterms: '',
-            //             delivertime: '',
-            //             tags: '',
-            //             originCountry: '',
-            //             operationCountries: [],
-            //             companyLicenseNo: '',
-            //             companyLicenseExpiry: '',
-            //             companyTaxNo: '',
-            //             description: '',
-            //             taxImage: null,
-            //             taxImageType: 'tax',
-            //             logoImage: null,
-            //             logoImageType: 'logo',
-            //             licenseImage: null,
-            //             licenseImageType: 'license',
-            //             certificateImage: null,
-            //             certificateImageType: 'certificate'
-            //         });
-            //         setErrors({});
-            //         setIsChecked(false);
-            //         setCompanyPhone('');
-            //         setMobile('');
-            //         setSelectedCompanyType(null)
-            //         setResetUploaders(true);
-            //         setShowModal(true);
+            postRequestWithFile('supplier/register', formDataToSend, async (response) => {
+                if (response.code === 200) {
+                    setFormData({
+                        companyType: '',
+                        companyName: '',
+                        companyAddress: '',
+                        companyEmail: '',
+                        companyPhone: '',
+                        contactPersonName: '',
+                        designation: '',
+                        email: '',
+                        mobile: '',
+                        paymentterms: '',
+                        delivertime: '',
+                        tags: '',
+                        originCountry: '',
+                        operationCountries: [],
+                        companyLicenseNo: '',
+                        companyLicenseExpiry: '',
+                        companyTaxNo: '',
+                        description: '',
+                        taxImage: null,
+                        taxImageType: 'tax',
+                        logoImage: null,
+                        logoImageType: 'logo',
+                        licenseImage: null,
+                        licenseImageType: 'license',
+                        certificateImage: null,
+                        certificateImageType: 'certificate'
+                    });
+                    setErrors({});
+                    setIsChecked(false);
+                    setCompanyPhone('');
+                    setMobile('');
+                    setSelectedCompanyType(null)
+                    setResetUploaders(true);
+                    setShowModal(true);
                     
-            //     } else {
-            //        console.log('error in supplier/register api');
-            //     }
-            // }) 
+                } else {
+                   console.log('error in supplier/register api');
+                }
+            }) 
         }
     };
 
@@ -402,12 +411,12 @@ const SignUp = () => {
                                 name="companyPhone"
                                 value={companyPhone}
                                 onChange={(value) => {
-                                    const formattedValue = formatPhoneNumber(value);
+                                    const formattedValue = formatCompanyPhoneNumber(value);
                                     setCompanyPhone(formattedValue);
                                     handlePhoneChange('companyPhone', value);
                                 }}
                             />
-                            {errors.companyPhone && <div className='signup__errors'>{errors.companyPhone}</div>}
+                            {errors.companyPhone  && <div className='signup__errors'>{errors.companyPhone}</div>}
                         </div>
 
                         <div className='signup-form-section-div'>

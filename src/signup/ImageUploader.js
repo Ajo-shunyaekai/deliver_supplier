@@ -54,31 +54,6 @@ const ImageUploader = ({ onUploadStatusChange, imageType, reset, allowMultiple }
         });
     };
 
-    // const handleFileRemove = (fileName, event) => {
-    //     event.stopPropagation();
-    //     setFilePreviews(prev => {
-    //         const updatedPreviews = prev.filter(file => file.name !== fileName);
-            
-    //         const updatedFormData = formData[`${imageType}Image`].filter(file => file.name !== fileName);
-
-    //         setFormData(prevState => ({
-    //             ...prevState,
-    //             [`${imageType}Image`]: updatedFormData
-    //         }));
-
-    //         setErrors(prevState => ({
-    //             ...prevState,
-    //             [`${imageType}Image`]: updatedFormData.length === 0 ? `${imageType} image is required` : ''
-    //         }));
-
-    //         return updatedPreviews;
-    //     });
-
-    //     if (fileInputRef.current) {
-    //         fileInputRef.current.value = '';
-    //     }
-    // };
-
     const handleFileRemove = (fileName, event) => {
                 event.stopPropagation();
                 setFilePreviews(prev => {
