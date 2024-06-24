@@ -271,10 +271,11 @@ const SignUp = () => {
         if (validateForm() && isChecked) {
             
             const formDataToSend = new FormData();
-
+            console.log(formData.operationCountries);
              const countryLabels = formData.operationCountries.map(country => {
                 return country ? country.label : '';
-            });
+            }) || [];
+            console.log(countryLabels);
             formDataToSend.append('supplier_type', formData.companyType?.label);
             formDataToSend.append('supplier_name', formData.companyName);
             formDataToSend.append('description', formData.description);
@@ -291,7 +292,8 @@ const SignUp = () => {
             formDataToSend.append('estimated_delivery_time', formData.delivertime);
             formDataToSend.append('contact_person_mobile', mobile);
             formDataToSend.append('contact_person_email', formData.email);
-            formDataToSend.append('country_of_operation', countryLabels);
+            // formDataToSend.append('country_of_operation', countryLabels);
+            countryLabels.forEach(item => formDataToSend.append('country_of_operation[]', item));
             formDataToSend.append('tax_no', formData.companyTaxNo);
             Array.from(formData.logoImage).forEach(file => formDataToSend.append('supplier_image', file));
             Array.from(formData.licenseImage).forEach(file => formDataToSend.append('license_image', file));
