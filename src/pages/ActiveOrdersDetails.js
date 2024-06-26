@@ -110,7 +110,7 @@ const ActiveOrdersDetails = () => {
             </div>
             {/* start the assign driver section */}
             <div className='order-details-assign-driver-section'>
-                <ActiveAssignDriver />
+                <ActiveAssignDriver productList = {orderDetails?.items} />
             </div>
             {/* end the assign driver section */}
 

@@ -1,8 +1,7 @@
 /* react upload document */
 .upload-area {
   width: 100%;
-  /* width: 350px; */
-  height: 180px;
+  height: 100px;
   cursor: pointer;
   display: flex;
   background-color: #ffffff;
@@ -16,6 +15,54 @@
   justify-content: center;
   align-items: center;
 }
+.image-uploader {
+  position: relative;
+  width: 300px;
+  text-align: center;
+}
+
+.upload-area {
+  cursor: pointer;
+}
+
+.upload-text {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #888;
+}
+
+.image-previews {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.uploaded-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.close-icon {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  top: 2px;
+  right: 2px;
+  padding: 3px;
+  cursor: pointer;
+  color: #5e676f;
+  background: white;
+  border-radius: 50%;
+}
+.error-message {
+  color:#ff0000;
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: start;
+}
+
 .image-name {
   font-size: 14px;
   margin-top: 6px;
@@ -26,7 +73,6 @@
   display: inline-block;
   width: 100%;
   height: 100px;
-  /* border: 2px solid red; */
 }
 
 .uploaded-image {
@@ -34,10 +80,6 @@
   width: 150px;
   height: auto;
 }
-/*
-  .uploaded-image:hover {
-    transform: scale(1.5);
-  } */
 
 .remove-icon {
   position: absolute;
@@ -50,8 +92,8 @@
 }
 
 .upload-icon {
-  /* width: 36px; */
-  width: 25px;
+  width: 36px;
+  height: 30px;
 }
 
 .upload-text {
@@ -70,22 +112,21 @@
 
 
 .image-previews{
+  width: 94%;
   display: flex;
   justify-content: start;
   align-items: start;
-  gap: 0.5rem;
+  gap: 16px;
   flex-wrap: wrap;
   position: relative;
-  top: -20rem;
-  right: -38vw;
-  /* border: 2px solid green; */
+  top: -22rem;
+  right: -36vw;
 }
 
 .image-preview{
   position: relative;
-  width: 11vw;
-  height: 100px;;
-  margin-top: 0.5rem;
+  width: 9.6vw;
+  height: 100px;
 }
 
 
@@ -96,20 +137,9 @@
 }
 
 
-.close-icon {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 20px; /* Adjust as needed */
-  cursor: pointer;
-  color: #5e676f;
-}
-
-/* =================================== */
-/* App.css */
-
 .modalBody{
-  /* border: 1px solid red; */
+  width: 400px !important;
+  height: auto;
 position: relative;
 top: 1rem;
 }
@@ -125,7 +155,10 @@ top: 1rem;
   background-color: transparent;
   border: none;
 }
-
+.modal-close-icons{
+  width: 14px;
+  height: 14px;
+}
 .modal {
   position: fixed;
   top: 0;
@@ -148,18 +181,10 @@ top: 1rem;
 }  
 
 .image-previews {
-  right: -42vw;
+  right: -38vw;
   width: 400px;
 }
-
-
-/* .image-preview{
-  width: 10vw;
-} */
-
-
-
-}  
+}
 
 @media screen and (max-width: 1164px) {
   .image-previews {
@@ -180,14 +205,12 @@ top: 1rem;
 
 .image-uploader {
   height: auto;
-  /* border: 2px solid red; */
 }
 
 }
 
 @media screen and (max-width: 580px) {  
   .image-preview{
-    /* width: 100%; */
     width: 45%;
   }
 }

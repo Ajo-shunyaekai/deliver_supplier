@@ -22,7 +22,7 @@
   border-collapse: separate !important;
   border-spacing: 0 10px !important;
 }
-.pending-invoies-tbody-section {
+.pending-invoices-tbody-section {
   background-color: white;
 }
 .invoice-th {
@@ -158,6 +158,9 @@
   font-size: 12px;
   color: #ff0000;
 }
+.pending-invoice-pagination-conatiner-section{
+  margin-bottom: 10rem;
+}  
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   .modal-pay-dropdown {
     padding: 8px !important;

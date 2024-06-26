@@ -1,9 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../style/productDetails.css';
 import para from '../assest/para.webp'
 import CountryDetails from '../pages/CountryDetails';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { postRequest } from '../api/Requests';
+
+
 const ProductDetails = () => {
+
+    const { medicineId } = useParams()
+
+    const [medicineDetails, setMedicineDetails] = useState()
+    const [medId, setMedId] = useState(medicineId)
+
+    useEffect(() => {
+        // const supplierIdSessionStorage = sessionStorage.getItem("supplier_id");
+        // const supplierIdLocalStorage   = localStorage.getItem("supplier_id");
+
+        // if (!supplierIdSessionStorage && !supplierIdLocalStorage) {
+        // navigate("/login");
+        // return;
+        // }
+        
+        const obj = {
+            medicine_id : medId,
+            // buyer_id    :supplierIdSessionStorage || supplierIdLocalStorage 
+        }
+        
+        postRequest('buyer/medicine/medicine-details', obj, async (response) => {
+            if (response.code === 200) {
+                setMedicineDetails(response.result)
+            } else {
+               console.log('error in med details api');
+            }
+          })
+    },[])
 
     return (
         <>
@@ -22,7 +53,7 @@ const ProductDetails = () => {
                                     Suppositories 125 mg, 250 mg,
                                 </p>
                             </div>
-                            <Link to='/edit-product'>
+                            <Link to={`/edit-product/${medicineDetails?.medicine_id}`}>
                                 <div className="product-details-sec-one-right">
                                     <button className='product-details-send-btn'>Edit</button>
                                 </div>

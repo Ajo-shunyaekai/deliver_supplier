@@ -5,13 +5,13 @@ import faqSupport from '../style/faqSupport.css'
 const FaqSupport = () => {
     return (
         <>
-            <div className="support-heading">FAQ</div >
+            <div className="support-heading">FAQ</div>
             {/* <Accordion defaultActiveKey="0"> */}
             <div className='faq-container'>
 
                 < Accordion >
                     <Accordion.Item eventKey="0" className="faq-cover">
-                        <Accordion.Header className="faq-heading">Lorem ipsum 1</Accordion.Header>
+                        <Accordion.Header className="faq-heading"> Lorem ipsum dolor sit amet, consectetur adipiscing elit,</Accordion.Header>
                         <Accordion.Body>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -26,7 +26,7 @@ const FaqSupport = () => {
 
 
                     <Accordion.Item eventKey="1" className="faq-cover">
-                        <Accordion.Header className="faq-heading">Lorem ipsum 2</Accordion.Header>
+                        <Accordion.Header className="faq-heading"> Lorem ipsum dolor sit amet, consectetur adipiscing elit,</Accordion.Header>
                         <Accordion.Body className="faq-content" >
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -39,7 +39,7 @@ const FaqSupport = () => {
                     </Accordion.Item>
 
                     <Accordion.Item eventKey="2" className="faq-cover">
-                        <Accordion.Header className="faq-heading">Lorem ipsum 3</Accordion.Header>
+                        <Accordion.Header className="faq-heading"> Lorem ipsum dolor sit amet, consectetur adipiscing elit,</Accordion.Header>
                         <Accordion.Body className="faq-content">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -52,7 +52,7 @@ const FaqSupport = () => {
                     </Accordion.Item>
 
                     <Accordion.Item eventKey="3" className="faq-cover">
-                        <Accordion.Header className="faq-heading">Lorem ipsum 4</Accordion.Header>
+                        <Accordion.Header className="faq-heading"> Lorem ipsum dolor sit amet, consectetur adipiscing elit,</Accordion.Header>
                         <Accordion.Body className="faq-content">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -65,7 +65,7 @@ const FaqSupport = () => {
                     </Accordion.Item>
 
                     <Accordion.Item eventKey="4" className="faq-cover">
-                        <Accordion.Header className="faq-heading">Lorem ipsum 5</Accordion.Header>
+                        <Accordion.Header className="faq-heading"> Lorem ipsum dolor sit amet, consectetur adipiscing elit,</Accordion.Header>
                         <Accordion.Body className="faq-content">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad

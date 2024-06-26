@@ -50,8 +50,18 @@ function ExcludeSidebar() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           {/* <Route path="/" element={<Navigate to="/dashboard" />} /> */}
-          <Route path="/order" element={<Order />} />
-          <Route path="/product" element={<Product />} />
+          <Route path="/order/active" element={<Order />} />
+          <Route path="/order/completed" element={<Order />} />
+          <Route path="/order/order-request" element={<Order />} />
+          <Route path="/order" element={<Navigate to="/order/order-request" />} />
+          {/* <Route path="/product" element={<Product />} /> */}
+          <Route path="/product/newproduct" element={<Product />} />
+          <Route path="/product/secondarymarket" element={<Product />} />
+          <Route path="/product" element={<Navigate to="/product/newproduct" />} />
+          {/* <Route path="/invoice" element={<Invoice />} /> */}
+          <Route path="/invoice/pending" element={<Invoice />} />
+          <Route path="/invoice/paid" element={<Invoice />} />
+          <Route path="/invoice" element={<Navigate to="/invoice/pending" />} />
           <Route path="/invoice" element={<Invoice />} />
           <Route path="/support" element={<Support />} />
           <Route path="/header" element={<Header />} />
@@ -62,7 +72,7 @@ function ExcludeSidebar() {
           <Route path="/popup-Modal" element={<PopupModal />} />
           <Route path="/ordercancel" element={<OrderCancel />} />
           <Route path="/order-details/:orderId" element={<OrderDetails />} />
-          <Route path="/product-details" element={<ProductDetails />} />
+          <Route path="/product-details/:medicineId" element={<ProductDetails />} />
           <Route path="/country-details" element={<CountryDetails />} />
           <Route path="/faq-support" element={<FaqSupport />} />
           <Route path="/pending-invoice" element={<PendingInvoice />} />
@@ -82,7 +92,7 @@ function ExcludeSidebar() {
           <Route path="/buyer-active-list" element={<BuyerActiveList />} />
           <Route path="/buyer-pending-list" element={<BuyerPendingList />} />
           <Route path="/add-product" element={<AddProduct/>} />
-          <Route path="/edit-product" element={<EditAddProduct/>} /> 
+          <Route path="/edit-product/:medicineId" element={<EditAddProduct/>} /> 
         </Routes>
       </Sidebar>
     </div>
