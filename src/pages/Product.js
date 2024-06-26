@@ -1,336 +1,125 @@
-import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import styles from '../style/product.module.css'
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
-import MedicineOne from '../assest/paracetamol.png';
-import '../style/addproductlist.css'
+import React, { useEffect, useState } from 'react';
+import styles from '../style/product.module.css';
+import { useLocation, useNavigate } from 'react-router-dom';
+import '../style/addproductlist.css';
+import SecondaryMarket from './SecondaryMarket';
+import NewProduct from './NewProduct';
+import { postRequest } from '../api/Requests';
+
+const Product = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const [medicineList, setMedicineList] = useState([])
+    const [totalItems, setTotalItems] = useState()
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 2
 
 
-const Buy = () => {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [medicineType, setMedicineType] = useState(() => {
+        switch (location.pathname) {
+            case '/product/newproduct':
+                return 'new';
+            case '/product/secondarymarket':
+                return 'secondary market';
+            default:
+                return 'new';
+        }
+    });
+    
 
-    const toggleDropdown = () => {
-        setDropdownOpen(!dropdownOpen);
+    const getActiveButtonFromPath = (path) => {
+        switch (path) {
+            case '/product/newproduct':
+                return 'newproduct';
+            case '/product/secondarymarket':
+                return 'secondarymarket';
+            default:
+                return 'newproduct';
+        }
     };
-    const handleItemClick = (path) => {
-        setDropdownOpen(false);
-        NavLink.push(path);
+
+
+    const activeButton = getActiveButtonFromPath(location.pathname);
+
+    const handleButtonClick = (button) => {
+        switch (button) {
+            case 'newproduct':
+                setMedicineType('new')
+                navigate('/product/newproduct');
+                break;
+            case 'secondarymarket':
+                setMedicineType('secondary market')
+                navigate('/product/secondarymarket');
+                break;
+            default:
+                navigate('/product/newproduct');
+        }
     };
-    <Link to='/add-product'></Link>
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    useEffect(() => {
+        const obj = {
+            medicine_type : medicineType,
+            pageNo      : currentPage, 
+            pageSize        : itemsPerPage,
+        }
+
+        postRequest('medicine/medicine-list', obj, async (response) => {
+            if (response.code === 200) {
+                setMedicineList(response.result.data)
+                setTotalItems(response.result.totalItems)
+            } else {
+               console.log('error in order list api',response);
+            }
+          })
+    }, [medicineType, currentPage])
 
     return (
         <>
             <div className={styles['product-main-conatiners']}>
-                <div className={styles[`supprot-heading-container`]}>
-                    <div className={styles[`supprot-heading-text`]}>
-                        Add Product
-                    </div>
-
-                    <div className={styles.supportDownloadBtnContainer}>
-                        <div onClick={toggleDropdown} className={styles.supportDownloadbtn}>
-                            Bulk Download
-                        </div>
-                        {dropdownOpen && (
-                            <div className={styles.dropdownContent}>
-                                {/* Add links for each dropdown item */}
-                                <Link to='#'>
-                                    <div className={styles.dropdownbtn} onClick={() => handleItemClick('/sample-sheet')}>
-                                        <DescriptionOutlinedIcon /> Sample Sheet
-                                    </div>
-                                </Link>
-                                <Link to='#'>
-                                    <div className={styles.dropdownbtn} onClick={() => handleItemClick('/download')}>
-                                        <CloudDownloadOutlinedIcon /> Download
-                                    </div>
-                                </Link>
-                            </div>
-                        )}
-                    </div>
-                </div >
-
-                <div className={styles[`support-container`]}>
-                        <Link to='/add-product' style={{marginTop:'-20px'}}>
-                            <div className={styles[`support-container-text-add`]}>Add a Product</div>
-                            <div className={styles[`support-add-card`]}>
-                                <div className={styles[`support-add-icon-container`]}>
-                                    <AddOutlinedIcon className={styles[`support-add-icon`]} />
-                                </div>
-                            </div>
-                        </Link>
-
-                    <div className='buy-product-card-section'>
-                        <div className='buy-product-card-first-section-right'>
-                            <div className='buy-product-card-first-medicine-image'>
-                                <img src={MedicineOne} alt="Medicine" />
-                            </div>
-                            <div className='buy-product-card-first-button-container'>
-                                <Link to='/product-details'>
-                                    <div className='buy-product-card-first-send-button'>
-                                        View Details
-                                    </div>
-                                </Link>
-                            </div>
-                        </div>
-
-                        <div className='buy-product-card-first-section'>
-                            <div className='buy-product-card-first-left'>
-                                <div className='buy-product-card-first-copmany-name'>Liv-Peptidase 5</div>
-                                <div className='buy-product-card-first-copmany-description'>Serratiopeptidase, Livealth Biopharma</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Country of Origin</div>
-                                <div className='buy-product-card-second-text'>Dubai UAE</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Stocked In</div>
-                                <div className='buy-product-card-second-text'>450</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Dossier Type</div>
-                                <div className='buy-product-card-second-text'>EU CTU</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Dossier Status</div>
-                                <div className='buy-product-card-second-text'>Ready to file</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>GMP Approvals</div>
-                                <div className='buy-product-card-second-text'>GU EMP</div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div className='buy-product-card-section'>
-                        <div className='buy-product-card-first-section-right'>
-                            <div className='buy-product-card-first-medicine-image'>
-                                <img src={MedicineOne} alt="Medicine" />
-                            </div>
-                            <div className='buy-product-card-first-button-container'>
-                                <Link to='/product-details'>
-                                    <div className='buy-product-card-first-send-button'>
-                                        View Details
-                                    </div>
-                                </Link>
-                            </div>
-                        </div>
-
-                        <div className='buy-product-card-first-section'>
-                        <div className='buy-product-card-first-left'>
-                                <div className='buy-product-card-first-copmany-name'>Liv-Peptidase 5</div>
-                                <div className='buy-product-card-first-copmany-description'>Serratiopeptidase, Livealth Biopharma</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Country of Origin</div>
-                                <div className='buy-product-card-second-text'>Dubai UAE</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Stocked In</div>
-                                <div className='buy-product-card-second-text'>450</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Dossier Type</div>
-                                <div className='buy-product-card-second-text'>EU CTU</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Dossier Status</div>
-                                <div className='buy-product-card-second-text'>Ready to file</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>GMP Approvals</div>
-                                <div className='buy-product-card-second-text'>GU EMP</div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div className='buy-product-card-section'>
-                        <div className='buy-product-card-first-section-right'>
-                            <div className='buy-product-card-first-medicine-image'>
-                                <img src={MedicineOne} alt="Medicine" />
-                            </div>
-                            <div className='buy-product-card-first-button-container'>
-                                <Link to='/product-details'>
-                                    <div className='buy-product-card-first-send-button'>
-                                        View Details
-                                    </div>
-                                </Link>
-                            </div>
-                        </div>
-
-                        <div className='buy-product-card-first-section'>
-                        <div className='buy-product-card-first-left'>
-                                <div className='buy-product-card-first-copmany-name'>Liv-Peptidase 5</div>
-                                <div className='buy-product-card-first-copmany-description'>Serratiopeptidase, Livealth Biopharma</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Country of Origin</div>
-                                <div className='buy-product-card-second-text'>Dubai UAE</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Stocked In</div>
-                                <div className='buy-product-card-second-text'>450</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Dossier Type</div>
-                                <div className='buy-product-card-second-text'>EU CTU</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Dossier Status</div>
-                                <div className='buy-product-card-second-text'>Ready to file</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>GMP Approvals</div>
-                                <div className='buy-product-card-second-text'>GU EMP</div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div className='buy-product-card-section'>
-                        <div className='buy-product-card-first-section-right'>
-                            <div className='buy-product-card-first-medicine-image'>
-                                <img src={MedicineOne} alt="Medicine" />
-                            </div>
-                            <div className='buy-product-card-first-button-container'>
-                                <Link to='/product-details'>
-                                    <div className='buy-product-card-first-send-button'>
-                                        View Details
-                                    </div>
-                                </Link>
-                            </div>
-                        </div>
-
-                        <div className='buy-product-card-first-section'>
-                        <div className='buy-product-card-first-left'>
-                                <div className='buy-product-card-first-copmany-name'>Liv-Peptidase 5</div>
-                                <div className='buy-product-card-first-copmany-description'>Serratiopeptidase, Livealth Biopharma</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Country of Origin</div>
-                                <div className='buy-product-card-second-text'>Dubai UAE</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Stocked In</div>
-                                <div className='buy-product-card-second-text'>450</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Dossier Type</div>
-                                <div className='buy-product-card-second-text'>EU CTU</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Dossier Status</div>
-                                <div className='buy-product-card-second-text'>Ready to file</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>GMP Approvals</div>
-                                <div className='buy-product-card-second-text'>GU EMP</div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div className='buy-product-card-section'>
-                        <div className='buy-product-card-first-section-right'>
-                            <div className='buy-product-card-first-medicine-image'>
-                                <img src={MedicineOne} alt="Medicine" />
-                            </div>
-                            <div className='buy-product-card-first-button-container'>
-                                <Link to='/product-details'>
-                                    <div className='buy-product-card-first-send-button'>
-                                        View Details
-                                    </div>
-                                </Link>
-                            </div>
-                        </div>
-
-                        <div className='buy-product-card-first-section'>
-                        <div className='buy-product-card-first-left'>
-                                <div className='buy-product-card-first-copmany-name'>Liv-Peptidase 5</div>
-                                <div className='buy-product-card-first-copmany-description'>Serratiopeptidase, Livealth Biopharma</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Country of Origin</div>
-                                <div className='buy-product-card-second-text'>Dubai UAE</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Stocked In</div>
-                                <div className='buy-product-card-second-text'>450</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Dossier Type</div>
-                                <div className='buy-product-card-second-text'>EU CTU</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Dossier Status</div>
-                                <div className='buy-product-card-second-text'>Ready to file</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>GMP Approvals</div>
-                                <div className='buy-product-card-second-text'>GU EMP</div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div className='buy-product-card-section'>
-                        <div className='buy-product-card-first-section-right'>
-                            <div className='buy-product-card-first-medicine-image'>
-                                <img src={MedicineOne} alt="Medicine" />
-                            </div>
-                            <div className='buy-product-card-first-button-container'>
-                                <Link to='/product-details'>
-                                    <div className='buy-product-card-first-send-button'>
-                                        View Details
-                                    </div>
-                                </Link>
-                            </div>
-                        </div>
-
-                        <div className='buy-product-card-first-section'>
-                        <div className='buy-product-card-first-left'>
-                                <div className='buy-product-card-first-copmany-name'>Liv-Peptidase 5</div>
-                                <div className='buy-product-card-first-copmany-description'>Serratiopeptidase, Livealth Biopharma</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Country of Origin</div>
-                                <div className='buy-product-card-second-text'>Dubai UAE</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Stocked In</div>
-                                <div className='buy-product-card-second-text'>450</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Dossier Type</div>
-                                <div className='buy-product-card-second-text'>EU CTU</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>Dossier Status</div>
-                                <div className='buy-product-card-second-text'>Ready to file</div>
-                            </div>
-                            <div className='buy-product-card-second-section'>
-                                <div className='buy-product-card-second-head'>GMP Approvals</div>
-                                <div className='buy-product-card-second-text'>GU EMP</div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div >
-
-                {/* Add Product Card */}
-
-                {/* <AddProductCard/> */}
-
+                <div className={styles['supprot-heading-text']}>
+                    Add Product
+                </div>
+                <div className={styles['support-add-product-container']}>
+                <div
+                    className={`${styles['support-product-new-product']} ${activeButton === 'newproduct' ? styles.active : ''}`}
+                    onClick={() => handleButtonClick('newproduct')}
+                >
+                    New Product
+                </div>
+                <div
+                    className={`${styles['support-product-secondary-product']} ${activeButton === 'secondarymarket' ? styles.active : ''}`}
+                    onClick={() => handleButtonClick('secondarymarket')}
+                >
+                    Secondary Market
+                </div>
+                </div>
+                {activeButton === 'newproduct' && 
+                <NewProduct
+                    productList = {medicineList}
+                    totalItems = {totalItems}
+                    currentPage = {currentPage}
+                    itemsPerPage    = {itemsPerPage}
+                    handlePageChange = {handlePageChange}
+                 />}
+                {activeButton === 'secondarymarket' && 
+                <SecondaryMarket 
+                    productList = {medicineList}
+                    totalItems = {totalItems}
+                    currentPage = {currentPage}
+                    itemsPerPage    = {itemsPerPage}
+                    handlePageChange = {handlePageChange}
+                />}
             </div>
         </>
     )
 }
 
-export default Buy
-
+export default Product;
 
 
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import order from '../style/order.css';
 import order_list from '../assest/dashboard/order_list.svg'
 import OrderCancel from './OrderCancel';
@@ -13,255 +13,48 @@ import { postRequestWithToken } from '../api/Requests';
 
 
 const Order = () => {
-    const navigate = useNavigate()
-    // Alloted Order JSOn file
-    const [allotedOrders, setAllotedOrders] = useState([
-        {
-            "order_id": "000001",
-            "date": {
-                "date": "12/12/2019",
-                // "time": "10:00 am"
-            },
-            "source_destination": {
-                "source": "Pharmaceutical Pvt Ltd",
-                // "destination": "Sharjah - United Arab Emirates"
-            },
-            "number_of_TRWB": 4,
-            "commodity": {
-                "name": "Steel",
-                "quantity": "(20 Ton)"
-            },
-            "status": "Order Placed"
-        },
-        {
-            "order_id": "000002",
-            "date": {
-                "date": "12/12/2019",
-                // "time": "10:00 am"
-            },
-            "source_destination": {
-                "source": "Pharmaceutical Pvt Ltd",
-                // "destination": "Sharjah - United Arab Emirates"
-            },
-            "number_of_TRWB": 4,
-            "commodity": {
-                "name": "Steel",
-                "quantity": "(20 Ton)"
-            },
-            "status": "Order Placed"
-        },
-        {
-            "order_id": "000003",
-            "date": {
-                "date": "12/12/2019",
-                // "time": "10:00 am"
-            },
-            "source_destination": {
-                "source": "Pharmaceutical Pvt Ltd",
-                // "destination": "Sharjah - United Arab Emirates"
-            },
-            "number_of_TRWB": 4,
-            "commodity": {
-                "name": "Steel",
-                "quantity": "(20 Ton)"
-            },
-            "status": "Order Placed"
-        },
-        {
-            "order_id": "000004",
-            "date": {
-                "date": "12/12/2019",
-                // "time": "10:00 am"
-            },
-            "source_destination": {
-                "source": "Pharmaceutical Pvt Ltd",
-                // "destination": "Sharjah - United Arab Emirates"
-            },
-            "number_of_TRWB": 4,
-            "commodity": {
-                "name": "Steel",
-                "quantity": "(20 Ton)"
-            },
-            "status": "Order Placed"
-        },
-    ]);
+    const location = useLocation();
+    const navigate = useNavigate();
+   
 
-    // Active Order JSOn file
-    const [activeOrders, setActiveOrders] = useState([
-        {
-            "order_id": "000002",
-            "date": {
-                "date": "12/12/2019",
-                // "time": "10:00 am"
-            },
-            "source_destination": {
-                "source": "Pharmaceutical Pvt Ltd",
-                // "destination": "Sharjah - United Arab Emirates"
-            },
-            "number_of_TRWB": 4,
-            "commodity": {
-                "name": "Steel",
-                "quantity": "(20 Ton)"
-            },
-            "status": "Order Placed"
-        },
-        {
-            "order_id": "000003",
-            "date": {
-                "date": "12/12/2019",
-                // "time": "10:00 am"
-            },
-            "source_destination": {
-                "source": "Pharmaceutical Pvt Ltd",
-                // "destination": "Sharjah - United Arab Emirates"
-            },
-            "number_of_TRWB": 4,
-            "commodity": {
-                "name": "Steel",
-                "quantity": "(20 Ton)"
-            },
-            "status": "Order Placed"
-        },
-        {
-            "order_id": "000004",
-            "date": {
-                "date": "12/12/2019",
-                // "time": "10:00 am"
-            },
-            "source_destination": {
-                "source": "Pharmaceutical Pvt Ltd",
-                // "destination": "Sharjah - United Arab Emirates"
-            },
-            "number_of_TRWB": 4,
-            "commodity": {
-                "name": "Steel",
-                "quantity": "(20 Ton)"
-            },
-            "status": "Order Placed"
-        },
-        {
-            "order_id": "000005",
-            "date": {
-                "date": "12/12/2019",
-                // "time": "10:00 am"
-            },
-            "source_destination": {
-                "source": "Pharmaceutical Pvt Ltd",
-                // "destination": "Sharjah - United Arab Emirates"
-            },
-            "number_of_TRWB": 4,
-            "commodity": {
-                "name": "Steel",
-                "quantity": "(20 Ton)"
-            },
-            "status": "Order Placed"
-        },
-        {
-            "order_id": "000006",
-            "date": {
-                "date": "12/12/2019",
-                // "time": "10:00 am"
-            },
-            "source_destination": {
-                "source": "Pharmaceutical Pvt Ltd",
-                // "destination": "Sharjah - United Arab Emirates"
-            },
-            "number_of_TRWB": 4,
-            "commodity": {
-                "name": "Steel",
-                "quantity": "(20 Ton)"
-            },
-            "status": "Order Placed"
-        },
-        {
-            "order_id": "000007",
-            "date": {
-                "date": "12/12/2019",
-                // "time": "10:00 am"
-            },
-            "source_destination": {
-                "source": "Pharmaceutical Pvt Ltd",
-                // "destination": "Sharjah - United Arab Emirates"
-            },
-            "number_of_TRWB": 4,
-            "commodity": {
-                "name": "Steel",
-                "quantity": "(20 Ton)"
-            },
-            "status": "Order Placed"
-        },
-    ]);
 
-    // Complete Order JSOn file
-    const [completeOrders, setCompleteOrders] = useState([
-        {
-            "order_id": "000003",
-            "date": {
-                "date": "12/12/2019",
-                // "time": "10:00 am"
-            },
-            "source_destination": {
-                "source": "Pharmaceutical Pvt Ltd",
-                // "destination": "Sharjah - United Arab Emirates"
-            },
-            "number_of_TRWB": 4,
-            "commodity": {
-                "name": "Steel",
-                "quantity": "(20 Ton)"
-            },
-            "status": "Order Placed"
-        }
-    ]);
-
-    // Delete Order JSOn file
-    const [deleteOrders, setDeleteOrders] = useState([
-        {
-            "order_id": "000005",
-            "date": {
-                "date": "12/12/2019",
-                // "time": "10:00 am"
-            },
-            "source_destination": {
-                "source": "Pharmaceutical Pvt Ltd",
-            },
-            "number_of_TRWB": 4,
-            "commodity": {
-                "name": "Steel",
-                "quantity": "(20 Ton)"
-            },
-            "status": "Order Placed"
-        }
-    ]);
-
-    // Active class apply
-    const [activeLink, setActiveLink]   = useState('order-request');
+    // const [activeLink, setActiveLink]   = useState('order-request');
     const [orderList, setOrderList]     = useState([])
     const [totalOrders, setTotalOrders] = useState()
     const [currentPage, setCurrentPage] = useState(1); 
     const ordersPerPage = 2;
 
-    const handleLinkClick = (link) => {
-        setActiveLink(link);
-        setCurrentPage(1)
-        
-        switch (link) {
-            case 'order-request':
-                break;
-            case 'active':
-                break;
-            case 'completed':
-                break;
+     const getActiveLinkFromPath = (path) => {
+        switch (path) {
+            case '/order/order-request':
+                return 'order-request';
+            case '/order/active':
+                return 'active';
+            case '/order/completed':
+                return 'completed';
             default:
-                break;
+                return 'order-request';
         }
     };
 
-    // Based on the activeLink, select the appropriate orders
-    const ordersToShow = activeLink === 'order-request' ? allotedOrders : activeLink === 'completed' ?
-        completeOrders : activeLink === 'deleted' ? deleteOrders : activeOrders;
+    const activeLink = getActiveLinkFromPath(location.pathname);
 
-    // Calculate total pages
-    const totalPages = Math.ceil(ordersToShow.length / ordersPerPage);
+    const handleLinkClick = (link) => {
+        setCurrentPage(1);
+        switch (link) {
+            case 'order-request':
+                navigate('/order/order-request');
+                break;
+            case 'active':
+                navigate('/order/active');
+                break;
+            case 'completed':
+                navigate('/order/completed');
+                break;
+            default:
+                navigate('/order/order-request');
+        }
+    };
 
     const [show, setShow] = useState(false);
 
@@ -299,14 +92,14 @@ const Order = () => {
             limit        : ordersPerPage,
         }
 
-        // postRequestWithToken('supplier/order/supplier-order-list', obj, async (response) => {
-        //     if (response.code === 200) {
-        //         setOrderList(response.result.data)
-        //         setTotalOrders(response.result.totalItems)
-        //     } else {
-        //        console.log('error in order list api',response);
-        //     }
-        //   })
+        postRequestWithToken('supplier/order/supplier-order-list', obj, async (response) => {
+            if (response.code === 200) {
+                setOrderList(response.result.data)
+                setTotalOrders(response.result.totalItems)
+            } else {
+               console.log('error in order list api',response);
+            }
+          })
     },[activeLink, currentPage])
 
     
@@ -328,7 +121,7 @@ const Order = () => {
                     })()}
                 </div>
                 <div className="order-container">
-                    <div className="order-container-left">
+                    {/* <div className="order-container-left">
                         <div onClick={() => handleLinkClick('order-request')} className={activeLink === 'order-request' ? 'active order-left-wrapper' : 'order-left-wrapper'}>
                             <img src={order_list} alt="order icon" />
                             <div>Order Request</div>
@@ -341,7 +134,31 @@ const Order = () => {
                             <img src={order_list} alt="order icon" />
                             <div>Completed Orders</div>
                         </div>
+                    </div> */}
+
+                   <div className="order-container-left">
+                    <div
+                        onClick={() => handleLinkClick('pending')}
+                        className={activeLink === 'order-request' ? 'active order-left-wrapper' : 'order-left-wrapper'}
+                    >
+                        <img src={order_list} alt="order icon" />
+                        <div>Order Request</div>
                     </div>
+                    <div
+                        onClick={() => handleLinkClick('active')}
+                        className={activeLink === 'active' ? 'active order-left-wrapper' : 'order-left-wrapper'}
+                    >
+                        <img src={order_list} alt="order icon" />
+                        <div>Active Orders</div>
+                    </div>
+                    <div
+                        onClick={() => handleLinkClick('completed')}
+                        className={activeLink === 'completed' ? 'active order-left-wrapper' : 'order-left-wrapper'}
+                    >
+                        <img src={order_list} alt="order icon" />
+                        <div>Completed Orders</div>
+                    </div>
+                </div>
 
                     <div className="order-container-right">
                         <div responsive="xl" className='order-table-responsive'>
@@ -364,8 +181,8 @@ const Order = () => {
                                     handlePageChange = {handlePageChange}
                                     activeLink       = {activeLink}
                                  /> 
-                                : activeLink === 'deleted' ? 
-                                <DeletedOrders /> 
+                                // : activeLink === 'deleted' ? 
+                                // <DeletedOrders /> 
                                 : activeLink === 'order-request' ? 
                                 <OrderRequest 
                                     orderList        = {orderList} 

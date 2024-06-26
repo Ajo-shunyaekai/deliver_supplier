@@ -3,7 +3,7 @@
   flex-direction: column;
   row-gap: 20px;
   width: 100%;
-  max-width: 97%;
+  max-width: 1500px;
   overflow: scroll;
   background-attachment: fixed;
   scrollbar-width: none;
@@ -30,21 +30,30 @@
 }
 
 .create-invoice-section {
-  background-color: #fff;
-  border-radius: 4px;
-  padding: 30px 20px;
+  width: 100%;
   display: flex;
   justify-content: start;
   flex-wrap: wrap;
   gap: 16px;
+  flex-direction: column;
 }
 
 .craete-invoice-form {
   width: 100%;
   display: flex;
   justify-content: start;
+  flex-direction: column;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 16px;
+}
+
+.create-invoice-inner-form-section {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 30px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .create-invoice-div-container {
@@ -97,7 +106,7 @@
   display: flex;
   align-items: center;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -111,7 +120,7 @@
   display: flex;
   align-items: center;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -138,33 +147,56 @@
 }
 
 .craete-add-cross-icon {
+  width: 100% !important;
   display: flex;
+  justify-content: end;
   cursor: pointer;
   position: relative;
-  top: 38px;
-
+  top: -50%;
+  left: 14px;
 }
 
 .create-invoice-close-btn {
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
-  margin-top: 10px;
   cursor: pointer;
-  color: linear-gradient(270deg, #00dcff, #0075ce);
+  position: relative;
+  top: -50px;
+  left: 10px;
+  width: 100%;
 }
 
 .form-item-container {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: start;
+  flex-wrap: wrap;
   align-items: center;
-  /* border: 2px solid red; */
+  gap: 16px;
 }
 
 .create-invoice-upload-purchase {
   position: relative;
-  top: -45px;
+  top: 0px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
+.create-invoice-new-product-section-containers {
+  display: flex;
+  width: 100%;
+  justify-content: start;
+  align-items: center;
+  gap: 16px;
+
+}
+
+.create-invoice-product-image-section {
+  display: flex;
+  gap: 16px;
+  justify-content: start;
 }
 
 @media screen and (max-width: 1580px) {
@@ -177,32 +209,32 @@
   }
 }
 
-@media screen and (max-width: 1500px) {
-  .create-invoice-section {
-    padding: 30px 20px 30px 20px;
-  }
-}
-
 @media screen and (max-width: 1400px) {
   .create-invoice-div-container {
     width: 31.4%;
+  }
+
+  .create-invoice-new-product-section-containers {
+    flex-wrap: wrap;
+  }
+
+  .craete-add-cross-icon {
+    top: -70%;
+    left: 6px;
   }
 
   .create-invoice-container {
     max-width: 100%;
   }
 
-  .create-invoice-section {
-    padding: 30px 20px 30px 20px;
-  }
-
-  .create-invoice-close-btn {
-    position: relative;
-    bottom: 40px;
-  }
-
   .create-invoice-div-container-description {
     width: 64%;
+  }
+}
+
+@media screen and (max-width: 1140px) {
+  .craete-add-cross-icon {
+    left: 12px;
   }
 }
 

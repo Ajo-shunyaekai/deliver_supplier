@@ -113,18 +113,22 @@ const Dashboard = () => {
                                     </Link>
                                 </div>
                                 <div className='bottom-container'>
-                                    <div className='bottom-cart-cont'>
-                                        <div className='bottom-head'>Pending Invoices:<span className='bottom-text'> 65</span></div>
-                                        <div className='bottom-graph'>
-                                            <ProgressBar />
+                                    <Link to='/invoice/pending'>
+                                        <div className='bottom-cart-cont'>
+                                            <div className='bottom-head'>Pending Invoices:<span className='bottom-text'> 65</span></div>
+                                            <div className='bottom-graph'>
+                                                <ProgressBar />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className='bottom-cart-cont'>
-                                        <div className='bottom-head'> Completed Invoices:<span className='bottom-text'> 25</span></div>
-                                        <div className='bottom-graph'>
-                                            <OrangeBar />
+                                    </Link>
+                                    <Link to='/invoice/paid'>
+                                        <div className='bottom-cart-cont'>
+                                            <div className='bottom-head'> Completed Invoices:<span className='bottom-text'> 25</span></div>
+                                            <div className='bottom-graph'>
+                                                <OrangeBar />
+                                            </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 </div>
                             </div>
                             <div className='cart-top-left-section'>

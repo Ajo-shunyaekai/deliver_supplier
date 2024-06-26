@@ -167,7 +167,7 @@ const CompleteOrder = ({orderList, totalOrders, currentPage, ordersPerPage, hand
                                                             <div className="order-section-heading">{orderedDate}</div>
                                                         </td>
                                                         <td className='order-section-tds'>
-                                                            <div className="order-section-heading">{order.buyer.buyer_name}</div>
+                                                            <div className="order-section-heading">{order?.buyer?.buyer_name}</div>
                                                         </td>
                                                         <td className='order-section-td'>
                                                             <div className="order-section-heading">{totalQuantity}</div>

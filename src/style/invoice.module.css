@@ -60,6 +60,8 @@
 }
 
 .invoice-wrapper-left-text {
+  display: flex !important;
+  column-gap: 10px;
   font-size: 14px;
   color: #5e676f;
 }

@@ -55,11 +55,7 @@
   margin-bottom: 20px;
 }
 
-.form-submit-btn-cont {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
+
 
 .product-range-input {
   padding: 8px;
@@ -86,15 +82,7 @@
   max-width: 100%;
   margin: auto;
 }
-.form-submit-btn {
-  cursor: pointer;
-  margin: auto;
-  border: none;
-  padding: 6px 30px;
-  border-radius: 4px;
-  background: linear-gradient(to left, #00dcff, #0075ce);
-  color: white;
-}
+
 
 .support-btn-container {
   display: flex;
@@ -113,14 +101,9 @@
   font-size: 14px;
   font-weight: 500;
 }
-
-.support-btn:hover {
-  background-color: #e0e0e0;
-}
-
 .active {
   background-color: #e1e1e4;
-  color: #448bff;
+  color: #5e676f;
 }
 
 .form-heading {
@@ -180,11 +163,24 @@
   display: none;
 }
 
-
+.form-submit-btn-cont {
+  display: flex;
+  justify-content: start;
+  margin-top:20px;
+}
+.form-submit-btn {
+  font-size: 14px;
+  cursor: pointer !important;
+  border: none !important;
+  padding: 6px 24px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to left, #00dcff, #0075ce) !important;
+  color: #ffffff !important;
+}
 .error-message {
     font-size: 12px;
     margin-top: 4px;
-    color: #ff0000;
+    color: #ff0000 !important;
 }
 /* add media quries here */
 

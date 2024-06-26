@@ -61,8 +61,8 @@ const OrderCancel = ({ setModal, orderId,  activeLink }) => {
         <Box sx={{ width: 350 }} role="presentation">
             <div className="order-cancel-container">
                 <div className="order-cancel-header">
-                    <div className="order-cancel-heading">Order ID : {orderId}</div>
-                    <CloseIcon onClick={toggleDrawer(false)} style={{ fontSize: '20px', color: '#5e676f' }} />
+                    <div className="order-cancel-heading">Order ID : 22585</div>
+                    <CloseIcon onClick={handleClose} style={{ fontSize: '20px', color: '#5e676f' }} />
                 </div>
 
                 <div className="order-cancel-content">
@@ -71,19 +71,12 @@ const OrderCancel = ({ setModal, orderId,  activeLink }) => {
 
                 <div className="order-textarea-heading">
                     <span>Reason</span>
-                    <textarea 
-                      name="" 
-                      id="" rows="4" 
-                      className="order-textarea" 
-                      value={reason}
-                      onChange={handleReasonChange}
-                      />
-                          {error && <div className="error-message" style={{color:'red'}}>{error}</div>}
+                    <textarea name="" id="" rows="4" className="order-textarea" />
                 </div>
-            
+
                 <div className="order-btn-container">
-                    <div className="order-close-btn" onClick={toggleDrawer(false)}>Close</div>
-                    <div className="order-submit-btn" onClick={() => handleCancel()}>Delete</div>
+                    <div className="order-close-btn" onClick={handleClose}>Close</div>
+                    <div className="order-submit-btn" onClick={handleClose}>Delete</div>
                 </div>
             </div>
         </Box>

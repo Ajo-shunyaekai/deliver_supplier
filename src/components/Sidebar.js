@@ -304,7 +304,7 @@ const Sidebar = ({ children, dragWindow }) => {
                                     <div className={styles.profile_wrapper}>
                                         <div className={styles.profile_text}>
                                             <Link to='#'>
-                                                 {localStorage.getItem('supplier_name') || sessionStorage.getItem('supplier_name')}
+                                                vikrant
                                             </Link>
                                         </div>
                                         <div className={styles.profile_wrapper_mid}>
@@ -322,7 +322,7 @@ const Sidebar = ({ children, dragWindow }) => {
                                             </div>
                                         </div>
 
-                                        <div className={styles.profile_sign_out} onClick={() => handleSignout()}>
+                                        <div className={styles.profile_sign_out}>
                                             Sign out
                                         </div>
                                     </div>
@@ -427,7 +427,7 @@ const Sidebar = ({ children, dragWindow }) => {
             </div >
 
         </>
-    );
+    );;
 };
 
 export default Sidebar;
