@@ -96,7 +96,7 @@ const Dashboard = () => {
                                     <Link to='/order-requests'>
                                         <div className='top-content-section'>
                                             <div className='top-head'>Order Request</div>
-                                            <div className='top-text'>{orderSummary?.completedCount[0]?.count || 100}</div>
+                                            <div className='top-text'>{orderSummary?.pendingCount[0]?.count || 100}</div>
                                         </div>
                                     </Link>
                                     <Link to='/ongoing-orders'>
@@ -108,7 +108,7 @@ const Dashboard = () => {
                                     <Link to='/completed-orders'>
                                         <div className='top-content-section'>
                                             <div className='top-head'>Completed Orders</div>
-                                            <div className='top-text'>{orderSummary?.pendingCount[0].count || 20}</div>
+                                            <div className='top-text'>{orderSummary?.completedCount[0].count || 20}</div>
                                         </div>
                                     </Link>
                                 </div>

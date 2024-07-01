@@ -6,6 +6,9 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { postRequestWithToken } from '../../api/Requests';
 import moment from 'moment/moment';
 import OrderCancel from '../OrderCancel';
+import Pagination from 'react-js-pagination';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
 
 const DashboardOngoing = () => {
@@ -79,7 +82,7 @@ const DashboardOngoing = () => {
                                         <th className="request-container-th-action"><div className="request-container-head">Action</div></th>
                                     </tr>
                                 </thead>
-                                <tbody className='request-container-tbody'>
+                                {/* <tbody className='request-container-tbody'>
                                     <tr className="request-section-tr">
                                         <td className='request-section-td'>
                                             <div className="request-section-heading">18452025</div>
@@ -103,11 +106,11 @@ const DashboardOngoing = () => {
                                                         <RemoveRedEyeOutlinedIcon className='request-section-eye' />
                                                     </div>
                                                 </Link>
-                                                {/* <Link to='#'> */}
+                                               
                                                     <div className='request-section-delete' onClick={() => showModal('087565')}>
                                                         <HighlightOffIcon className='request-section-off' />
                                                     </div>
-                                                {/* </Link> */}
+                                             
                                             </div>
                                         </td>
                                     </tr>
@@ -136,11 +139,11 @@ const DashboardOngoing = () => {
                                                         <RemoveRedEyeOutlinedIcon className='request-section-eye' />
                                                     </div>
                                                 </Link>
-                                                {/* <Link to='#'> */}
+                                              
                                                     <div className='request-section-delete' onClick={() => showModal('087565')}>
                                                         <HighlightOffIcon className='request-section-off' />
                                                     </div>
-                                                {/* </Link> */}
+                                                
                                             </div>
                                         </td>
                                     </tr>
@@ -169,16 +172,18 @@ const DashboardOngoing = () => {
                                                         <RemoveRedEyeOutlinedIcon className='request-section-eye' />
                                                     </div>
                                                 </Link>
-                                                {/* <Link to='#'> */}
+                                               
                                                     <div className='request-section-delete' onClick={() => showModal('087565')}>
                                                         <HighlightOffIcon className='request-section-off' />
                                                     </div>
-                                                {/* </Link> */}
+                                                
                                             </div>
                                         </td>
                                     </tr>
-                                </tbody>
-                                {/* {
+                                </tbody> */}
+
+
+                                {
                                     orderList && orderList.length > 0 ? (
                                         orderList.map((order, i) => {
                                             const totalQuantity = order.items.reduce((total, item) => {
@@ -220,8 +225,28 @@ const DashboardOngoing = () => {
                                             ) 
                                         })
                                     ) : 'no orders'
-                                } */}
+                                }
                             </table>
+                        </div>
+
+                        <div className='completed-pagi-container'>
+                            <Pagination
+                                activePage={currentPage}
+                                itemsCountPerPage={ordersPerPage}
+                                totalItemsCount={totalOrders}
+                                pageRangeDisplayed={5}
+                                onChange={handlePageChange}
+                                itemClass="page-item"
+                                linkClass="page-link"
+                                prevPageText={<KeyboardDoubleArrowLeftIcon style={{ fontSize: '15px' }} />}
+                                nextPageText={<KeyboardDoubleArrowRightIcon style={{ fontSize: '15px' }} />}
+                                hideFirstLastPages={true}
+                            />
+                            <div className='completed-pagi-total'>
+                                <div className='completed-pagi-total'>
+                                    Total Items: {totalOrders}
+                                </div>
+                            </div>
                         </div>
 
                         {

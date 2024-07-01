@@ -374,7 +374,7 @@ const SignUp = () => {
                                 className='signup-form-section-input'
                                 type="text"
                                 name="companyName"
-                                placeholder="Enter the Company Name"
+                                placeholder="Enter Company Name"
                                 value={formData.companyName}
                                 onChange={handleChange}
                             />
@@ -387,7 +387,7 @@ const SignUp = () => {
                                 className='signup-form-section-input'
                                 type="text"
                                 name="companyAddress"
-                                placeholder="Enter the Company Address"
+                                placeholder="Enter Company Address"
                                 value={formData.companyAddress}
                                 onChange={handleChange}
                             />
@@ -399,7 +399,7 @@ const SignUp = () => {
                                 className='signup-form-section-input'
                                 type="text"
                                 name="companyEmail"
-                                placeholder="Enter the Company Email ID"
+                                placeholder="Enter Company Email ID"
                                 value={formData.companyEmail}
                                 onChange={handleChange}
                             />
@@ -427,7 +427,7 @@ const SignUp = () => {
                                 className='signup-form-section-input'
                                 type="text"
                                 name="contactPersonName"
-                                placeholder="Enter the Contact Person Name"
+                                placeholder="Enter Contact Person Name"
                                 value={formData.contactPersonName}
                                 onChange={handleChange}
                             />
@@ -439,7 +439,7 @@ const SignUp = () => {
                                 className='signup-form-section-input'
                                 type="text"
                                 name="designation"
-                                placeholder="Enter the Designation"
+                                placeholder="Enter Designation"
                                 value={formData.designation}
                                 onChange={handleChange}
                             />
@@ -451,7 +451,7 @@ const SignUp = () => {
                                 className='signup-form-section-input'
                                 type="text"
                                 name="email"
-                                placeholder="Enter the Email ID"
+                                placeholder="Enter Email ID"
                                 value={formData.email}
                                 onChange={handleChange}
                             />
@@ -473,30 +473,7 @@ const SignUp = () => {
                             />
                             {errors.mobile && <div className='signup__errors'>{errors.mobile}</div>}
                         </div>
-                        <div className='signup-form-section-div'>
-                            <label className='signup-form-section-label'>Est. Delivery Time</label>
-                            <input
-                                className='signup-form-section-input'
-                                type="text"
-                                name="delivertime"
-                                placeholder="Enter the Delivery Time"
-                                value={formData.delivertime}
-                                onChange={handleChange}
-                            />
-                            {errors.delivertime && <div className='signup__errors'>{errors.delivertime}</div>}
-                        </div>
-                        <div className='signup-form-section-div'>
-                            <label className='signup-form-section-label'>Tags</label>
-                            <input
-                                className='signup-form-section-input'
-                                type="text"
-                                name="tags"
-                                placeholder="Enter the Tags (comma separated, max 5)"
-                                value={formData.tags}
-                                onChange={handleChange}
-                            />
-                            {errors.tags && <div className='signup__errors'>{errors.tags}</div>}
-                        </div>
+
                         <div className='signup-form-section-div'>
                             <label className='signup-form-section-label'>Country of Origin</label>
                             <Select
@@ -511,15 +488,6 @@ const SignUp = () => {
                         <div className='signup-form-section-div'>
                             <label className='signup-form-section-label'>Country of Operation</label>
                             {countries.length > 0 && (
-                                // <ReactMultiSelectCheckboxes
-                                //     className='signup-forms-sections-select custom-multi-select'
-                                //     options={countries}
-                                //     // value={formData.operationCountries}
-                                //     value={formData.operationCountries}
-                                //     onChange={handleOperationCountriesChange}
-                                //     getDropdownButtonLabel={getDropdownButtonLabel}
-                                //     style={{width:'100%!important'}}
-                                // />
                                < ReactMultiSelectCheckboxes
                                 className='signup-forms-sections-select custom-multi-select'
                                 options={countries}
@@ -527,17 +495,31 @@ const SignUp = () => {
                                 onChange={handleOperationCountriesChange}
                                 getDropdownButtonLabel={getDropdownButtonLabel}
                                 style={{ width: '100%!important' }}
-                            />
+                               />
                             )}
                              {errors.operationCountries && <div className='signup__errors'>{errors.operationCountries}</div>}
                         </div>
+                        
+                        <div className='signup-form-section-div'>
+                            <label className='signup-form-section-label'>Est. Delivery Time</label>
+                            <input
+                                className='signup-form-section-input'
+                                type="text"
+                                name="delivertime"
+                                placeholder="Enter Delivery Time"
+                                value={formData.delivertime}
+                                onChange={handleChange}
+                            />
+                            {errors.delivertime && <div className='signup__errors'>{errors.delivertime}</div>}
+                        </div>
+
                         <div className='signup-form-section-div'>
                             <label className='signup-form-section-label'>Company License No.</label>
                             <input
                                 className='signup-form-section-input'
                                 type="text"
                                 name="companyLicenseNo"
-                                placeholder="Enter the License No."
+                                placeholder="Enter License No."
                                 value={formData.companyLicenseNo}
                                 onChange={handleChange}
                             />
@@ -549,7 +531,7 @@ const SignUp = () => {
                                 className='signup-form-section-input'
                                 type="text"
                                 name="companyLicenseExpiry"
-                                placeholder="Enter the License Expiry Date"
+                                placeholder="Enter License Expiry Date"
                                 value={formData.companyLicenseExpiry}
                                 onChange={handleChange}
                             />
@@ -561,12 +543,39 @@ const SignUp = () => {
                                 className='signup-form-section-input'
                                 type="text"
                                 name="companyTaxNo"
-                                placeholder="Enter the Company Tax No."
+                                placeholder="Enter Company Tax No."
                                 value={formData.companyTaxNo}
                                 onChange={handleChange}
                             />
                             {errors.companyTaxNo && <div className='signup__errors'>{errors.companyTaxNo}</div>}
                         </div>
+                        <div className='signup-form-section-div'>
+                            <label className='signup-form-section-label'>Tags</label>
+                            <input
+                                className='signup-form-section-input'
+                                type="text"
+                                name="tags"
+                                placeholder="Enter Tags (comma separated, max 5)"
+                                value={formData.tags}
+                                onChange={handleChange}
+                            />
+                            {errors.tags && <div className='signup__errors'>{errors.tags}</div>}
+                        </div>
+                        
+                        <div className='signup-form-section-div'>
+                            <label className='signup-form-section-label'>About Company</label>
+                            <textarea
+                                className='signup-form-section-input'
+                                name="description"
+                                rows="4"
+                                cols="50"
+                                placeholder='Enter Description'
+                                value={formData.description}
+                                onChange={handleChange}
+                            />
+                            {errors.description && <div className='signup__errors'>{errors.description}</div>}
+                        </div>
+                        
                         <div className='signup-form-section-div'>
                             <label className='signup-form-section-label'>Payment Terms</label>
                             <textarea
@@ -575,32 +584,20 @@ const SignUp = () => {
                                 name="paymentterms"
                                 rows="4"
                                 cols="50"
-                                placeholder="Enter the Payment Terms"
+                                placeholder="Enter Payment Terms"
                                 value={formData.paymentterms}
                                 onChange={handleChange}
                             />
                             {errors.paymentterms && <div className='signup__errors'>{errors.paymentterms}</div>}
                         </div>
-                        <div className='signup-form-section-div'>
-                            <label className='signup-form-section-label'>About Company</label>
-                            <textarea
-                                className='signup-form-section-input'
-                                name="description"
-                                rows="4"
-                                cols="50"
-                                placeholder='Enter the Description'
-                                value={formData.description}
-                                onChange={handleChange}
-                            />
-                            {errors.description && <div className='signup__errors'>{errors.description}</div>}
-                        </div>
+                       
                         <div className='signup-form-section-div'>
                             <label className='signup-form-section-label'>Upload Trade License</label>
                             <ImageUploader onUploadStatusChange={handleImageUpload} imageType="license" reset={resetUploaders} allowMultiple={true}/>
                             {errors.licenseImage && <div className='signup__errors'>{errors.licenseImage}</div>}
                         </div>
                         <div className='signup-form-section-div'>
-                            <label className='signup-form-section-label'>Upload Tax Registraion Certificate</label>
+                            <label className='signup-form-section-label'>Upload Tax Registration Certificate</label>
                             <ImageUploader onUploadStatusChange={handleImageUpload} imageType="tax" reset={resetUploaders} allowMultiple={true}/>
                             {errors.taxImage && <div className='signup__errors'>{errors.taxImage}</div>}
                         </div>

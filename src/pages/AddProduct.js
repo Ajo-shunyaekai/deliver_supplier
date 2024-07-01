@@ -6,6 +6,7 @@ import ImageAddUploader from './ImageAppUploader';
 import CloseIcon from '@mui/icons-material/Close';
 import AddPdfUpload from './AddPdfUpload';
 
+
 const MultiSelectOption = ({ children, ...props }) => (
     <components.Option {...props}>
         <input
@@ -32,12 +33,13 @@ const MultiSelectDropdown = ({ options, value, onChange }) => {
 };
 
 const AddProduct = () => {
+
     const productTypeOptions = [
         { value: 'new_product', label: 'New Product' },
         { value: 'secondary_market', label: 'Secondary Market' }
     ];
 
-    const formTypes = [
+    const formTypesOptions = [
         { value: 'tablet', label: 'Tablet' },
         { value: 'syrup', label: 'Syrup' }
     ];
@@ -61,7 +63,282 @@ const AddProduct = () => {
         { value: 'nutraceuticals', label: 'Nutraceuticals' }
     ];
 
-    const [productType, setProductType] = useState({ value: 'new_product', label: 'New Product' });
+    const [productType, setProductType] = useState( { value: 'new_product', label: 'New Product' },);
+    const [formType, setFormType] = useState()
+    const [productCategory, setProductCategory] = useState()
+    const [countryOfOrigin, setCountryOfOrigin] = useState()
+    const [registeredCountries, setRegisteredCountries] = useState()
+    const [countries, setCountries] = useState([]);
+    const [medicineImages, setMedicineImages] = useState()
+    
+
+    const [errors, setErrors]     = useState({});
+    const [formData, setFormData] = useState({
+        productName : '',
+        productType : productType,
+        composition  : '',
+        strength : '',
+        typeOfForm : '',
+        shelfLife : '',
+        dossierType : '',
+        dossierStatus : '',
+        productCategory : '',
+        totalQuantity : '',
+        gmpApprovals : '',
+        shippingTime : '',
+        originCountry : '',
+        registeredIn : '',
+        availableFor : '',
+        tags : '',
+        description : '', 
+        quantity : [],
+        unitPrice : [],
+        totalPrice : [],
+        estDeliveryTime : [], 
+        product_image : medicineImages
+
+    })
+
+    useEffect(() => {
+        const countryOptions = countryList().getData();
+        setCountries(countryOptions);
+    }, []);
+
+    const handleConditionChange = (index, selected) => {
+        const newFormSections = [...formSections];
+        newFormSections[index].condition = selected;
+        setFormSections(newFormSections);
+    };
+
+    const handleQuantityChange = (index, selected) => {
+        
+        const newFormSections = [...formSections];
+        newFormSections[index].quantity = selected;
+
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [`quantity${index}`]: ''
+        }));
+
+        const quantities = newFormSections.map(section => section.quantity);
+
+    setFormData({
+        ...formData,
+        quantity : quantities
+    });
+
+        setFormSections(newFormSections);
+        
+    };
+
+    const handleInputChange = (index, event) => {
+        const { name, value } = event.target;
+        const newFormSections = [...formSections];
+        newFormSections[index][name] = value;
+        setFormSections(newFormSections);
+    
+        if (value.trim() === '') {
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                [`${name}${index}`]: `${name.charAt(0).toUpperCase() + name.slice(1)} is required`
+            }));
+        } else {
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                [`${name}${index}`]: ''
+            }));
+
+            const unitPrices = newFormSections.map(section => section.unitPrice);
+        const totalPrices = newFormSections.map(section => section.totalPrice);
+        const estDeliveryTimes = newFormSections.map(section => section.estDeliveryTime);
+
+        setFormData({
+            ...formData,
+            unitPrice : unitPrices ,
+            totalPrice : totalPrices,
+            estDeliveryTime : estDeliveryTimes
+        });
+
+        setFormSections(newFormSections);
+        }
+    };
+    
+    const addFormSection = () => {
+        let valid = true;
+
+        formSections.forEach((section, index) => {
+            if (!section.quantity || !section.unitPrice || !section.totalPrice || !section.estDeliveryTime) {
+                valid = false;
+                setErrors(prevErrors => ({
+                    ...prevErrors,
+                    [`quantity${index}`]: !section.quantity ? 'Quantity is required' : '',
+                    [`unitPrice${index}`]: !section.unitPrice ? 'Unit Price is required' : '',
+                    [`totalPrice${index}`]: !section.totalPrice ? 'Total Price is required' : '',
+                    [`estDeliveryTime${index}`]: !section.estDeliveryTime ? 'Estimated Delivery Time is required' : '',
+                    
+                }));
+            }
+        });
+       
+
+        if (valid) {
+            setFormSections([
+                ...formSections,
+                {
+                    id: formSections.length,
+                    strength: '',
+                    quantity: null,
+                    typeOfForm: null,
+                    totalPrice: '',
+                    unitPrice: '',
+                    shelfLife: '',
+                    estDeliveryTime: '',
+                    condition: ''
+                }
+            ]);
+            
+            setErrors({});
+        }
+    };
+
+
+    const removeFormSection = (index) => {
+        if (formSections.length > 1) {
+            const newFormSections = formSections.filter((_, i) => i !== index);
+
+            const newQuantities = formData.quantity.filter((_, i) => i !== index);
+            const newUnitPrices = formData.unitPrice.filter((_, i) => i !== index);
+            const newTotalPrices = formData.totalPrice.filter((_, i) => i !== index);
+            const newEstDeliveryTimes = formData.estDeliveryTime.filter((_, i) => i !== index);
+
+            setFormSections(newFormSections);
+            setFormData({
+                ...formData,
+                quantity: newQuantities,
+                unitPrice: newUnitPrices,
+                totalPrice: newTotalPrices,
+                estDeliveryTime: newEstDeliveryTimes
+            });
+        }
+    };
+    
+
+    const handleProductTypeChange = (selected) => {
+        setProductType(selected);
+        // setSelectedCompanyType(selectedOption);
+        setFormData(prevState => ({ ...prevState, productType: selected}));
+        if (!selected) {
+            setErrors(prevState => ({ ...prevState, productType: 'Product Type is required' }));
+        } else {
+            setErrors(prevState => ({ ...prevState, productType: '' }));
+        }
+    };
+
+    const handleFormTypeChange = (selected) => {
+       setFormType(selected)
+        setFormData(prevState => ({ ...prevState, typeOfForm: selected }));
+        if (!selected) {
+            setErrors(prevState => ({ ...prevState, typeOfForm: 'Type of form is required' }));
+        } else {
+            setErrors(prevState => ({ ...prevState, typeOfForm: '' }));
+        }
+    };
+ 
+    const handleProductCategoryChange = (selected) => {
+        setProductCategory(selected)
+         setFormData(prevState => ({ ...prevState, productCategory: selected }));
+         if (!selected) {
+             setErrors(prevState => ({ ...prevState, productCategory: 'Product category is required' }));
+         } else {
+             setErrors(prevState => ({ ...prevState, productCategory: '' }));
+         }
+     };
+
+     const handleCountryOriginChange = (selected) => {
+        setCountryOfOrigin(selected)
+         setFormData(prevState => ({ ...prevState, originCountry: selected }));
+         if (!selected) {
+             setErrors(prevState => ({ ...prevState, originCountry: 'Country of origin is required' }));
+         } else {
+             setErrors(prevState => ({ ...prevState, originCountry: '' }));
+         }
+     };
+
+     const handleRegisteredInChange = (selectedOptions) => {
+        const selectedLabels = selectedOptions?.map(option => option.label) || [];
+      
+        setFormData({
+            ...formData,
+            registeredIn: selectedOptions
+        });
+
+        setRegisteredCountries(selectedOptions)
+    
+        setErrors(prevState => ({
+            ...prevState,
+            registeredIn: selectedLabels.length === 0 ? 'Registered in is required' : ''
+        }));
+    };
+    
+    const getDropdownButtonLabel = ({ placeholderButtonLabel, value }) => {
+        if (value && value.length) {
+            return value.map(country => country.label).join(', ');
+        }
+        return placeholderButtonLabel;
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData(prevState => ({ ...prevState, [name]: value }));
+
+        if (name === 'description' && value.length > 1000) {
+            setErrors(prevState => ({ ...prevState, description: 'Description cannot exceed 1000 characters' }));
+        } else {
+            setErrors(prevState => ({ ...prevState, [name]: '' }));
+        }
+    };
+
+   useEffect(() => {
+    setFormData({
+        ...formData,
+        product_image : medicineImages
+    });
+   }, [medicineImages])
+
+    const validateForm = () => {
+        let formErrors = {};
+    
+        if (!formData.productName) formErrors.productName = 'Product name is required';
+        if (!productType) formErrors.productType = 'Product type is required';
+        if (!formData.composition) formErrors.composition = 'Composition is required';
+        if (!formData.strength) formErrors.strength = 'Strength is required';
+        if (!formType) formErrors.typeOfForm = 'Type of form is required';
+        if (!formData.shelfLife) formErrors.shelfLife = 'Shelf lifeis required';
+        if (!formData.dossierStatus) formErrors.dossierStatus = 'Dossier Status is required';
+        if (!formData.dossierType) formErrors.dossierType = 'Dossier Type is required';
+        if (!formData.totalQuantity) formErrors.totalQuantity = 'Total quantity is required';
+        if (!formData.gmpApprovals) formErrors.gmpApprovals = 'Gmp approval is required';
+        if (!formData.shippingTime) formErrors.shippingTime = 'Shipping time is required';
+        if (!formData.availableFor) formErrors.availableFor = 'Available for is required';
+        if (!formData.tags) formErrors.tags = 'Tags are required';
+        if (!formData.description) formErrors.description = 'Description is required';
+        if (!countryOfOrigin) formErrors.originCountry = 'Country of Origin is required';
+        if (!registeredCountries) formErrors.registeredIn = 'Registered in is required';
+        if (!productCategory) formErrors.productCategory = 'Product Category is required';
+
+        formSections.forEach((section, index) => {
+            if (!section.quantity) formErrors[`quantity${index}`] = 'Quantity is required';
+            if (!section.unitPrice) formErrors[`unitPrice${index}`] = 'Unit Price is required';
+            if (!section.totalPrice) formErrors[`totalPrice${index}`] = 'Total Price is required';
+            if (!section.estDeliveryTime) formErrors[`estDeliveryTime${index}`] = 'Estimated Delivery Time is required';
+        });
+
+        if(formData.product_image?.length === 0) formErrors.medicineImage = 'Medicine Image is required';
+
+        setErrors(formErrors);
+        return Object.keys(formErrors).length === 0;
+    }
+
     const [formSections, setFormSections] = useState([
         {
             strength: '',
@@ -73,61 +350,27 @@ const AddProduct = () => {
             condition: ''
         }
     ]);
-    const [countries, setCountries] = useState([]);
 
-    useEffect(() => {
-        const countryOptions = countryList().getData();
-        setCountries(countryOptions);
-    }, []);
-    const handleConditionChange = (index, selected) => {
-        const newFormSections = [...formSections];
-        newFormSections[index].condition = selected;
-        setFormSections(newFormSections);
-    };
-    const handleQuantityChange = (index, selected) => {
-        const newFormSections = [...formSections];
-        newFormSections[index].quantity = selected;
-        setFormSections(newFormSections);
-    };
+    const handleSubmit = (e) => {
+        e.preventDefault()
 
-    const handleInputChange = (index, event) => {
-        const { name, value } = event.target;
-        const newFormSections = [...formSections];
-        newFormSections[index][name] = value;
-        setFormSections(newFormSections);
-    };
-    const addFormSection = () => {
-        setFormSections([
-            ...formSections,
-            {
-                strength: '',
-                quantity: null,
-                typeOfForm: null,
-                totalPrice: '',
-                unitPrice: '',
-                shelfLife: '',
-                estDeliveryTime: '',
-                condition: ''
-            }
-        ]);
-    };
-
-    const removeFormSection = (index) => {
-        if (formSections.length > 1) {
-            const newFormSections = formSections.filter((_, i) => i !== index);
-            setFormSections(newFormSections);
+        if(validateForm()) {
+            console.log('done');
+            console.log(formData);
+        } else {
+            console.log('errorrrrr');
+            console.log(formData);
         }
-    };
+    }
 
-    const handleProductTypeChange = (selected) => {
-        setProductType(selected);
-    };
     return (
         <>
             <div className={styles['create-invoice-container']}>
                 <div className={styles['create-invoice-heading']}>Add Product</div>
                 <div className={styles['create-invoice-section']}>
-                    <form className={styles['craete-invoice-form']} >
+                    <form className={styles['craete-invoice-form']}  onSubmit={handleSubmit}>
+
+                        {/* details section */}
                         <div className={styles['create-invoice-inner-form-section']}>
                             <div className={styles['create-invoice-add-item-cont']}>
                                 <div className={styles['create-invoice-form-heading']}>Product Details</div>
@@ -140,7 +383,9 @@ const AddProduct = () => {
                                     name='productName'
                                     placeholder='Enter Product Name'
                                     autoComplete='off'
+                                    onChange={handleChange}
                                 />
+                              {errors.productName && <div className='add-product-errors'>{errors.productName}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Product Type</label>
@@ -150,7 +395,9 @@ const AddProduct = () => {
                                     onChange={handleProductTypeChange}
                                     options={productTypeOptions}
                                     placeholder="Select Product Type"
+                                    name = 'productType'
                                 />
+                                {errors.productType && <div className='add-product-errors'>{errors.productType}</div>}
                             </div>
 
                             {productType && productType.value === 'secondary_market' && (
@@ -192,7 +439,9 @@ const AddProduct = () => {
                                     name='composition'
                                     placeholder='Enter Composition'
                                     autoComplete='off'
+                                    onChange={handleChange}
                                 />
+                                {errors.composition && <div className='add-product-errors'>{errors.composition}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Strength</label>
@@ -202,15 +451,21 @@ const AddProduct = () => {
                                     name='strength'
                                     placeholder='Enter Strength'
                                     autoComplete='off'
+                                    onChange={handleChange}
                                 />
+                                {errors.strength && <div className='add-product-errors'>{errors.strength}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Type of form</label>
                                 <Select
                                     className={styles['create-invoice-div-input-select']}
-                                    options={formTypes}
+                                    value={formType}
+                                    options={formTypesOptions}
+                                    onChange={handleFormTypeChange}
                                     placeholder="Select Type of Form"
+                                    name='typeOfForm'
                                 />
+                                {errors.typeOfForm && <div className='add-product-errors'>{errors.typeOfForm}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Shelf Life</label>
@@ -220,7 +475,9 @@ const AddProduct = () => {
                                     name='shelfLife'
                                     placeholder='Enter Shelf Life'
                                     autoComplete='off'
+                                    onChange={handleChange}
                                 />
+                                {errors.shelfLife && <div className='add-product-errors'>{errors.shelfLife}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Dossier Type</label>
@@ -230,7 +487,9 @@ const AddProduct = () => {
                                     name='dossierType'
                                     placeholder='Enter Dossier Type'
                                     autoComplete='off'
+                                    onChange={handleChange}
                                 />
+                                {errors.dossierType && <div className='add-product-errors'>{errors.dossierType}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Dossier Status</label>
@@ -240,7 +499,9 @@ const AddProduct = () => {
                                     name='dossierStatus'
                                     placeholder='Enter Dossier Status'
                                     autoComplete='off'
+                                    onChange={handleChange}
                                 />
+                                {errors.dossierStatus && <div className='add-product-errors'>{errors.dossierStatus}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Product Category</label>
@@ -248,7 +509,10 @@ const AddProduct = () => {
                                     className={styles['create-invoice-div-input-select']}
                                     options={productCategoryOptions}
                                     placeholder="Select Product Category"
+                                    name='produtCategory'
+                                    onChange={handleProductCategoryChange}
                                 />
+                                 {errors.productCategory && <div className='add-product-errors'>{errors.productCategory}</div>}
                             </div>
                             {productType && productType.value === 'new_product' && (
                                 <>
@@ -257,10 +521,12 @@ const AddProduct = () => {
                                         <input
                                             className={styles['create-invoice-div-input']}
                                             type='text'
-                                            name='gmpApprovals'
+                                            name='totalQuantity'
                                             placeholder='Enter Total Quantity'
                                             autoComplete='off'
+                                            onChange={handleChange}
                                         />
+                                        {errors.totalQuantity && <div className='add-product-errors'>{errors.totalQuantity}</div>}
                                     </div>
                                 </>
                             )}
@@ -272,7 +538,9 @@ const AddProduct = () => {
                                     name='gmpApprovals'
                                     placeholder='Enter GMP Approvals'
                                     autoComplete='off'
+                                    onChange={handleChange}
                                 />
+                                {errors.gmpApprovals && <div className='add-product-errors'>{errors.gmpApprovals}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Shipping Time</label>
@@ -281,7 +549,9 @@ const AddProduct = () => {
                                     type='text'
                                     name='shippingTime'
                                     placeholder='Enter Shipping Time'
+                                    onChange={handleChange}
                                 />
+                                {errors.shippingTime && <div className='add-product-errors'>{errors.shippingTime}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Country of Origin</label>
@@ -291,14 +561,19 @@ const AddProduct = () => {
                                     options={countries}
                                     placeholder="Select Country of Origin"
                                     autoComplete='off'
+                                    onChange={handleCountryOriginChange}
                                 />
+                                 {errors.originCountry && <div className='add-product-errors'>{errors.originCountry}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Registered In</label>
                                 <MultiSelectDropdown
                                     options={countries}
                                     placeholderButtonLabel="Select Countries"
+                                    onChange={handleRegisteredInChange}
+                                    getDropdownButtonLabel={getDropdownButtonLabel}
                                 />
+                                {errors.registeredIn && <div className='add-product-errors'>{errors.registeredIn}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Available For</label>
@@ -307,16 +582,20 @@ const AddProduct = () => {
                                     type='text'
                                     name='availableFor'
                                     placeholder='Enter Available For'
+                                    onChange={handleChange}
                                 />
+                                {errors.availableFor && <div className='add-product-errors'>{errors.availableFor}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Tags</label>
                                 <input
                                     className={styles['create-invoice-div-input']}
                                     type='text'
-                                    name='availableFor'
+                                    name='tags'
                                     placeholder='Enter Tags'
+                                    onChange={handleChange}
                                 />
+                                 {errors.tags && <div className='add-product-errors'>{errors.tags}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container-description']}>
                                 <label className={styles['create-invoice-div-label']}>Product Description</label>
@@ -326,10 +605,13 @@ const AddProduct = () => {
                                     rows="4"
                                     cols="50"
                                     placeholder='Enter Description'
+                                    onChange={handleChange}
                                 />
+                                {errors.description && <div className='add-product-errors'>{errors.description}</div>}
                             </div>
                         </div>
 
+                       {/* inventory section */}
                         <div className={styles['create-invoice-inner-form-section']}>
                             <div className={styles['create-invoice-section']}>
                                 <div className={styles['create-invoice-add-item-cont']}>
@@ -349,7 +631,11 @@ const AddProduct = () => {
                                                         onChange={(selected) => handleQuantityChange(index, selected)}
                                                         options={quantityOptions}
                                                         placeholder="Select Quantity"
+                                                        name='quantity'
                                                     />
+                                                     {/* {errors.quantity && <div className='add-product-errors'>{errors.quantity}</div>} */}
+                                                     {errors[`quantity${index}`] && <div className='add-product-errors'>{errors[`quantity${index}`]}</div>}
+
                                                 </div>
 
                                                 <div className={styles['create-invoice-div-container']}>
@@ -362,6 +648,8 @@ const AddProduct = () => {
                                                         value={section.unitPrice}
                                                         onChange={(event) => handleInputChange(index, event)}
                                                     />
+                                                    {/* {errors.unitPrice && <div className='add-product-errors'>{errors.unitPrice}</div>} */}
+                                                    {errors[`unitPrice${index}`] && <div className='add-product-errors'>{errors[`unitPrice${index}`] }</div>}
                                                 </div>
                                                 <div className={styles['create-invoice-div-container']}>
                                                     <label className={styles['create-invoice-div-label']}>Total Price</label>
@@ -373,6 +661,9 @@ const AddProduct = () => {
                                                         value={section.totalPrice}
                                                         onChange={(event) => handleInputChange(index, event)}
                                                     />
+                                                     {/* {errors.totalPrice && <div className='add-product-errors'>{errors.totalPrice}</div>} */}
+                                                     {errors[`totalPrice${index}`] && <div className='add-product-errors'>{errors[`totalPrice${index}`]}</div>}
+
                                                 </div>
 
                                                 <div className={styles['create-invoice-div-container']}>
@@ -385,7 +676,11 @@ const AddProduct = () => {
                                                         value={section.estDeliveryTime}
                                                         onChange={(event) => handleInputChange(index, event)}
                                                     />
+                                                     {/* {errors.estDeliveryTime && <div className='add-product-errors'>{errors.estDeliveryTime}</div>} */}
+                                                     {errors[`estDeliveryTime${index}`] &&  <div className='add-product-errors'>{errors[`estDeliveryTime${index}`]}</div>}
                                                 </div>
+                                               
+
                                             </div>
                                         )}
                                         {productType && productType.value === 'secondary_market' && (
@@ -434,26 +729,34 @@ const AddProduct = () => {
                                 ))}
                             </div>
                         </div>
+
+                        {/* image upload section */}
                         <div className={styles['create-invoice-inner-form-section']}>
                             <div className={styles['create-invoice-product-image-section']}>
                                 <div className={styles['create-invoice-upload-purchase']}>
                                     <div className={styles['create-invoice-form-heading']}>Upload Product Image</div>
-                                    <ImageAddUploader />
+                                    <ImageAddUploader 
+                                    image={medicineImages}
+                                    setImage={setMedicineImages}
+                                    />
+                                    {!medicineImages || errors.product_image && <div className='add-product-errors'>{errors.medicineImage}</div>}
                                 </div>
                                 {productType && productType.value === 'secondary_market' && (
                                     <>
                                         <div className={styles['create-invoice-upload-purchase']}>
                                             <div className={styles['create-invoice-form-heading']}>Upload Purchase Invoice</div>
-                                            <AddPdfUpload />
+                                            <AddPdfUpload 
+                                            />
                                         </div>
                                     </>
                                 )}
 
                             </div>
                         </div>
+
                         <div className={styles['craete-invoices-button']}>
                             <div className={styles['create-invoices-cancel']}>Cancel</div>
-                            <button type="submit" className={styles['create-invoices-submit']}>Add Product</button>
+                            <button type='submit' className={styles['create-invoices-submit']}>Add Product</button>
                         </div>
                     </form>
 

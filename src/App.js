@@ -81,7 +81,7 @@ function ExcludeSidebar() {
           <Route path="/create-invoice" element={<CreateInvoice />} />
           <Route path="/order-requests" element={<OrderRequests />} />
           <Route path="/ongoing-orders" element={<DashboardOngoing />} />
-          <Route path="/completed-orders" element={<CompletedOrders />} />
+          <Route path="/completed-orders" element={<CompletedOrders />} />  
           <Route path="/image-uploader" element={<ImageUploader />} />
           <Route path="/success-modal" element={<SuccessModal />} />
           <Route path="/invoice-design" element={<InvoiceDesign />} />

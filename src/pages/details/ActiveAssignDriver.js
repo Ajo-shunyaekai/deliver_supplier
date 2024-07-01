@@ -6,6 +6,7 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 const ActiveAssignDriver = ({productList}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const ordersPerPage = 1; 
+    
     const activeOrders = [
         { productId: 'PR1234567', productName: 'Paracetamol (acetaminophen)', quantity: 200, totalAmount: '500 AED' },
         { productId: 'PR1234567', productName: 'Paracetamol (acetaminophen)', quantity: 200, totalAmount: '500 AED' },
@@ -14,9 +15,9 @@ const ActiveAssignDriver = ({productList}) => {
 
     const data = productList && productList.length > 0 ? productList : activeOrders;
 
-    const indexOfLastOrder = currentPage * ordersPerPage;
+    const indexOfLastOrder  = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-    const currentOrders = data.slice(indexOfFirstOrder, indexOfLastOrder);
+    const currentOrders     = data.slice(indexOfFirstOrder, indexOfLastOrder);
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
