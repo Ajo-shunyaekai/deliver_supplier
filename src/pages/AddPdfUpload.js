@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import UploadIcon from '../assest/uplaod.svg';
 import styles from '../style/pdfadd.module.css';
 import CloseIcon from '@mui/icons-material/Close';
 
-const AddPdfUpload = () => {
+const AddPdfUpload = ({invoiceImage, setInvoiceImage}) => {
     // PDF popup modal
     const [showModal, setShowModal] = useState(false);
     const [selectedPdf, setSelectedPdf] = useState(null);
@@ -16,6 +16,14 @@ const AddPdfUpload = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const fileInputRef = useRef(null);
     const maxFiles = 5;
+
+    useEffect(() => {
+        if (!invoiceImage || invoiceImage.length === 0) {
+            setErrorMessage('Please upload at least one purchase invoice.');
+        } else {
+            setErrorMessage('');
+        }
+    }, [invoiceImage]);
 
     const handlePdfUpload = (event) => {
         const files = event.target.files;
@@ -44,6 +52,7 @@ const AddPdfUpload = () => {
                 count++;
             }
         }
+        setInvoiceImage([...pdfFiles, ...newPdfFiles]); 
 
         if (count <= maxFiles) {
             setPdfFiles([...pdfFiles, ...newPdfFiles]);
@@ -56,6 +65,7 @@ const AddPdfUpload = () => {
         const updatedPdfFiles = [...pdfFiles];
         updatedPdfFiles.splice(index, 1);
         setPdfFiles(updatedPdfFiles);
+        setInvoiceImage(updatedPdfFiles)
     };
 
     const handlePdfClick = () => {
@@ -70,6 +80,7 @@ const AddPdfUpload = () => {
         };
         reader.readAsDataURL(pdf);
     };
+
 
     return (  
        <>
