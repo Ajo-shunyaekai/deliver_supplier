@@ -530,16 +530,11 @@ const AddProduct = () => {
                 newFormData.append('gmp_approvals', formData.gmpApprovals);
                 newFormData.append('shipping_time', formData.shippingTime);
                 newFormData.append('country_of_origin', countryOfOrigin?.label);
-                // newFormData.append('registered_in', registered);
                 registered.forEach(item => newFormData.append('registered_in[]', item));
                 newFormData.append('available_for', formData.availableFor);
                 newFormData.append('tags', formData.tags);
                 newFormData.append('description', formData.description);
-                // newFormData.append('quantity[]', formData.quantity);
                 quantities.forEach(item => newFormData.append('quantity[]', item));
-                // newFormData.append('unit_price', formData.unitPrice.join(','));
-                // newFormData.append('total_price', formData.totalPrice.join(','));
-                // newFormData.append('est_delivery_days', formData.estDeliveryTime.join(','));
                 formData.unitPrice.forEach(price => newFormData.append('unit_price[]', price));
                 formData.totalPrice.forEach(price => newFormData.append('total_price[]', price));
                 formData.estDeliveryTime.forEach(time => newFormData.append('est_delivery_days[]', time));
@@ -547,8 +542,9 @@ const AddProduct = () => {
 
                 postRequestWithTokenAndFile('/medicine/add-medicine', newFormData, async (response) => {
                     if(response.code === 200) {
-                       
+                       alert('success')
                     } else {
+                        alert('failed')
                         console.log('error in new  /medicine/add-medicine');
                     }
                 })
@@ -557,14 +553,12 @@ const AddProduct = () => {
                 const countryLabels = formData.countryAvailableIn?.map(country => {
                     return country ? country.label : '';
                 }) || [];
-
-                // const countryLabels = formData.countryAvailableIn.map(country => country.label).join(', ');
                 
                 secondaryFormData.append('supplier_id', supplierIdSessionStorage || supplierIdLocalStorage);
                 secondaryFormData.append('medicine_name', formData.productName);
                 secondaryFormData.append('product_type', 'secondary market');
                 secondaryFormData.append('purchased_on', formData.purchasedOn);
-                // secondaryFormData.append('country_available_in', formData.countryAvailableIn);
+
                 countryLabels.forEach(item => secondaryFormData.append('country_available_in[]', item));
                 secondaryFormData.append('strength', formData.strength);
                 secondaryFormData.append('min_purchase_unit', formData.minPurchaseUnit);
@@ -575,33 +569,24 @@ const AddProduct = () => {
                 secondaryFormData.append('dossier_type', formData.dossierType);
                 secondaryFormData.append('dossier_status', formData.dossierStatus);
                 secondaryFormData.append('product_category', formData.productCategory?.label);
-                // newFormData.append('total_quantity', formData.totalQuantity);
                 secondaryFormData.append('gmp_approvals', formData.gmpApprovals);
                 secondaryFormData.append('shipping_time', formData.shippingTime);
                 secondaryFormData.append('country_of_origin', countryOfOrigin?.label);
-                // secondaryFormData.append('registered_in', formData.registeredIn);
                 registered.forEach(item => secondaryFormData.append('registered_in[]', item));
                 secondaryFormData.append('available_for', formData.availableFor);
                 secondaryFormData.append('tags', formData.tags);
                 secondaryFormData.append('description', formData.description);
-                // secondaryFormData.append('quantity', formData.quantityNo);
                 secondaryFormData.append('quantity', formData.quantityNo.join(','));
                 secondaryFormData.append('unit_price', formData.unitPricee);
-                // secondaryFormData.append('condition', formData.condition);
                 secondaryFormData.append('condition', formData.condition[0].value);
-                // if (formData.condition && formData.condition.length > 0) {
-                //     formData.condition.forEach((condition, index) => {
-                //         secondaryFormData.append(`condition[${index}]`, condition.value);
-                //     });
-                // }
-                
                 Array.from(formData.product_image).forEach(file => secondaryFormData.append('product_image', file));
                 Array.from(formData.invoice_image).forEach(file => secondaryFormData.append('invoice_image', file));
 
                 postRequestWithTokenAndFile('/medicine/add-medicine', secondaryFormData, async (response) => {
                     if(response.code === 200) {
-                        window.alert()
+                        alert('success')
                     } else {
+                        alert('failed')
                         console.log('error in secondary  /medicine/add-medicine');
                     }
                 })

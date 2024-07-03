@@ -17,6 +17,7 @@ const Product = () => {
 
 
     const [medicineType, setMedicineType] = useState(() => {
+        
         switch (location.pathname) {
             case '/product/newproduct':
                 return 'new';
@@ -43,6 +44,7 @@ const Product = () => {
     const activeButton = getActiveButtonFromPath(location.pathname);
 
     const handleButtonClick = (button) => {
+        setCurrentPage(1)
         switch (button) {
             case 'newproduct':
                 setMedicineType('new')
@@ -64,8 +66,8 @@ const Product = () => {
     useEffect(() => {
         const obj = {
             medicine_type : medicineType,
-            pageNo      : currentPage, 
-            pageSize        : itemsPerPage,
+            pageNo        : currentPage, 
+            pageSize      : itemsPerPage,
         }
 
         postRequest('medicine/medicine-list', obj, async (response) => {
