@@ -271,11 +271,10 @@ const SignUp = () => {
         if (validateForm() && isChecked) {
             
             const formDataToSend = new FormData();
-            console.log(formData.operationCountries);
-             const countryLabels = formData.operationCountries.map(country => {
+            const countryLabels = formData.operationCountries.map(country => {
                 return country ? country.label : '';
             }) || [];
-            console.log(countryLabels);
+
             formDataToSend.append('supplier_type', formData.companyType?.label);
             formDataToSend.append('supplier_name', formData.companyName);
             formDataToSend.append('description', formData.description);
