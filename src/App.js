@@ -41,6 +41,8 @@ import BuyerActiveList from './pages/buyer/BuyerActiveList.js';
 import BuyerPendingList from './pages/buyer/BuyerPendingList.js';
 import AddProduct from './pages/AddProduct.js';
 import EditAddProduct from './pages/EditAddProduct.js';
+import SecondaryProductDetails from './pages/SecondaryProductDetails.js';
+import SupplierPurchaseInvoice from './pages/invoice/SupplierPurchaseInvoice.js';
 
 
 function ExcludeSidebar() {
@@ -93,6 +95,8 @@ function ExcludeSidebar() {
           <Route path="/buyer-pending-list" element={<BuyerPendingList />} />
           <Route path="/add-product" element={<AddProduct/>} />
           <Route path="/edit-product/:medicineId" element={<EditAddProduct/>} /> 
+          <Route path="/secondary-product-details/:medicineId" element={<SecondaryProductDetails/>} />
+          <Route path="/supplier-purchase-invoice" element={<SupplierPurchaseInvoice/>} />
         </Routes>
       </Sidebar>
     </div>
