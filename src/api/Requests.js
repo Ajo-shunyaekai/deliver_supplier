@@ -46,6 +46,7 @@ export const postRequestWithToken = async (URL, requestData, callback) => {
             // withCredentials : true,
             headers : {
                 "access_token" : sessionStorage.getItem('token') || localStorage.getItem('token'),
+                "supplier_id" : sessionStorage.getItem('supplier_id') || localStorage.getItem('supplier_id'),
                 // access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lIjoiVGh1IE1heSAwMiAyMDI0IDExOjM2OjE2IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKSIsImJ1eWVySWQiOiJCVVktcDQ4MHhxdXNjeiIsImlhdCI6MTcxNDYyOTk3Nn0.NADTShvxaTLQBizjnmA9-NC1v-jFcFcLqrx5yOwAP8g',
                 "Content-Type" : "application/json"
             } 

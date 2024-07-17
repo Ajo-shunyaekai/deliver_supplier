@@ -108,7 +108,7 @@ const Dashboard = () => {
                                     <Link to='/completed-orders'>
                                         <div className='top-content-section'>
                                             <div className='top-head'>Completed Orders</div>
-                                            <div className='top-text'>{orderSummary?.completedCount[0].count || 20}</div>
+                                            <div className='top-text'>{orderSummary?.completedCount[0]?.count || 20}</div>
                                         </div>
                                     </Link>
                                 </div>
@@ -134,7 +134,7 @@ const Dashboard = () => {
                             <div className='cart-top-left-section'>
                                 <div className='left-head'>Total Sales Amount</div>
                                 <div className='circular-process'>
-                                    <CircularBar totalSalesAmount = {orderSummary?.totalPurchaseAmount[0].total_purchase} />
+                                    <CircularBar totalSalesAmount = {orderSummary?.totalPurchaseAmount[0]?.total_purchase} />
                                 </div>
                             </div>
                         </div>

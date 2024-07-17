@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import '../style/addproductlist.css';
 import SecondaryMarket from './SecondaryMarket';
 import NewProduct from './NewProduct';
-import { postRequest } from '../api/Requests';
+import { postRequest, postRequestWithToken } from '../api/Requests';
 
 const Product = () => {
     const location = useLocation();
@@ -64,13 +64,23 @@ const Product = () => {
     };
 
     useEffect(() => {
+
+        const supplierIdSessionStorage = sessionStorage.getItem("supplier_id");
+        const supplierIdLocalStorage   = localStorage.getItem("supplier_id");
+
+        if (!supplierIdSessionStorage && !supplierIdLocalStorage) {
+        navigate("/login");
+        return;
+        }
+
         const obj = {
+            supplier_id   : supplierIdSessionStorage || supplierIdLocalStorage ,
             medicine_type : medicineType,
             pageNo        : currentPage, 
             pageSize      : itemsPerPage,
         }
 
-        postRequest('medicine/medicine-list', obj, async (response) => {
+        postRequestWithToken('medicine/medicine-list', obj, async (response) => {
             if (response.code === 200) {
                 setMedicineList(response.result.data)
                 setTotalItems(response.result.totalItems)

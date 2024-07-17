@@ -94,7 +94,7 @@ const SecondaryMarket = ({productList, currentPage, totalItems, itemsPerPage, ha
                                     <img  src={`${process.env.REACT_APP_SERVER_URL}uploads/medicine/product_files/${firstImage}`}  alt="Medicine" /> 
                                 </div>
                                 <div className='buy-product-card-first-button-container'>
-                                    <Link to={`/product-details/${product.medicine_id}`}>
+                                    <Link to={`/secondary-product-details/${product.medicine_id}`}>
                                         <div className='buy-product-card-first-send-button'>
                                             View Details
                                         </div>
@@ -139,7 +139,7 @@ const SecondaryMarket = ({productList, currentPage, totalItems, itemsPerPage, ha
                                             <img src={MedicineOne} alt="Medicine" />
                                         </div>
                                         <div className='buy-product-card-first-button-container'>
-                                            <Link to='/product-details'>
+                                            <Link to='/secondary-product-details'>
                                                 <div className='buy-product-card-first-send-button'>
                                                     View Details
                                                 </div>

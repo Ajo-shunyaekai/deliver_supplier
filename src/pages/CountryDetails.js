@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 // import styles from './countryDetails.module.css';
 import styles from '../style/countryDetails.module.css';
 
-const CountryDetails = () => {
-    // State to store the fetched country data
+const CountryDetails = ({countryData}) => {
     const [countries, setCountries] = useState([]);
-    const limit = 5; // Limiting the rendering to 5 items
+    const [filteredCountries, setFilteredCountries] = useState([]);
 
     // Function to fetch country data from the API
     const fetchCountries = async () => {
@@ -23,10 +22,18 @@ const CountryDetails = () => {
         fetchCountries();
     }, []);
 
+    // Filter countries based on countryData prop
+    useEffect(() => {
+        if (countries.length > 0 && countryData?.length > 0) {
+            const filtered = countries.filter(country => countryData.includes(country.name.common));
+            setFilteredCountries(filtered);
+        }
+    }, [countries, countryData]);
+
     return (
         <>
             <ul className={styles.container}>
-                {countries.slice(0, limit).map(country => (
+                {filteredCountries.map(country => (
                     <li key={country.name.common}>
                         <h6>{country.name.common}</h6>
                         {country.flags && country.flags.svg && (
@@ -35,7 +42,7 @@ const CountryDetails = () => {
                     </li>
                 ))}
             </ul>
-        </ >
+        </>
     );
 }
 

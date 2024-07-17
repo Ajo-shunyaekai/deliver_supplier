@@ -73,6 +73,7 @@ const AddProduct = () => {
     const [productCategory, setProductCategory] = useState()
     const [countryOfOrigin, setCountryOfOrigin] = useState()
     const [registeredCountries, setRegisteredCountries] = useState()
+    const [stockedIn, setStockedIn] = useState()
     const [availableCountries, setAvailableCountries] = useState([])
     const [countries, setCountries] = useState([]);
     const [medicineImages, setMedicineImages] = useState()
@@ -95,6 +96,7 @@ const AddProduct = () => {
         shippingTime : '',
         originCountry : '',
         registeredIn : '',
+        stockedIn : '',
         availableFor : '',
         tags : '',
         description : '', 
@@ -350,6 +352,22 @@ const AddProduct = () => {
         }));
      };
 
+     const handleStockedInChange = (selectedOptions) => {
+        const selectedLabels = selectedOptions?.map(option => option.label) || [];
+      
+        setFormData({
+            ...formData,
+            stockedIn: selectedOptions
+        });
+
+        setStockedIn(selectedOptions)
+    
+        setErrors(prevState => ({
+            ...prevState,
+            stockedIn: selectedLabels.length === 0 ? 'Stocked in is required' : ''
+        }));
+     };
+
      const handleAvailableInChange = (selectedOptions) => {
         const selectedLabels = selectedOptions?.map(option => option.label) || [];
 
@@ -442,6 +460,7 @@ const AddProduct = () => {
         if (!formData.description) formErrors.description = 'Description is required';
         if (!countryOfOrigin) formErrors.originCountry = 'Country of Origin is required';
         if (!registeredCountries) formErrors.registeredIn = 'Registered in is required';
+        if (!stockedIn) formErrors.stockedIn = 'Stocked in is required';
         if (!productCategory) formErrors.productCategory = 'Product Category is required';
 
         if(productType && productType.label === 'New Product') {
@@ -509,6 +528,10 @@ const AddProduct = () => {
                 return country ? country.label : '';
             }) || [];
 
+            const stocked = formData.stockedIn?.map(country => {
+                return country ? country.label : '';
+            } ) || []
+
             console.log('formData', formData);
             if(productType && productType.label === 'New Product') {
 
@@ -531,6 +554,7 @@ const AddProduct = () => {
                 newFormData.append('shipping_time', formData.shippingTime);
                 newFormData.append('country_of_origin', countryOfOrigin?.label);
                 registered.forEach(item => newFormData.append('registered_in[]', item));
+                stocked.forEach(item => newFormData.append('stocked_in[]', item));
                 newFormData.append('available_for', formData.availableFor);
                 newFormData.append('tags', formData.tags);
                 newFormData.append('description', formData.description);
@@ -573,6 +597,7 @@ const AddProduct = () => {
                 secondaryFormData.append('shipping_time', formData.shippingTime);
                 secondaryFormData.append('country_of_origin', countryOfOrigin?.label);
                 registered.forEach(item => secondaryFormData.append('registered_in[]', item));
+                stocked.forEach(item => secondaryFormData.append('stocked_in[]', item));
                 secondaryFormData.append('available_for', formData.availableFor);
                 secondaryFormData.append('tags', formData.tags);
                 secondaryFormData.append('description', formData.description);
@@ -815,6 +840,17 @@ const AddProduct = () => {
                                     getDropdownButtonLabel={getDropdownButtonLabel}
                                 />
                                 {errors.registeredIn && <div className='add-product-errors'>{errors.registeredIn}</div>}
+                            </div>
+
+                            <div className={styles['create-invoice-div-container']}>
+                                <label className={styles['create-invoice-div-label']}>Stocked In</label>
+                                <MultiSelectDropdown
+                                    options={countries}
+                                    placeholderButtonLabel="Select Countries"
+                                    onChange={handleStockedInChange}
+                                    getDropdownButtonLabel={getDropdownButtonLabel}
+                                />
+                                {errors.stockedIn && <div className='add-product-errors'>{errors.stockedIn}</div>}
                             </div>
                             <div className={styles['create-invoice-div-container']}>
                                 <label className={styles['create-invoice-div-label']}>Available For</label>
