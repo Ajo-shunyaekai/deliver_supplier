@@ -158,7 +158,7 @@ const NewProduct = ({productList, currentPage, totalItems, itemsPerPage, handleP
                                 </div>
                                 <div className='buy-product-card-second-section'>
                                     <div className='buy-product-card-second-head'>Stocked In</div>
-                                    <div className='buy-product-card-second-text'>{product.quantity || 900}</div>
+                                    <div className='buy-product-card-second-text'>{product.stocked_in.join(', ')}</div>
                                 </div>
                                 <div className='buy-product-card-second-section'>
                                     <div className='buy-product-card-second-head'>Dossier Type</div>
